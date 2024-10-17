@@ -18,14 +18,14 @@
             <h1>Welcome to Tanseeq Group!</h1>
        </div>
        <div class="container text-center">
-       <img src="{{ asset('images/ps.jpg') }}" alt="Tanseeq Group Logo" class="w-1/2 h-1/2 mx-auto">
+       <img src="{{ asset('images/ps.jpg') }}" alt="Tanseeq Group Logo" class="w-1/2 h-1/2 mx-auto mt-3">
        </div>
        <div class="container text-center">
        <a
             href="{{ route('login') }}"
             class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white"
         >
-        <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3">
+        <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 focus:bg-gray-700 active:bg-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 ms-3 mt-3">
                     Log in
                 </button>
                 </a>    
