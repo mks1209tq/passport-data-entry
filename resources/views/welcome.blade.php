@@ -18,7 +18,7 @@
             <h1>Welcome to Tanseeq Group!</h1>
        </div>
        <div class="container text-center">
-       <img src="{{ asset('images/ps.jpg') }}" alt="Tanseeq Group Logo" class="w-1/2 h-1/2 mx-auto mt-3">
+       <img src="{{ asset('images/logo.jpg') }}" alt="Tanseeq Group Logo" class="w-1/2 h-1/2 mx-auto mt-3">
        </div>
        <div class="container text-center">
        <a

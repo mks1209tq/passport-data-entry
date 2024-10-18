@@ -1,13 +1,12 @@
 models:
-  Employee:
+  Cert:
     id
     softDeletes
-  Passport:
-    softDeletes
+  
 
 controllers:
-  Passport:
+  Cert:
     resource
 
-seeders: Passport
+seeders: Cert
     
