@@ -15,7 +15,7 @@
     <body class="font-sans antialiased dark:bg-black dark:text-white/50 flex flex-col items-center justify-center min-h-screen bg-gray-100">
         <div class="w-full sm:max-w-md mt-6 px-6 py-4 bg-white shadow-md overflow-hidden sm:rounded-lg">
         <div class="container text-center">
-            <h1>Welcome to Tanseeq Group!</h1>
+            <h1>Welcome!</h1>
        </div>
        <div class="container text-center">
        <img src="{{ asset('images/logo.jpg') }}" alt="Tanseeq Group Logo" class="w-1/2 h-1/2 mx-auto mt-3">
