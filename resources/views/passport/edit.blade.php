@@ -46,7 +46,7 @@
                                    type="date" 
                                    name="visa_expiry_date" 
                                    value="{{ old('visa_expiry_date', $passport->visa_expiry_date) }}" 
-                                       required >
+                                        >
                         </div>
         
                         <div class="flex items-center justify-between">
@@ -64,8 +64,6 @@
                     <div class="w-8/12 px-20" style="height: calc(100vh - 180px);">
                     <?php
                     $file = $passport->file_name;
-
-                    // dd($file);
                     $docUrl = Storage::disk('idrive_e2')->temporaryUrl($file, now()->addMinutes(5));
                     $docUrl .= '#view=FitV';
                     ?>
