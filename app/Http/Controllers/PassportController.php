@@ -44,13 +44,17 @@ class PassportController extends Controller
 
     public function update(PassportUpdateRequest $request, Passport $passport): RedirectResponse
     {
-            
+
+        $passport->is_passport = $request->has('is_passport');
+        $passport->is_visa = $request->has('is_visa');
+        $passport->is_photo = $request->has('is_photo');
+
         $updated = $passport->update($request->all());
 
         $updated = $passport->update(['is_data_entered' => true]);
-    
+
+       
         
-    
         if ($updated) {
             $request->session()->flash('passport.id', $passport->id);
             return redirect()->route('dashboard')->with('success', 'Passport updated successfully');
