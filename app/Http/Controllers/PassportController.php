@@ -48,7 +48,8 @@ class PassportController extends Controller
         $passport->is_passport = $request->has('is_passport');
         $passport->is_visa = $request->has('is_visa');
         $passport->is_photo = $request->has('is_photo');
-
+        $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+        
         $updated = $passport->update($request->all());
 
         $updated = $passport->update(['is_data_entered' => true]);

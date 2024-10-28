@@ -72,7 +72,24 @@
                                     name="is_photo"
                                     value="1"
                                     {{ old('is_photo', $passport->is_photo) ? 'checked' : '' }}> is_photo
+
+                                <br>
+                                <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="is_no_file_uploaded"
+                                    type="checkbox"
+                                    name="is_no_file_uploaded"
+                                    value="1"
+                                    {{ old('is_no_file_uploaded', $passport->is_no_file_uploaded) ? 'checked' : '' }}>
+                                    No File Uploaded
                             </fieldset>
+                            <br>
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="issue">Issue<br>
+                                <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="issue"
+                                    type="text"
+                                    name="issue"
+                                    value="{{ old('issue', $passport->issue) }}" placeholder="Please enter any issues here">
+                                    
                         </div>
 
                         <div class="flex items-center justify-between">
