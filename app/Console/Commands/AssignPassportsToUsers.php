@@ -18,7 +18,7 @@ class AssignPassportsToUsers extends Command
 
         $countPerUser = $this->argument('count');
 
-        $users = User::where('is_admin', false)->get();
+        $users = User::where('is_admin', false)->where('is_verifier', false)->get();
 
         if ($users->isEmpty()) {
             $this->error('No non-admin users found in the system.');
