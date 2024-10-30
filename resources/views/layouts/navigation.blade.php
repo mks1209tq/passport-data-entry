@@ -18,13 +18,13 @@
                 </div>
                 @if (Auth::user()->is_admin || Auth::user()->is_verifier)
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('issues')" :active="request()->routeIs('issues')">
+                    <x-nav-link :href="route('issue-passports.index')" :active="request()->routeIs('issue-passports.index')">
                         {{ __('Issues') }}
                     </x-nav-link>
                 </div>
 
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('to_verify')" :active="request()->routeIs('to_verify')">
+                    <x-nav-link :href="route('verify-passports.index')" :active="request()->routeIs('verify-passports.index')">
                         {{ __('Verify') }}
                     </x-nav-link>
                 </div>
@@ -86,12 +86,12 @@
         </div>
         @if (Auth::user()->is_admin || Auth::user()->is_verifier)
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('issues')" :active="request()->routeIs('issues')">
+            <x-responsive-nav-link :href="route('issue-passports.index')" :active="request()->routeIs('issue-passports.index')">
                 {{ __('Issues') }}
             </x-responsive-nav-link>
         </div>
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('to_verify')" :active="request()->routeIs('to_verify')">
+            <x-responsive-nav-link :href="route('verify-passports.index')" :active="request()->routeIs('verify-passports.index')">
                 {{ __('Verify') }}
             </x-responsive-nav-link>
         </div>

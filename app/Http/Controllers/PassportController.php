@@ -42,11 +42,7 @@ class PassportController extends Controller
         return view('passport.edit', compact('passport'));
     }
 
-    public function verify(Request $request, Passport $passport): View
-    {
-        return view('passport.verify', compact('passport'));
-    }
-
+    
     public function update(PassportUpdateRequest $request, Passport $passport): RedirectResponse
     {
 
@@ -59,29 +55,6 @@ class PassportController extends Controller
         
         $updated = $passport->update($request->all());
 
-        $updated = $passport->update(['is_data_entered' => true]);
-
-       
-        
-        if ($updated) {
-            $request->session()->flash('passport.id', $passport->id);
-            return redirect()->route('dashboard')->with('success', 'Passport updated successfully');
-        } else {
-            return back()->with('error', 'Failed to update passport');
-        }
-    }
-
-    public function verify_update(PassportUpdateRequest $request, Passport $passport): RedirectResponse
-    {
-
-        $passport->is_passport = $request->has('is_passport');
-        $passport->is_visa = $request->has('is_visa');
-        $passport->is_photo = $request->has('is_photo');
-        $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
-
-        
-        
-        $updated = $passport->update($request->all());
 
         $updated = $passport->update(['is_data_entered' => true]);
 
@@ -94,6 +67,8 @@ class PassportController extends Controller
             return back()->with('error', 'Failed to update passport');
         }
     }
+
+    
 
     public function destroy(Request $request, Passport $passport): Response
     {

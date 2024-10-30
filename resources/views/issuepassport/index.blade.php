@@ -1,11 +1,12 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Dashboard') }}
+            {{ __('Verify Passports') }}
         </h2>
     </x-slot>
 
     @section('content')
+    
     <div class="pt-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -35,14 +36,12 @@
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class="px-3">
-                    <?php
-                    $passports = App\Models\Passport::all()->where('is_data_entered', '!=', null);
-                    ?>
+                    
                     @foreach ($passports as $passport)
                         <!-- <p>{{ $passport->employee_id }}</p> -->
                         <p>
-                            <a href="{{ route('verify', $passport->id) }}">{{ $passport->id}}</a>&nbsp;
-                            <a href="{{ route('verify', $passport->id) }}">{{ $passport->file_name }}</a>
+                            <a href="{{ route('issue-passports.edit', $passport->id) }}">{{ $passport->id}} &nbsp;
+                            {{ $passport->file_name }}</a>
                         </p>
 
                         

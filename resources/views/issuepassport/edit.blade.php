@@ -1,17 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
+
 <div class="pt-3">
     <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 flex flex-row">
                 <div class="w-4/12 px-3">
-                    <form action="{{ route('passports.verify-update', $passport->id) }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                    <form action="{{ route('issue-passports.update', $passport->id) }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
                         @csrf
                         @method('PUT')
 
                         <input type="hidden" name="id" value="{{ $passport->id }}">
-                        <input type="hidden" name="is_data_correct" value="1">
+                        <input type="hidden" name="data_correct_value" value="1">
 
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="employee_id">
@@ -21,8 +22,8 @@
                                 id="id"
                                 type="text"
                                 name="id"
-                                value="{{ old('id', $passport->id) }}"
-                                disabled>
+                                value="{{ old('id', $passport->id) }}" disabled
+                                >
                         </div>
 
                         <div class="mb-4">
@@ -34,7 +35,7 @@
                                 type="date"
                                 name="passport_expiry_date"
                                 value="{{ old('passport_expiry_date', $passport->passport_expiry_date) }}"
-                                autofocus disabled>
+                                autofocus >
                         </div>
 
                         <div class="mb-4">
@@ -46,7 +47,7 @@
                                 type="date"
                                 name="visa_expiry_date"
                                 value="{{ old('visa_expiry_date', $passport->visa_expiry_date) }}"
-                                disabled>
+                                >
                         </div>
 
                         <div class="mb-4">
@@ -60,7 +61,7 @@
                                     name="is_passport"
                                     value="1"
                                     {{ old('is_passport', $passport->is_passport) ? 'checked' : '' }}
-                                    disabled> is_passport
+                                    > is_passport
                                 <br>
                                 <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="is_visa"
@@ -68,7 +69,7 @@
                                     name="is_visa"
                                     value="1"
                                         {{ old('is_visa', $passport->is_visa) ? 'checked' : '' }}
-                                    disabled> is_visa
+                                    > is_visa
                                 <br>
                                 <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="is_photo"
@@ -76,7 +77,7 @@
                                     name="is_photo"
                                     value="1"
                                     {{ old('is_photo', $passport->is_photo) ? 'checked' : '' }}
-                                    disabled> is_photo
+                                    > is_photo
 
                                 <br>
                                 <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
@@ -85,7 +86,7 @@
                                     name="is_no_file_uploaded"
                                     value="1"
                                     {{ old('is_no_file_uploaded', $passport->is_no_file_uploaded) ? 'checked' : '' }}
-                                    disabled>
+                                    >
                                     No File Uploaded
                             </fieldset>
                             <br>
@@ -96,7 +97,7 @@
                                     name="issue"
                                     value="{{ old('issue', $passport->issue) }}"
                                     placeholder="Please enter any issues here"
-                                    disabled>
+                                    >
                                     
                         </div>
 
@@ -105,7 +106,7 @@
                                 type="submit">
                                 Mark as Verified
                             </button>
-                            <a href="{{ route('to_verify') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline">
+                            <a href="{{ route('verify-passports.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline">
                                 Cancel
                             </a>
                         </div>
