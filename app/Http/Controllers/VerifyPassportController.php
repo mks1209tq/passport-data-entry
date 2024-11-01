@@ -57,7 +57,7 @@ class VerifyPassportController extends Controller
         $passport->is_photo = $request->has('is_photo');
         $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
 
-        dd($passport->data_correct_value, $passport->verify_count);
+        // dd($passport->data_correct_value, $passport->verify_count);
         
         $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
 

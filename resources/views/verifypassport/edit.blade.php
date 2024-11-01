@@ -97,7 +97,7 @@
                                     name="issue"
                                     value="{{ old('issue', $passport->issue) }}"
                                     placeholder="Please enter any issues here"
-                                    disabled>
+                                    >
                                     
                         </div>
 
