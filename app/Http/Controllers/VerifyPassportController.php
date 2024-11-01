@@ -51,32 +51,39 @@ class VerifyPassportController extends Controller
     {
 
         $passport = Passport::find($passport);
-
-        $passport->is_passport = $request->has('is_passport');
-        $passport->is_visa = $request->has('is_visa');
-        $passport->is_photo = $request->has('is_photo');
-        $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
-
-        // dd($passport->data_correct_value, $passport->verify_count);
-        
-        $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
-
-
-        
-       
-        
-        
-        $updated = $passport->update(['verify_count' => $verify_data_correct_count]);
-
-        //$updated = $passport->update(['is_data_entered' => true]);
-
-       
-        
-        if ($updated) {
-            $request->session()->flash('passport.id', $passport->id);
-            return redirect()->route('verify-passports.index')->with('success', 'Passport updated successfully');
-        } else {
-            return back()->with('error', 'Failed to update passport');
+    
+        // update db "re_entry","is_data_entered" if the action is reentry OR update db "verify_count" if the action is verify
+        switch($request->input('action')) {
+            case 'reentry':
+                $re_entry = $passport->re_entry + 1;
+                $updated = $passport->update([
+                    'is_data_entered' => 0,
+                    'verify_count' => 0,
+                    're_entry' => $re_entry
+                ]);
+    
+                if ($updated) {
+                    return redirect()->route('verify-passports.index')
+                                   ->with('success', 'Passport has been marked for re-entry');
+                }
+                return back()->with('error', 'Failed to mark passport for re-entry');
+    
+            case 'verify':
+                $passport->is_passport = $request->has('is_passport');
+                $passport->is_visa = $request->has('is_visa');
+                $passport->is_photo = $request->has('is_photo');
+                $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+                
+                $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
+                
+                $updated = $passport->update(['verify_count' => $verify_data_correct_count]);
+                
+                if ($updated) {
+                    $request->session()->flash('passport.id', $passport->id);
+                    return redirect()->route('verify-passports.index')
+                                   ->with('success', 'Passport updated successfully');
+                }
+                return back()->with('error', 'Failed to update passport');
         }
     }
 

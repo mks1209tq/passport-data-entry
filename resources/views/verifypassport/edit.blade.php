@@ -69,7 +69,7 @@
                                     name="is_visa"
                                     value="1"
                                         {{ old('is_visa', $passport->is_visa) ? 'checked' : '' }}
-                                    > is_visa
+                                    disabled> is_visa
                                 <br>
                                 <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="is_photo"
@@ -102,11 +102,18 @@
                         </div>
 
                         <div class="flex items-center justify-between">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline"
-                                type="submit">
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs"
+                                type="submit" name="action" value="verify">
                                 Mark as Verified
                             </button>
-                            <a href="{{ route('verify-passports.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline">
+
+                            
+                                <button type="submit" 
+                                    class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs"
+                                    type="submit" name="action" value="reentry">
+                                Re-entry
+                                </button>
+                            <a href="{{ route('verify-passports.index') }}" class="bg-red-500 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs">
                                 Cancel
                             </a>
                         </div>
