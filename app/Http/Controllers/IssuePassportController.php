@@ -14,7 +14,7 @@ class IssuePassportController extends Controller
     public function index(Request $request): View
     {
         $passports = Passport::all()
-        ->where('is_data_entered', '!=', null)
+        // ->where('is_data_entered', '!=', null)
         ->where('issue', '!=', null);
 
 
@@ -60,15 +60,15 @@ class IssuePassportController extends Controller
 
         // dd($passport->data_correct_value, $passport->verify_count);
 
-        $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
+        // $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
 
 
-        // $updated = $passport->update($request->all());
+        $updated = $passport->update($request->all());
 
 
         // $updated = $passport->update(['is_data_entered' => true]);
 
-        $updated = $passport->update(['verify_count' => $verify_data_correct_count]);
+        // $updated = $passport->update(['issue' => 'a']);
 
         
         if ($updated) {

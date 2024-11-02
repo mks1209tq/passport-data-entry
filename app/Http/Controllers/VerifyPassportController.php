@@ -15,7 +15,7 @@ class VerifyPassportController extends Controller
     {
         $passports = Passport::all()
         ->where('is_data_entered', '!=', null)
-        ->where('verify_count', '<', 3);
+        ->where('verify_count', '<', 2);
 
         return view('verifypassport.index', compact('passports'));
     }
@@ -54,12 +54,19 @@ class VerifyPassportController extends Controller
     
         // update db "re_entry","is_data_entered" if the action is reentry OR update db "verify_count" if the action is verify
         switch($request->input('action')) {
-            case 'reentry':
+            case 're-enter':
                 $re_entry = $passport->re_entry + 1;
                 $updated = $passport->update([
+                    'is_data_correct' => 0,
                     'is_data_entered' => 0,
+                    'passport_expiry_date' => null,
+                    'visa_expiry_date' => null,
+                    'is_passport' => 0,
+                    'is_visa' => 0,
+                    'is_photo' => 0,
+                    'is_no_file_uploaded' => 0,
                     'verify_count' => 0,
-                    're_entry' => $re_entry
+                    're_entry' => $re_entry,
                 ]);
     
                 if ($updated) {
@@ -68,13 +75,15 @@ class VerifyPassportController extends Controller
                 }
                 return back()->with('error', 'Failed to mark passport for re-entry');
     
-            case 'verify':
-                $passport->is_passport = $request->has('is_passport');
-                $passport->is_visa = $request->has('is_visa');
-                $passport->is_photo = $request->has('is_photo');
-                $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+            case 'mark-as-verified':
+                // dd($request->all());
+                // $passport->is_passport = $request->has('is_passport');
+                // $passport->is_visa = $request->has('is_visa');
+                // $passport->is_photo = $request->has('is_photo');
+                // $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
                 
                 $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
+                
                 
                 $updated = $passport->update(['verify_count' => $verify_data_correct_count]);
                 

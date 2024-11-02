@@ -103,15 +103,15 @@
 
                         <div class="flex items-center justify-between">
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs"
-                                type="submit" name="action" value="verify">
+                                type="submit" name="action" value="mark-as-verified">
                                 Mark as Verified
                             </button>
 
                             
                                 <button type="submit" 
                                     class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs"
-                                    type="submit" name="action" value="reentry">
-                                Re-entry
+                                    type="submit" name="action" value="re-enter">
+                                Re-Enter
                                 </button>
                             <a href="{{ route('verify-passports.index') }}" class="bg-red-500 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline text-xs">
                                 Cancel

@@ -21,9 +21,9 @@ class UserScope implements Scope
             }
 
             // For non-admin users
-            $builder->where('user_id', Auth::user()->id)
-                    ->where('is_data_correct', false)
-                    ->where('is_data_entered', false);
+            $builder->where('user_id', Auth::user()->id);
+                    
+                    
         } else {
             // For unauthenticated users or as a fallback
             $builder->where('is_data_correct', false)

@@ -24,7 +24,7 @@
                         Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->count() }}
                         </div>
                         <div>
-                        Passports Data Correct: {{ App\Models\Passport::where('is_data_correct', true)->count() }}
+                        Passports Data Verified: {{ App\Models\Passport::where('verify_count', '>', 1)->count() }}
                         </div>
                     @endif
                 </div>

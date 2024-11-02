@@ -23,7 +23,7 @@
                         Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->count() }}
                         </div>
                         <div>
-                        Passports Data Correct: {{ App\Models\Passport::where('is_data_correct', true)->count() }}
+                        Passports Data Verified: {{ App\Models\Passport::where('verify_count', '>', 1)->count() }}
                         </div>
                     @endif
                 </div>
@@ -38,16 +38,35 @@
                     <?php
                     $passports = App\Models\Passport::all();
                     ?>
+                    <table class="">
+                            <th class="">&nbsp; &nbsp;</th>   
+                            <th class="text-left">Passport ID</th>
                     @foreach ($passports as $passport)
                         <!-- <p>{{ $passport->employee_id }}</p> -->
-                        <p>
-                            <a href="{{ route('passports.edit', $passport->id) }}">{{ $passport->id}}</a>&nbsp;
-                            <a href="{{ route('passports.edit', $passport->id) }}">{{ $passport->file_name }}</a>
-                        </p>
+                        
+                            <tr>
+                                <td>
+                                    
+                                        @if ($passport->verify_count > 1)
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+</svg>
+
+                                        @endif
+                                    
+                                </td>
+                                <td>
+                                    <a href="{{ route('passports.edit', $passport->id) }}">{{ $passport->id}}&nbsp;
+                                    {{ $passport->file_name }}
+                                    </a>
+                                </td>
+                            </tr>
+                        
 
                         
 
                     @endforeach
+                    </table>
                     </div>
                     <div class="px-3">
                         

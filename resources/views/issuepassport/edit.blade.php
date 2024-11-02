@@ -12,7 +12,7 @@
                         @method('PUT')
 
                         <input type="hidden" name="id" value="{{ $passport->id }}">
-                        <input type="hidden" name="data_correct_value" value="1">
+                        
 
                         <div class="mb-4">
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="employee_id">
@@ -104,7 +104,7 @@
                         <div class="flex items-center justify-between">
                             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline"
                                 type="submit">
-                                Mark as Verified
+                                Update Passport
                             </button>
                             <a href="{{ route('verify-passports.index') }}" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline">
                                 Cancel
