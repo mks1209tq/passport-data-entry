@@ -167,7 +167,7 @@
                                 </td>
                                 <td class="border border-slate-500 text-center p-2">
                                     {{ $passports->where('user_id', $user->id)
-                                    ->where('is_data_verified', true)
+                                    ->where('is_data_entered', true)
                                     ->count() }}
                                 
                             </td>
