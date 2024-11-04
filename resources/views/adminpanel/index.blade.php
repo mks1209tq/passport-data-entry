@@ -152,17 +152,28 @@
                         @php
                             $passportsPerUser = $passports->count() / $users->count();
                         @endphp 
+                        <table class="border border-slate-500">
+                            <th class="border border-slate-500 text-left p-2">User</th>
+                            <th class="border border-slate-500 text-center p-2">Assigned</th>
+                            <th class="border border-slate-500 text-center p-2">Entered</th>
                         @foreach ($users as $user)
-                            <p>
-                                {{ $user->name }}: 
-                                {{ $passports->where('user_id', $user->id)->count() }}
-                                {{ $passports->where('user_id', $user->id)
+                        <tr>
+                                <td class="border border-slate-500 p-2">
+                            
+                                    {{ $user->name }}
+                                </td>
+                                <td class="border border-slate-500 text-center p-2">
+                                    {{ $passports->where('user_id', $user->id)->count() }}
+                                </td>
+                                <td class="border border-slate-500 text-center p-2">
+                                    {{ $passports->where('user_id', $user->id)
                                     ->where('is_data_verified', true)
                                     ->count() }}
                                 
-                            </p>
+                            </td>
+                        </tr>
                         @endforeach
-
+                        </table>
                     </div>
 
                 </div>
