@@ -8,20 +8,91 @@
     </x-slot>
 
     @section('content')
+    
     <div class="pt-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-                    {{ __("Welcome! ") }}
+                    <!-- {{ __("Welcome! ") }} -->
+                       <!-- Flash Messages -->
+                       @if (session('success'))
+                        <div class="pt-3">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
+                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+                                    <span class="block sm:inline">{{ session('success') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
+                        @if (session('error'))
+                        <div class="pt-3">
+                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
+                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                                    <span class="block sm:inline">{{ session('error') }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        @endif
 
-                    @if (Auth::user()->is_admin)
-                    <a
-                        href="{{ route('register') }}"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                    
+                    <button
+                        onclick="window.location.href='{{ route('register') }}'"
+                        class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
                         Register
-                    </a><br>
+                    </button>
+                    
 
-                    @endif
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-3">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 p-4" >
+                    <!-- {{ __("Welcome! ") }} -->
+                    <form action="{{ route('set-admin') }}" method="POST">
+                        @csrf
+                        Choose User
+                        <select class="mx-2" name="user" id="user">
+                            @foreach ($non_admins as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
+                            Set Admin
+                        </button>
+                    </form>
+                    <br>
+
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="pt-3">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900">
+                    <!-- {{ __("Welcome! ") }} -->
+                    <form action="{{ route('set-verifier') }}" method="POST">
+                        @csrf
+                        Choose User
+                        <select class="mx-2" name="user" id="user">
+                            @foreach ($non_verifiers as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
+                            Set Verifier
+                        </button>
+                    </form>
+                    <br>
+
+                    
                 </div>
             </div>
         </div>
@@ -49,25 +120,7 @@
                             </button>
                         </form>
 
-                        <!-- Flash Messages -->
-                        @if (session('success'))
-                        <div class="pt-3">
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
-                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                                    <span class="block sm:inline">{{ session('success') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                        @if (session('error'))
-                        <div class="pt-3">
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
-                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                    <span class="block sm:inline">{{ session('error') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+                       
 
                     </div>
 
@@ -118,25 +171,7 @@
                             </button>
                         </form>
 
-                        <!-- Flash Messages -->
-                        @if (session('success'))
-                        <div class="pt-3">
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
-                                <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
-                                    <span class="block sm:inline">{{ session('success') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
-                        @if (session('error'))
-                        <div class="pt-3">
-                            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 xl:px-0">
-                                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-                                    <span class="block sm:inline">{{ session('error') }}</span>
-                                </div>
-                            </div>
-                        </div>
-                        @endif
+                        
 
                     </div>
 
@@ -180,8 +215,8 @@
 
                 </div>
             </div>
-        </div>
-    </div>
+            </div>
+        
     @endsection
 </x-app-layout>
 @else

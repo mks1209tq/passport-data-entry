@@ -22,6 +22,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/adminpanel', [AdminPanelController::class, 'index'])->name('adminpanel.index');
     Route::POST('/assign-passports', [AdminPanelController::class, 'assignPassports'])->name('assign-passports');
     Route::POST('/assign-users', [AdminPanelController::class, 'assignUsers'])->name('assign-users');
+    Route::POST('/set-admin', [AdminPanelController::class, 'setAdmin'])->name('set-admin');
+    Route::POST('/set-verifier', [AdminPanelController::class, 'setVerifier'])->name('set-verifier');
 });
 
 require __DIR__.'/auth.php';

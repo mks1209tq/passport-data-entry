@@ -20,10 +20,12 @@ class AdminPanelController extends Controller
     public function index(Request $request): View
     {
         return view('adminpanel.index', [
-            'users' => User::all()
-                        ->where('is_admin', false)
-                        ->where('is_verifier', false),
+            'users' => User::all(),
              'passports' => Passport::all(),
+             'admins' => User::where('is_admin', true)->get(),
+             'verifiers' => User::where('is_verifier', true)->get(),
+             'non_admins' => User::where('is_admin', false)->get(),
+             'non_verifiers' => User::where('is_verifier', false)->get(),
         ]);
     }
 
@@ -48,6 +50,19 @@ class AdminPanelController extends Controller
             'users' => $userIds
         ]);
         return redirect()->back()->with('success', 'Passports assigned successfully');
+    }
+
+    public function setAdmin(Request $request): RedirectResponse {
+        $userId = $request->input('user');
+        $user = User::find($userId)->update(['is_admin' => true]);
+        
+        return redirect()->back()->with('success', 'Admin set successfully');
+    }
+
+    public function setVerifier(Request $request): RedirectResponse {
+        $userId = $request->input('user');
+        User::find($userId)->update(['is_verifier' => true]);
+        return redirect()->back()->with('success', 'Verifier set successfully');
     }
 
     
