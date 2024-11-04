@@ -10,6 +10,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Support\Facades\Artisan;
 use App\Models\User;
+use App\Models\Passport;
+
 class AdminPanelController extends Controller
 {
     /**
@@ -21,7 +23,7 @@ class AdminPanelController extends Controller
             'users' => User::all()
                         ->where('is_admin', false)
                         ->where('is_verifier', false),
-            // 'user' => $request->user(),
+             'passports' => Passport::all(),
         ]);
     }
 
