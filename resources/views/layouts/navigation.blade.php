@@ -51,11 +51,11 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-
+                        @if (Auth::user()->is_admin)
                         <x-dropdown-link :href="route('adminpanel.index')">
                             {{ __('Admin Panel') }}
                         </x-dropdown-link>
-
+                        @endif
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
