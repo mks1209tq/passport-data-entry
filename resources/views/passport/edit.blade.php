@@ -105,7 +105,8 @@
                     </form>
                 </div>
                 <div class="w-8/12 px-20" style="height: calc(100vh - 180px);">
-                    <?php
+                    <p>temporarily hidden</p>
+                    <!-- <?php
                     $file = $passport->file_name;
                     $docUrl = Storage::disk('idrive_e2')->temporaryUrl($file, now()->addMinutes(5));
                     $docUrl .= '#view=FitV';
@@ -113,7 +114,7 @@
 
                     <div class="w-full h-full">
                         <iframe class="embed-responsive-item w-full h-full" src="{{ $docUrl }}" allowfullscreen></iframe>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>

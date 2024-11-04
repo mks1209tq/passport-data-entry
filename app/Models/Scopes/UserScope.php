@@ -14,6 +14,7 @@ class UserScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
+        
         if (Auth::check()) {
             if (Auth::user()->is_admin) {
                 // No scope for admin users

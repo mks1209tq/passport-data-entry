@@ -7,18 +7,29 @@ use App\Models\Passport;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class AssignPassportsToUsers extends Command
+class AssignPassportsToOneUser extends Command
 {
-    protected $signature = 'passports:assign {count=10 : Number of passports to assign per user}';
-    protected $description = 'Assign unassigned passports to users';
+    protected $signature = 'passports:assign-one {count : Number of passports to assign per user} {users* : Array of user IDs}';
+
+    protected $description = 'Assign unassigned passports to particular user';
 
     public function handle()
     {
         $this->info('Starting passport assignment process...');
 
-        $countPerUser = $this->argument('count');
+        $countPerUser = (int) $this->argument('count');
+        if (!$countPerUser || $countPerUser <= 0) {
+            $this->error('Count must be a positive number.');
+            return;
+        }
+        $userIds = $this->argument('users');
 
-        $users = User::where('is_admin', false)->where('is_verifier', false)->get();
+        $users = User::whereIn('id', $userIds)
+                    ->where('is_admin', false)
+                    ->where('is_verifier', false)
+                    ->get();
+
+        
 
         if ($users->isEmpty()) {
             $this->error('No non-admin users found in the system.');
