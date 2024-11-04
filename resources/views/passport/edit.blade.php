@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Cache;
+@endphp
+
 @extends('layouts.app')
 
 @section('content')
@@ -107,7 +111,10 @@
                 <div class="w-8/12 px-20" style="height: calc(100vh - 180px);">
                     <?php
                     $file = $passport->file_name;
-                    $docUrl = Storage::disk('idrive_e2')->temporaryUrl($file, now()->addMinutes(5));
+                    $cacheKey = 'passport_file_' . $passport->id;
+                    $docUrl = Cache::remember($cacheKey, now()->addMinutes(5), function () use ($file) {
+                        return Storage::disk('idrive_e2')->temporaryUrl($file, now()->addMinutes(5));
+                    });
                     $docUrl .= '#view=FitV';
                     ?>
 
