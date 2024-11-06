@@ -26,9 +26,9 @@
     <div class="flex-2 xl:flex">
       <div class="border-b px-1 py-2 sm:px-1 lg:pl-1 xl:w-96 xl:shrink-0 xl:border-b-0 xl:border-r xl:pl-2">
         <!-- Left column area -->
-        <div class="pt-1">
+        <div class="py-1">
         <div class="max-w-7xl mx-auto sm:px-2 lg:px-3">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-1">
                 <div class="p-2 text-gray-900 flex flex-col">
                     <div class="px-1">
                         <!-- Passport per User Count -->
@@ -61,8 +61,45 @@
 
                 </div>
             </div>
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-2">
+                <div class="p-2 text-gray-900 flex flex-col py-2">
+                    <div class="px-1 py-2">
+                        <!-- Passport per User Count -->
+                        @php
+                            $passportsPerUser = $passports->count() / $users->count();
+                        @endphp 
+                        <table class="border border-slate-500">
+                            <th class="border border-slate-500 text-left p-2">User</th>
+                            <th class="border border-slate-500 text-center p-2">Assigned</th>
+                            <th class="border border-slate-500 text-center p-2">Verified</th>
+                        @foreach ($users as $user)
+                        <tr>
+                                <td class="border border-slate-500 p-2">
+                            
+                                    {{ $user->name }}
+                                </td>
+                                <td class="border border-slate-500 text-center p-2">
+                                    {{ $passports->where('verifier1', $user->id)->count() + 
+                                    $passports->where('verifier2', $user->id)->count() }}
+                                </td>
+                                <td class="border border-slate-500 text-center p-2">
+                                    {{ $passports->where('verifier1_id', $user->id) ->count() + 
+                                    $passports->where('verifier2_id', $user->id) ->count() }}
+                                
+                            </td>
+                        </tr>
+                        @endforeach
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
             </div>
         </div>
+
+        
+
       </div>
       <!-- end of passport per user count -->
 
