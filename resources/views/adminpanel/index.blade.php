@@ -158,8 +158,10 @@
                 <div class="p-1 text-gray-900 p-2" >
                     <form action="{{ route('set-admin') }}" method="POST">
                         @csrf
-                        <div class="flex items-center space-x-2">
+                        <label class="block text-sm font-medium text-gray-700">Admins</label>
+                        <div class="mt-1 max-h-48 overflow-y-auto border rounded-md p-2">
                             @foreach ($users as $user)
+                            <div class="flex items-center space-x-2">
                         <input type="checkbox" 
                             name="selected_users[]" 
                             id="user-{{ $user->id }}" 
@@ -172,6 +174,7 @@
                                 
                             @endif
                         </label>
+                            </div>
                             @endforeach
                         </div>
                         <button type="submit"
@@ -195,9 +198,11 @@
                     <!-- {{ __("Welcome! ") }} -->
                     <form action="{{ route('set-verifier') }}" method="POST">
                         @csrf
-                        <div class="flex items-center space-x-2">
+                        <label class="block text-sm font-medium text-gray-700">Verifiers</label>
+                        <div class="mt-1 max-h-48 overflow-y-auto border rounded-md p-2">
                             @foreach ($users as $user)
-                        <input type="checkbox" 
+                            <div class="flex items-center space-x-2">
+                            <input type="checkbox" 
                             name="selected_users[]" 
                             id="user-{{ $user->id }}" 
                             value="{{ $user->id }}"
@@ -207,8 +212,9 @@
                             {{ $user->name }} 
                             @if($user->is_verifier)
                                 
-                            @endif
-                        </label>
+                                @endif
+                            </label>
+                            </div>
                             @endforeach
                         </div>
                         <button type="submit"
