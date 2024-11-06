@@ -13,10 +13,29 @@ class VerifyPassportController extends Controller
 {
     public function index(Request $request): View
     {
-        $passports = Passport::all()
-        ->where('is_data_entered', '!=', null)
-        ->where('verify_count', '<', 2);
-
+        $user_id = auth()->user()->id;
+    
+        $passports = Passport::where('is_data_entered', 1)
+        ->where('verify_count', '<', 2)
+        // User must be assigned as a verifier
+        ->where(function($query) use ($user_id) {
+        $query->where('verifier1', $user_id)
+              ->orWhere('verifier2', $user_id);
+        })
+        // User must not have verified yet
+        ->where(function($query) use ($user_id) {
+        $query->where(function($q) use ($user_id) {
+            // If user is verifier1, verifier1_id should be null
+            $q->where('verifier1', $user_id)
+              ->whereNull('verifier1_id');
+        })->orWhere(function($q) use ($user_id) {
+            // If user is verifier2, verifier2_id should be null
+            $q->where('verifier2', $user_id)
+              ->whereNull('verifier2_id');
+            });
+        })
+        ->get();    
+    
         return view('verifypassport.index', compact('passports'));
     }
 
@@ -67,6 +86,7 @@ class VerifyPassportController extends Controller
                     'is_no_file_uploaded' => 0,
                     'verify_count' => 0,
                     're_entry' => $re_entry,
+                    
                 ]);
     
                 if ($updated) {
@@ -76,16 +96,34 @@ class VerifyPassportController extends Controller
                 return back()->with('error', 'Failed to mark passport for re-entry');
     
             case 'mark-as-verified':
-                // dd($request->all());
-                // $passport->is_passport = $request->has('is_passport');
-                // $passport->is_visa = $request->has('is_visa');
-                // $passport->is_photo = $request->has('is_photo');
-                // $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+
+                // dd($passport->verifier1, $passport->verifier2);
+                $verify_data_correct_count = $passport->verify_count;
+
+
+
+                // if($verify_data_correct_count == 0){
+                //     $passport->update(['verifier1_id' => auth()->user()->id]);
+                // }
+
+                // if($verify_data_correct_count == 1){
+                //     $passport->update(['verifier2_id' => auth()->user()->id]);
+                // }             
+                
+                if($passport->verifier1 == auth()->user()->id){
+                    $passport->update(['verifier1_id' => auth()->user()->id]);
+                }
+
+                if($passport->verifier2 == auth()->user()->id){
+                    $passport->update(['verifier2_id' => auth()->user()->id]);
+                }
+                
                 
                 $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
                 
-                
                 $updated = $passport->update(['verify_count' => $verify_data_correct_count]);
+
+                
                 
                 if ($updated) {
                     $request->session()->flash('passport.id', $passport->id);

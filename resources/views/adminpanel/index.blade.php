@@ -134,12 +134,37 @@
                         </button>
                     </form>
                     <br>
+                    <form action="{{ route('set-admin') }}" method="POST">
+                        @csrf
+                        <div class="flex items-center space-x-2">
+                            @foreach ($users as $user)
+                        <input type="checkbox" 
+                            name="selected_users[]" 
+                            id="user-{{ $user->id }}" 
+                            value="{{ $user->id }}"
+                            {{ $user->is_admin ? 'checked' : '' }}
+                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="user-{{ $user->id }}" class="text-sm text-gray-700">
+                            {{ $user->name }} 
+                            @if($user->is_admin)
+                                
+                            @endif
+                        </label>
+                            @endforeach
+                        </div>
+                        <button type="submit"
+                            class="inline-flex w-32 items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
+                            Unset Admin
+                        </button>
+                    </form>
 
                     
                 </div>
             </div>
         </div>
     </div>
+    
+
 
     <div class="pt-1">
         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">

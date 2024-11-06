@@ -40,7 +40,7 @@
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class="px-3">
                         <?php
-                        $passports = App\Models\Passport::all()->where('is_data_entered', false);
+                        $passports = App\Models\Passport::all()->where('is_data_entered', false)->where('user_id', auth()->user()->id);
                         ?>
                         <table class="">
                             <th class="">&nbsp; &nbsp;</th>

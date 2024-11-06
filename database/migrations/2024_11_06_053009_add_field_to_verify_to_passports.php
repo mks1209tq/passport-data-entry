@@ -12,7 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('passports', function (Blueprint $table) {
-            $table->string('verifier1')->nullable();
+            $table->foreignId('verifier1_id')->nullable()->constrained('users');
+            $table->foreignId('verifier2_id')->nullable()->constrained('users');
+            
         });
     }
 

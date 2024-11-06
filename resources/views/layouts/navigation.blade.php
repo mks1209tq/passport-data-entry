@@ -30,6 +30,16 @@
                     </x-nav-link>
                 </div>
                 @endif
+
+                @if (Auth::user()->is_admin)
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('adminpanel.index')" :active="request()->routeIs('adminpanel.index')">
+                        {{ __('Admin Panel') }}
+                    </x-nav-link>
+                </div>
+                @endif
+
+                
             </div>
 
             <!-- Settings Dropdown -->
@@ -51,11 +61,7 @@
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
                         </x-dropdown-link>
-                        @if (Auth::user()->is_admin)
-                        <x-dropdown-link :href="route('adminpanel.index')">
-                            {{ __('Admin Panel') }}
-                        </x-dropdown-link>
-                        @endif
+                        
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
@@ -101,6 +107,16 @@
             </x-responsive-nav-link>
         </div>
         @endif
+
+        @if (Auth::user()->is_admin)
+        <div class="pt-2 pb-3 space-y-1">
+            <x-responsive-nav-link :href="route('adminpanel.index')" :active="request()->routeIs('adminpanel.index')">
+                {{ __('Admin Panel') }}
+            </x-responsive-nav-link>
+        </div>
+        @endif
+
+
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">

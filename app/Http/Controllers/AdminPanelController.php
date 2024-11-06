@@ -52,12 +52,23 @@ class AdminPanelController extends Controller
         return redirect()->back()->with('success', 'Passports assigned successfully');
     }
 
-    public function setAdmin(Request $request): RedirectResponse {
-        $userId = $request->input('user');
-        $user = User::find($userId)->update(['is_admin' => true]);
-        
-        return redirect()->back()->with('success', 'Admin set successfully');
+// ... existing code ...
+
+public function setAdmin(Request $request): RedirectResponse
+{
+    $selectedUsers = $request->input('selected_users', []);
+    
+    // Set all users to non-admin first
+    User::query()->update(['is_admin' => false]);
+    
+    // Then set selected users as admin
+    if (!empty($selectedUsers)) {
+        User::whereIn('id', $selectedUsers)->update(['is_admin' => true]);
     }
+    
+    return redirect()->back()->with('success', 'Admin status updated successfully');
+}
+
 
     public function setVerifier(Request $request): RedirectResponse {
         $userId = $request->input('user');

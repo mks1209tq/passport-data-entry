@@ -57,6 +57,8 @@ class IssuePassportController extends Controller
         $passport->is_visa = $request->has('is_visa');
         $passport->is_photo = $request->has('is_photo');
         $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+        
+        
 
         // dd($passport->data_correct_value, $passport->verify_count);
 
