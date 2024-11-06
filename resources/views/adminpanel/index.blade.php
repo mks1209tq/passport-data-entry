@@ -156,21 +156,6 @@
         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-1 text-gray-900 p-2" >
-                    
-                    <form action="{{ route('set-admin') }}" method="POST">
-                        @csrf
-                        Choose User
-                        <select class="mx-2" name="user" id="user">
-                            @foreach ($non_admins as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                            @endforeach
-                        </select>
-                        <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
-                            Set Admin
-                        </button>
-                    </form>
-                    <br>
                     <form action="{{ route('set-admin') }}" method="POST">
                         @csrf
                         <div class="flex items-center space-x-2">
@@ -191,7 +176,7 @@
                         </div>
                         <button type="submit"
                             class="inline-flex w-32 items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
-                            Unset Admin
+                            Set Admin
                         </button>
                     </form>
 
@@ -210,14 +195,24 @@
                     <!-- {{ __("Welcome! ") }} -->
                     <form action="{{ route('set-verifier') }}" method="POST">
                         @csrf
-                        Choose User
-                        <select class="mx-2" name="user" id="user">
-                            @foreach ($non_verifiers as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                        <div class="flex items-center space-x-2">
+                            @foreach ($users as $user)
+                        <input type="checkbox" 
+                            name="selected_users[]" 
+                            id="user-{{ $user->id }}" 
+                            value="{{ $user->id }}"
+                            {{ $user->is_verifier ? 'checked' : '' }}
+                            class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-500 focus:ring-indigo-500">
+                        <label for="user-{{ $user->id }}" class="text-sm text-gray-700">
+                            {{ $user->name }} 
+                            @if($user->is_verifier)
+                                
+                            @endif
+                        </label>
                             @endforeach
-                        </select>
+                        </div>
                         <button type="submit"
-                            class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
+                            class="inline-flex w-32 items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
                             Set Verifier
                         </button>
                     </form>
@@ -261,13 +256,8 @@
         </div>
     </div>
     <!-- end of assign passports -->
-    
-    
-    </div>
 
-    <div class="shrink-0 border-t px-2 py-2 sm:px-2 lg:w-96 lg:border-l lg:border-t-0 lg:pr-3 xl:pr-3">
-      <!-- Right column area -->
-      <div class="pt-1">
+    <div class="pt-1">
         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 text-gray-900 flex flex-col">
@@ -317,7 +307,46 @@
             </div>
         </div>
     </div>
+
     <!-- end of assign users -->
+    
+    
+    </div>
+
+    <div class="shrink-0 border-t px-2 py-2 sm:px-2 lg:w-96 lg:border-l lg:border-t-0 lg:pr-3 xl:pr-3">
+      <!-- Right column area -->
+      <div class="pt-1">
+        <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 text-gray-900 flex flex-col">
+                    <div class="px-3">
+                <!-- assign verifiers -->
+                <form action="{{ route('assign-verifiers') }}" method="POST" class="flex items-center gap-4">
+                            @csrf
+                            <div>
+                                <label for="count" class="block text-sm font-medium text-gray-700">Verifiers per User</label>
+                                <input type="number"
+                                    name="count"
+                                    id="count"
+                                    value="10"
+                                    min="1"
+                                    class="mt-1 block w-32 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            </div>
+                            <button type="submit"
+                                class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
+                                Assign Verifiers
+                            </button>
+                        </form>
+
+                        
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- end of assign verifiers -->
       
     </div>
   </div>

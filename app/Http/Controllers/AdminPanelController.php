@@ -52,6 +52,19 @@ class AdminPanelController extends Controller
         return redirect()->back()->with('success', 'Passports assigned successfully');
     }
 
+
+    public function assignVerifiers(Request $request): RedirectResponse {
+
+        
+        $count = $request->input('count');
+        
+        Artisan::call('pv:assign', [
+            'count' => $count,
+            
+        ]);
+        return redirect()->back()->with('success', 'Passports assigned successfully');
+    }
+
 // ... existing code ...
 
 public function setAdmin(Request $request): RedirectResponse
@@ -70,11 +83,20 @@ public function setAdmin(Request $request): RedirectResponse
 }
 
 
-    public function setVerifier(Request $request): RedirectResponse {
-        $userId = $request->input('user');
-        User::find($userId)->update(['is_verifier' => true]);
-        return redirect()->back()->with('success', 'Verifier set successfully');
+public function setVerifier(Request $request): RedirectResponse
+{
+    $selectedUsers = $request->input('selected_users', []);
+    
+    // Set all users to non-admin first
+    User::query()->update(['is_verifier' => false]);
+    
+    // Then set selected users as admin
+    if (!empty($selectedUsers)) {
+        User::whereIn('id', $selectedUsers)->update(['is_verifier' => true]);
     }
+    
+    return redirect()->back()->with('success', 'Verifier status updated successfully');
+}
 
     
 }
