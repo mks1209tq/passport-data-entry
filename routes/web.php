@@ -38,3 +38,6 @@ Route::resource('verify-passports', VerifyPassportController::class);
 Route::resource('issue-passports', IssuePassportController::class);
 
 
+
+
+Route::resource('certs', App\Http\Controllers\CertController::class);

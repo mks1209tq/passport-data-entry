@@ -1,21 +1,4 @@
-created:
-    - app/Http/Controllers/PassportController.php
-    - database/factories/EmployeeFactory.php
-    - database/factories/PassportFactory.php
-    - database/migrations/2024_10_16_074606_create_employees_table.php
-    - database/migrations/2024_10_16_074607_create_passports_table.php
-    - app/Models/Employee.php
-    - app/Models/Passport.php
-    - database/seeders/PassportSeeder.php
-    - tests/Feature/Http/Controllers/PassportControllerTest.php
-    - app/Http/Requests/PassportStoreRequest.php
-    - app/Http/Requests/PassportUpdateRequest.php
-    - resources/views/passport/index.blade.php
-    - resources/views/passport/create.blade.php
-    - resources/views/passport/show.blade.php
-    - resources/views/passport/edit.blade.php
-updated:
-    - routes/web.php
 models:
-    Employee: { id: id, softdeletes: softDeletes }
-    Passport: { softdeletes: softDeletes }
+    Employee: { name: string, user_id: integer }
+    Passport: { employee_id: string, file_name: string, is_data_correct: "boolean nullable default:'0'", is_data_entered: "boolean nullable default:'0'", passport_expiry_date: 'date nullable', visa_expiry_date: 'date nullable', user_id: 'integer nullable', is_passport: "boolean default:'0'", is_visa: "boolean default:'0'", is_photo: "boolean default:'0'", is_no_file_uploaded: "boolean default:'0'", issue: 'string nullable', verify_count: "integer nullable default:'0'", re_entry: 'boolean nullable', verifier1_id: 'integer nullable', verifier2_id: 'integer nullable', verifier1: 'integer nullable', verifier2: 'integer nullable', is_issue: "boolean default:'0'" }
+    User: { name: string, is_admin: "string default:'0'", email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable', is_verifier: "boolean default:'0'" }
