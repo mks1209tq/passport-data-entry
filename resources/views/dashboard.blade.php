@@ -40,7 +40,11 @@
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class="px-3">
                         <?php
+                        @if (Auth::user()->is_admin)
+                        $passports = App\Models\Passport::all()->where('is_data_entered', false);
+                        @else
                         $passports = App\Models\Passport::all()->where('is_data_entered', false)->where('user_id', auth()->user()->id);
+                        @endif
                         ?>
                         <table class="">
                             <th class="">&nbsp; &nbsp;</th>
