@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('passports', function (Blueprint $table) {
-            // $table->foreignId('verifier1_id')->nullable()->constrained('users');
-            // $table->foreignId('verifier2_id')->nullable()->constrained('users');
-            
+        Schema::create('applicants', function (Blueprint $table) {
+            $table->id();
+            $table->string('name', 100)->nullable();
+            $table->string('email', 100)->nullable()->index();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -23,8 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('passports', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('applicants');
     }
 };

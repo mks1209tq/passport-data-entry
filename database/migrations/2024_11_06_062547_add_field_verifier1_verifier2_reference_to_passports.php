@@ -13,9 +13,9 @@ return new class extends Migration
      public function up(): void
      {
          Schema::table('passports', function (Blueprint $table) {
-            $table->foreignId('verifier1')->nullable()->constrained('users');
-            $table->foreignId('verifier2')->nullable()->constrained('users');
-             $table->boolean('is_issue')->default(false);
+            // $table->foreignId('verifier1')->nullable()->constrained('users');
+            // $table->foreignId('verifier2')->nullable()->constrained('users');
+            //  $table->boolean('is_issue')->default(false);
          });
      }
    
