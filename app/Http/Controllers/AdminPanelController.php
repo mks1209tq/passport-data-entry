@@ -105,5 +105,12 @@ public function removeVerifierAssignments(Request $request): RedirectResponse
     return redirect()->back()->with('success', 'Verifier assignments removed successfully');
 }
 
+public function removePassportAssignments(Request $request): RedirectResponse
+{
+    $userId = $request->input('user_id');
+    Artisan::call('passport:remove', ['user_ids' => [$userId]]);
+    return redirect()->back()->with('success', 'Passport assignments removed successfully');
+}
+
     
 }

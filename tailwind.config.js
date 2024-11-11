@@ -1,5 +1,6 @@
 import defaultTheme from 'tailwindcss/defaultTheme';
 import forms from '@tailwindcss/forms';
+import plugin from 'tailwindcss/plugin';
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -17,5 +18,14 @@ export default {
         },
     },
 
-    plugins: [forms],
+    plugins: [
+        forms,
+        plugin(function({ addUtilities }) {
+            addUtilities({
+                '[x-cloak]': { display: 'none !important' },
+            })
+        }),
+    ],
 };
+
+
