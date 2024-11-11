@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
     Route::POST('/assign-verifiers', [AdminPanelController::class, 'assignVerifiers'])->name('assign-verifiers');
     Route::POST('/set-admin', [AdminPanelController::class, 'setAdmin'])->name('set-admin');
     Route::POST('/set-verifier', [AdminPanelController::class, 'setVerifier'])->name('set-verifier');
+    Route::POST('/remove-verifier-assignments', [AdminPanelController::class, 'removeVerifierAssignments'])->name('remove-verifier-assignments');
 });
 
 require __DIR__.'/auth.php';

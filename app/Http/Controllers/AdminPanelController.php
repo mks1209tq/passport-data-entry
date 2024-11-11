@@ -98,5 +98,12 @@ public function setVerifier(Request $request): RedirectResponse
     return redirect()->back()->with('success', 'Verifier status updated successfully');
 }
 
+public function removeVerifierAssignments(Request $request): RedirectResponse
+{
+    $userId = $request->input('user_id');
+    Artisan::call('verifier:remove', ['user_ids' => [$userId]]);
+    return redirect()->back()->with('success', 'Verifier assignments removed successfully');
+}
+
     
 }

@@ -47,7 +47,7 @@
                         }
                         ?>
                         <table class="">
-                            <th class="">&nbsp; &nbsp;</th>
+                            <th class="">&nbsp; &nbsp; </th>
                             <th class="text-left">Passport ID</th>
                             @foreach ($passports as $passport)
                             <!-- <p>{{ $passport->employee_id }}</p> -->
@@ -70,7 +70,9 @@
                             @endforeach
                         </table>
                     </div>
+                    <!-- make the below border -->
                     <div class="px-3">
+                        
 
                     </div>
                 </div>

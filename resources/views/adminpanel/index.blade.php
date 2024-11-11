@@ -321,12 +321,13 @@
 
     <div class="shrink-0 border-t px-2 py-2 sm:px-2 lg:w-96 lg:border-l lg:border-t-0 lg:pr-3 xl:pr-3">
       <!-- Right column area -->
+       <!-- assign verifiers -->
       <div class="pt-1">
         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-2 text-gray-900 flex flex-col">
                     <div class="px-3">
-                <!-- assign verifiers -->
+                
                 <form action="{{ route('assign-verifiers') }}" method="POST" class="flex items-center gap-4">
                             @csrf
                             <div>
@@ -353,6 +354,31 @@
         </div>
     </div>
     <!-- end of assign verifiers -->
+     <!-- remove verifier -->
+    <div class="pt-1">
+        <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
+            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-2 text-gray-900 flex flex-col">
+                    <div class="px-3">
+                    <form action="{{ route('remove-verifier-assignments') }}" method="POST" class="flex items-center gap-4">
+                    @csrf
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700">Remove Verifier Assignments</label>
+                        <select name="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                            <option value="">Select Verifier</option>
+                            @foreach($users as $user)
+                                <option value="{{ $user->id }}">{{ $user->name }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                        <button type="submit"
+                        class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white font-bold rounded-md mt-6"
+                        onclick="return confirm('Are you sure you want to remove all assignments from this verifier?')">
+                        Remove Assignments
+                        </button>
+                    </form>
+
+
       
     </div>
   </div>
