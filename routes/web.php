@@ -6,6 +6,7 @@ use App\Http\Controllers\VerifyPassportController;
 use App\Http\Controllers\PassportController;
 use App\Http\Controllers\IssuePassportController;
 use App\Http\Controllers\AdminPanelController;
+use App\Http\Controllers\ApplicantController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -36,6 +37,11 @@ Route::resource('passports', PassportController::class);
 
 
 
+Route::get('applicants/send', [ApplicantController::class, 'showSend'])->name('applicants.show-send');
+Route::post('applicants/send', [ApplicantController::class, 'send'])->name('applicants.send');
+
+Route::resource('applicants', ApplicantController::class);
+
 Route::resource('verify-passports', VerifyPassportController::class);
 
 Route::resource('issue-passports', IssuePassportController::class);
@@ -43,7 +49,7 @@ Route::resource('issue-passports', IssuePassportController::class);
 
 
 
-Route::resource('certs', App\Http\Controllers\CertController::class);
+
 
 
 
