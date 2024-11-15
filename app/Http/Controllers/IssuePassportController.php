@@ -15,7 +15,7 @@ class IssuePassportController extends Controller
     {
         $passports = Passport::all()
         // ->where('is_data_entered', '!=', null)
-        ->where('issue', '!=', null);
+        ->where('is_issue', true);
 
 
         return view('issuepassport.index', compact('passports'));
@@ -57,9 +57,9 @@ class IssuePassportController extends Controller
         $passport->is_visa = $request->has('is_visa');
         $passport->is_photo = $request->has('is_photo');
         $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+        $passport->is_issue = $request->has('is_issue');
         
-        
-
+       
         // dd($passport->data_correct_value, $passport->verify_count);
 
         // $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;

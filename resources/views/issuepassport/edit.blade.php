@@ -90,6 +90,17 @@
                                     No File Uploaded
                             </fieldset>
                             <br>
+                            <!-- create checkbox for is_issue -->
+                            <label class="block text-gray-700 text-sm font-bold mb-2" for="is_issue">Issue<br>
+                                <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    id="is_issue"
+                                    type="checkbox"
+                                    name="is_issue"
+                                    value="1"
+                                    {{ old('is_issue', $passport->is_issue) ? 'checked' : '' }}
+                                    >
+                            </label>
+                            
                             <label class="block text-gray-700 text-sm font-bold mb-2" for="issue">Issue<br>
                                 <input class="shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                                     id="issue"
