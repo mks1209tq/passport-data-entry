@@ -41,7 +41,11 @@ class AssignPassportsToOneUser extends Command
         try {
             foreach ($users as $user) {
                 $assignedCount = $this->assignPassportsToUser($user, $countPerUser);
-                $this->info("Assigned $assignedCount passports to user ID: " . $user->id);
+                if ($assignedCount > 0) {
+                    $this->info("Assigned $assignedCount passports to user ID: " . $user->id);
+                } else {
+                    $this->error('No passports were assigned to user ID: ' . $user->id);
+                }
             }
 
             DB::commit();
@@ -62,6 +66,10 @@ class AssignPassportsToOneUser extends Command
             ->limit($count)
             ->get();
 
+        if ($unassignedPassports->isEmpty()) {
+            $this->error('No unassigned passports(is_data_entered = false) found for user ID: ' . $user->id);
+            return 0;
+        }
 
         foreach ($unassignedPassports as $passport) {
             $passport->user_id = $user->id;

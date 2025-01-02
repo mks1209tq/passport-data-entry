@@ -14,20 +14,21 @@
 
                     <!-- to be removed--mk -->
                     <p>
-                        Total records assigned: {{ App\Models\Passport::where('user_id', 4)->count() }}
+                        Total records assigned: {{ App\Models\Passport::where('user_id', auth()->user()->id)->count() }}
                     </p>
-
-                    @if (Auth::user()->is_admin)
-                    <a
-                        href="{{ route('register') }}"
-                        class="rounded-md px-3 py-2 text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
-                        Register
-                    </a><br>
                     <div>
-                        Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->count() }}
+                        Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->where('user_id', auth()->user()->id)->count() }}
                     </div>
                     <div>
-                        Passports Data Verified: {{ App\Models\Passport::where('verify_count', '>', 1)->count() }}
+                        Passports Data Verified: {{ App\Models\Passport::where('verify_count', '>', 1)->where('user_id', auth()->user()->id)->count() }}
+                    </div>
+                    @if (Auth::user()->is_admin)
+                    <div>
+                    <a
+                        href="{{ route('register') }}"
+                        class="rounded-md text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
+                        Register a new user
+                    </a>
                     </div>
                     @endif
                 </div>
