@@ -18,7 +18,7 @@ class PassportController extends Controller
         return view('passport.index', compact('passports'));
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request)
     {
         return view('passport.create');
     }

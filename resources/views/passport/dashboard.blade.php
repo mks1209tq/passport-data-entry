@@ -1,7 +1,9 @@
 <x-app-layout>
+    
     <x-slot name="header">
+        @include('passport.partials.subnav')
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('hello') }}
+            {{ __('Passport Dashboard') }}
         </h2>
     </x-slot>
 

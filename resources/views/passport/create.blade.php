@@ -1,7 +1,1 @@
-{{--
-    @extends('layouts.app')
-
-    @section('content')
-        passport.create template
-    @endsection
---}}
+@include('passport.partials.subnav')
