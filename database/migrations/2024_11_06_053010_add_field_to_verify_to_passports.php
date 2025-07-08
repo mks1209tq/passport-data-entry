@@ -12,9 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('passports', function (Blueprint $table) {
-            // $table->foreignId('verifier1_id')->nullable()->constrained('users');
-            // $table->foreignId('verifier2_id')->nullable()->constrained('users');
-            
+            $table->foreignId('verifier1_id')->nullable()->constrained('users');
+            $table->foreignId('verifier2_id')->nullable()->constrained('users');
+            $table->foreignId('verifier1')->nullable()->constrained('users');
+            $table->foreignId('verifier2')->nullable()->constrained('users');
         });
     }
 
@@ -24,7 +25,11 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('passports', function (Blueprint $table) {
-            //
+            $table->dropForeign(['verifier1_id']);
+            $table->dropForeign(['verifier2_id']);
+            $table->dropForeign(['verifier1']);
+            $table->dropForeign(['verifier2']);
+            $table->dropColumn(['verifier1_id', 'verifier2_id', 'verifier1', 'verifier2']);
         });
     }
 };

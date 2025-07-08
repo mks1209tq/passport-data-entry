@@ -47,10 +47,13 @@ Route::resource('verify-passports', VerifyPassportController::class);
 Route::resource('issue-passports', IssuePassportController::class);
 
 
+Route::get('/ppdashboard', function () {
+    return view('passport.dashboard');
+})->middleware(['auth', 'verified'])->name('ppdashboard');
 
-
-
-
+Route::get('/leaveApplication', function () {
+    return view('leaveApplication.index');
+})->middleware(['auth', 'verified'])->name('leaveApplication');
 
 
 

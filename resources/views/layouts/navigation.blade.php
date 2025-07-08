@@ -13,35 +13,12 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Passport') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('leaveApplication')" :active="request()->routeIs('leaveApplication')">
+                        {{ __('Leave') }}
                     </x-nav-link>
                 </div>
-                
-                @if (Auth::user()->is_admin)
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('issue-passports.index')" :active="request()->routeIs('issue-passports.index')">
-                        {{ __('Issues') }}
-                    </x-nav-link>
-                </div>
-                @endif
-                
-                @if (Auth::user()->is_admin || Auth::user()->is_verifier)
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('verify-passports.index')" :active="request()->routeIs('verify-passports.index')">
-                        {{ __('Verify') }}
-                    </x-nav-link>
-                </div>
-                @endif
-
-                @if (Auth::user()->is_admin)
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('adminpanel.index')" :active="request()->routeIs('adminpanel.index')">
-                        {{ __('Admin Panel') }}
-                    </x-nav-link>
-                </div>
-                @endif
-
-                
             </div>
 
             <!-- Settings Dropdown -->
@@ -87,6 +64,35 @@
                     </svg>
                 </button>
             </div>
+        </div>
+    </div>
+
+    <!-- Second Row Navigation -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex space-x-8 py-2">
+            @if (Auth::user()->is_admin)
+            <div class="flex space-x-8">
+                <x-nav-link :href="route('issue-passports.index')" :active="request()->routeIs('issue-passports.index')">
+                    {{ __('Issues') }}
+                </x-nav-link>
+            </div>
+            @endif
+            
+            @if (Auth::user()->is_admin || Auth::user()->is_verifier)
+            <div class="flex space-x-8">
+                <x-nav-link :href="route('verify-passports.index')" :active="request()->routeIs('verify-passports.index')">
+                    {{ __('Verify') }}
+                </x-nav-link>
+            </div>
+            @endif
+
+            @if (Auth::user()->is_admin)
+            <div class="flex space-x-8">
+                <x-nav-link :href="route('adminpanel.index')" :active="request()->routeIs('adminpanel.index')">
+                    {{ __('Admin Panel') }}
+                </x-nav-link>
+            </div>
+            @endif
         </div>
     </div>
 
