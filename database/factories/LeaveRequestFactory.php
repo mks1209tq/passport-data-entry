@@ -20,10 +20,10 @@ class LeaveRequestFactory extends Factory
      */
     public function definition(): array
     {
-        static $counter = 1;
+        static $counter = 6;
         
         return [
-            'leaveRequestId' => 'LR' . str_pad($counter++, 6, '0', STR_PAD_LEFT),
+            'leaveRequestId' => 'LR-' . str_pad($counter++, 0, '0', STR_PAD_LEFT),
             'formId' => $this->faker->regexify('[A-Za-z0-9]{100}'),
             'submissionDate' => $this->faker->dateTime(),
             'employeeId' => $this->faker->regexify('[A-Za-z0-9]{100}'),

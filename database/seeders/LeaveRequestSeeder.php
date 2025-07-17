@@ -14,7 +14,7 @@ class LeaveRequestSeeder extends Seeder
     public function run(): void
     {
         // Create 50 sample leave requests
-        LeaveRequest::factory(50)->create();
+        LeaveRequest::factory(5)->create();
         
         $this->command->info('Leave requests seeded successfully!');
     }

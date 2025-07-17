@@ -52,7 +52,7 @@ Route::get('/ppdashboard', function () {
 })->middleware(['auth', 'verified'])->name('ppdashboard');
 
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/leaveApplication', function () {
