@@ -2,11 +2,6 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VerifyPassportController;
-use App\Http\Controllers\PassportController;
-use App\Http\Controllers\IssuePassportController;
-use App\Http\Controllers\AdminPanelController;
-use App\Http\Controllers\ApplicantController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -31,25 +26,6 @@ Route::middleware('auth')->group(function () {
 });
 
 
-
-Route::resource('passports', PassportController::class);
-
-
-
-Route::get('applicants/send', [ApplicantController::class, 'showSend'])->name('applicants.show-send');
-Route::post('applicants/send', [ApplicantController::class, 'send'])->name('applicants.send');
-
-Route::resource('applicants', ApplicantController::class);
-
-Route::resource('verify-passports', VerifyPassportController::class);
-
-Route::resource('issue-passports', IssuePassportController::class);
-
-
-Route::get('/ppdashboard', function () {
-    return view('passport.dashboard');
-})->middleware(['auth', 'verified'])->name('ppdashboard');
-
 Route::get('/dashboard', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -58,5 +34,6 @@ Route::get('/dashboard', function () {
 
 require __DIR__.'/auth.php';
 require __DIR__.'/leaveRequest.php';
+require __DIR__.'/passport.php';
 
 

@@ -20,12 +20,12 @@ class DatabaseSeeder extends Seeder
             LeaveRequestSeeder::class,
         ]);
 
-        // User::factory()->create([
-        //     'name' => 'admin',
-        //     'email' => 'a@a.com',
-        //     'password' => '$2y$12$kt6DH3V.hOsZxbIJLNZFEOIaUPB4dSyJL1hepO8GSmE1UgMXvtp3q',
-        //     'is_admin' => true,
-        // ]);
+        User::factory()->create([
+            'name' => 'admin',
+            'email' => 'a@a.com',
+            'password' => '$2y$12$kt6DH3V.hOsZxbIJLNZFEOIaUPB4dSyJL1hepO8GSmE1UgMXvtp3q',
+            'is_admin' => true,
+        ]);
 
         // User::factory()->create([
         //     'name' => 'user1',
