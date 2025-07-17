@@ -30,7 +30,6 @@ Route::middleware('auth')->group(function () {
     Route::POST('/remove-passport-assignments', [AdminPanelController::class, 'removePassportAssignments'])->name('remove-passport-assignments');
 });
 
-require __DIR__.'/auth.php';
 
 
 Route::resource('passports', PassportController::class);
@@ -55,14 +54,9 @@ Route::get('/dashboard', function () {
     return view('home');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::get('/leaveApplication', function () {
-    return view('leaveApplication.index');
-})->middleware(['auth', 'verified'])->name('leaveApplication');
 
 
+require __DIR__.'/auth.php';
+require __DIR__.'/leaveRequest.php';
 
 
-Route::resource('applicants', App\Http\Controllers\ApplicantController::class);
-
-
-Route::resource('leave-requests', App\Http\Controllers\LeaveRequestController::class);

@@ -24,7 +24,7 @@
                         </a>
                     </div>
                     <div class="px-3">
-                        <a href="{{ route('leaveApplication') }}">
+                        <a href="{{ route('lrdashboard') }}">
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-md">
                                 Leave
                             </button>
