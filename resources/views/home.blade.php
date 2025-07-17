@@ -19,7 +19,7 @@
                     <div class="px-3">
                         <a href="{{ route('ppdashboard') }}">
                             <button class="bg-gray-800 text-white px-4 py-2 rounded-md">
-                                Passport
+                                Passports
                             </button>
                         </a>
                     </div>
