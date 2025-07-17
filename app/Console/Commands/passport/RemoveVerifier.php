@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Console\Commands;
+namespace App\Console\Commands\passport;
 
 use Illuminate\Console\Command;
 use App\Models\Passport;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 
-class RemovePassport extends Command
+class RemoveVerifier extends Command
 {
-    protected $signature = 'passport:remove {user_ids*}';
+    protected $signature = 'verifier:remove {user_ids*}';
 
-    protected $description = 'Remove all passport assignments from a specific or multiple users';
+    protected $description = 'Remove all passport assignments from a specific verifier';
 
     public function handle()
     {
@@ -26,15 +26,17 @@ class RemovePassport extends Command
             return 1;
         }
 
-        // Remove passport assignments
+        // Remove verifier assignments
         $updatedPassports = Passport::where(function($query) use ($existingUserIds) {
-            $query->whereIn('user_id', $existingUserIds);
+            $query->whereIn('verifier1', $existingUserIds)
+                  ->orWhereIn('verifier2', $existingUserIds);
         })->update([
-            'user_id' => \DB::raw("CASE WHEN user_id IN (" . implode(',', $existingUserIds) . ") THEN NULL ELSE user_id END"),
+            'verifier1' => \DB::raw("CASE WHEN verifier1 IN (" . implode(',', $existingUserIds) . ") THEN NULL ELSE verifier1 END"),
+            'verifier2' => \DB::raw("CASE WHEN verifier2 IN (" . implode(',', $existingUserIds) . ") THEN NULL ELSE verifier2 END"),
         ]);
 
         $userNames = $existingUsers->pluck('name')->implode(', ');
-        $this->info("Successfully removed passport assignments for users: $userNames");
+        $this->info("Successfully removed verifier assignments for users: $userNames");
         $this->info("Updated $updatedPassports passport records");
         
         return 0;

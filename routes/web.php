@@ -51,6 +51,10 @@ Route::get('/ppdashboard', function () {
     return view('passport.dashboard');
 })->middleware(['auth', 'verified'])->name('ppdashboard');
 
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
 Route::get('/leaveApplication', function () {
     return view('leaveApplication.index');
 })->middleware(['auth', 'verified'])->name('leaveApplication');
@@ -59,3 +63,6 @@ Route::get('/leaveApplication', function () {
 
 
 Route::resource('applicants', App\Http\Controllers\ApplicantController::class);
+
+
+Route::resource('leave-requests', App\Http\Controllers\LeaveRequestController::class);
