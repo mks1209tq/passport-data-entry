@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('ppdashboard')" :active="request()->routeIs('ppdashboard')">
                         {{ __('Passport') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('leaveApplication')" :active="request()->routeIs('leaveApplication')">
+                    <x-nav-link :href="route('lrdashboard')" :active="request()->routeIs('lrdashboard')">
                         {{ __('Leave') }}
                     </x-nav-link>
                 </div>
