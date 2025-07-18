@@ -2,92 +2,86 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\PassportStoreRequest;
-use App\Http\Requests\IssuePassportUpdateRequest;
-use App\Models\Passport;
+use App\Http\Requests\LeaveRequestStoreRequest;
+use App\Http\Requests\IssueLeaveUpdateRequest;
+use App\Models\LeaveRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class IssuePassportController extends Controller
+class IssueLeaveController extends Controller
 {
     public function index(Request $request): View
     {
-        $passports = Passport::all()
+        $leaveRequests = LeaveRequest::all()
         // ->where('is_data_entered', '!=', null)
         ->where('is_issue', true);
 
 
-        return view('issuepassport.index', compact('passports'));
+        return view('LRissueleave.index', compact('leaveRequests'));
     }
 
     public function create(Request $request): View
     {
-        return view('issuepassport.create');
+        return view('LRissueleave.create');
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $passport = Passport::create($request->validated());
+        $leave = LeaveRequest::create($request->validated());
 
-        $request->session()->flash('passport.id', $passport->id);
+        $request->session()->flash('leave.id', $leave->id);
 
-        return redirect()->route('issue-passports.index');
+        return redirect()->route('issue-leaves.index');
     }
 
-    public function show(Request $request, $passport): View
+    public function show(Request $request, $leave): View
     {
-        return view('issuepassport.show', compact('passport'));
+        return view('LRissueleave.show', compact('leave'));
     }
 
-    public function edit(Request $request, $passport): View
+    public function edit(Request $request, $leave): View
     {
-        // dd($passport);
-        $passport = Passport::find($passport);
-        return view('issuepassport.edit', compact('passport'));
+        // dd($leave);
+        $leave = LeaveRequest::find($leave);
+        return view('LRissueleave.edit', compact('leave'));
     }
 
 
-    public function update(IssuePassportUpdateRequest $request, $passport): RedirectResponse
+    public function update(IssueLeaveUpdateRequest $request, $leave): RedirectResponse
     {
 
-        $passport = Passport::find($passport);
+        $leave = LeaveRequest::find($leave);
 
-        $passport->is_passport = $request->has('is_passport');
-        $passport->is_visa = $request->has('is_visa');
-        $passport->is_photo = $request->has('is_photo');
-        $passport->is_no_file_uploaded = $request->has('is_no_file_uploaded');
-        $passport->is_issue = $request->has('is_issue');
+        $leave->is_leave = $request->has('is_leave');
+        $leave->is_visa = $request->has('is_visa');
+        $leave->is_photo = $request->has('is_photo');
+        $leave->is_no_file_uploaded = $request->has('is_no_file_uploaded');
+        $leave->is_issue = $request->has('is_issue');
         
-       
-        // dd($passport->data_correct_value, $passport->verify_count);
-
-        // $verify_data_correct_count = $request->data_correct_value + $passport->verify_count;
+     
 
 
-        $updated = $passport->update($request->all());
+        $updated = $leave->update($request->all());
 
 
-        // $updated = $passport->update(['is_data_entered' => true]);
-
-        // $updated = $passport->update(['issue' => 'a']);
 
         
         if ($updated) {
 
-            $request->session()->flash('passport.id', $passport->id);
-            return redirect()->route('issue-passports.index')->with('success', 'Passport updated successfully');
+            $request->session()->flash('leave.id', $leave->id);
+            return redirect()->route('issue-leaves.index')->with('success', 'Leave updated successfully');
         } else {
-            return back()->with('error', 'Failed to update passport');
+            return back()->with('error', 'Failed to update leave');
         }
     }
 
     
 
-    public function destroy(Request $request, $passport): Response
+    public function destroy(Request $request, $leave): Response
     {
-        $passport->delete();
+        $leave->delete();
 
-        return redirect()->route('issue-passports.index');
+        return redirect()->route('issue-leaves.index');
     }
 }

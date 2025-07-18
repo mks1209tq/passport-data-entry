@@ -14,15 +14,8 @@ Route::get('/home', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-    Route::get('/adminpanel', [AdminPanelController::class, 'index'])->name('adminpanel.index');
-    Route::POST('/assign-passports', [AdminPanelController::class, 'assignPassports'])->name('assign-passports');
-    Route::POST('/assign-users', [AdminPanelController::class, 'assignUsers'])->name('assign-users');
-    Route::POST('/assign-verifiers', [AdminPanelController::class, 'assignVerifiers'])->name('assign-verifiers');
-    Route::POST('/set-admin', [AdminPanelController::class, 'setAdmin'])->name('set-admin');
-    Route::POST('/set-verifier', [AdminPanelController::class, 'setVerifier'])->name('set-verifier');
-    Route::POST('/remove-verifier-assignments', [AdminPanelController::class, 'removeVerifierAssignments'])->name('remove-verifier-assignments');
-    Route::POST('/remove-passport-assignments', [AdminPanelController::class, 'removePassportAssignments'])->name('remove-passport-assignments');
+      
+   
 });
 
 

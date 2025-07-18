@@ -1,6 +1,14 @@
 <!-- Second Row Navigation for Leave Pages -->
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex space-x-8 py-2 bg-white border-b border-gray-200">
+    <div class="flex space-x-8  bg-white border-b border-gray-200">
+        
+     
+    <div class="flex space-x-8">
+            <x-nav-link :href="route('lrdashboard')" :active="request()->routeIs('lrdashboard')">
+                {{ __('leaveRequest') }}
+            </x-nav-link>
+        </div>
+        
         @if (Auth::user()->is_admin)
         <div class="flex space-x-8">
             <x-nav-link :href="route('issue-leaves.index')" :active="request()->routeIs('issue-leaves.index')">
@@ -16,6 +24,9 @@
             </x-nav-link>
         </div>
         @endif
+
+    
+ 
 
         @if (Auth::user()->is_admin)
         <div class="flex space-x-8">

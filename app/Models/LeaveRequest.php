@@ -77,6 +77,13 @@ class LeaveRequest extends Model
         'verifier2',
         'verifier1_id',
         'verifier2_id',
+        're_entry',
+        'is_data_correct',
+        'is_issue',
+        'is_leave',
+        'is_visa',
+        'is_photo',
+        'is_no_file_uploaded',
     ];
 
     /**
@@ -104,5 +111,12 @@ class LeaveRequest extends Model
         'approvedByCEO' => 'boolean',
         'is_data_entered' => 'boolean',
         'verify_count' => 'integer',
+        're_entry' => 'boolean',
+        'is_data_correct' => 'boolean',
+        'is_issue' => 'boolean',
+        'is_leave' => 'boolean',
+        'is_visa' => 'boolean',
+        'is_photo' => 'boolean',
+        'is_no_file_uploaded' => 'boolean',
     ];
 }

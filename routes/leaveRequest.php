@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\VerifyLeaveRequestController;
+use App\Http\Controllers\VerifyLeaveController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\IssueLeaveController;
 use App\Http\Controllers\LRAdminPanelController;
@@ -24,9 +24,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::resource('verify-passports', VerifyPassportController::class);
+Route::resource('verify-leaves', LRVerifyLeaveController::class);
 
-Route::resource('issue-passports', IssuePassportController::class);
+Route::resource('issue-leaves', IssueLeaveController::class);
 
 
 Route::get('/lrdashboard', function () {
@@ -34,9 +34,7 @@ Route::get('/lrdashboard', function () {
 })->middleware(['auth', 'verified'])->name('lrdashboard');
 
 
-Route::get('/leaveApplication', function () {
-    return view('leaveApplication.index');
-})->middleware(['auth', 'verified'])->name('leaveApplication');
+
 
 
 

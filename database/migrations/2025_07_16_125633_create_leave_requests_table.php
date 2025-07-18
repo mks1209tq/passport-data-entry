@@ -53,6 +53,13 @@ return new class extends Migration
             $table->unsignedBigInteger('verifier2')->nullable();
             $table->unsignedBigInteger('verifier1_id')->nullable();
             $table->unsignedBigInteger('verifier2_id')->nullable();
+            $table->boolean('re_entry')->nullable();
+            $table->boolean('is_data_correct')->default(false);
+            $table->boolean('is_issue')->default(false);
+            $table->boolean('is_leave')->default(false);
+            $table->boolean('is_visa')->default(false);
+            $table->boolean('is_photo')->default(false);
+            $table->boolean('is_no_file_uploaded')->default(false);
             
             $table->timestamps();
             $table->softDeletes();
