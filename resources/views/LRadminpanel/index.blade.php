@@ -26,9 +26,9 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg my-1">
                                     <div class="p-2 text-gray-900 flex flex-col">
                                         <div class="px-1">
-                                            <!-- Passport per User Count -->
+                                            <!-- leaves per User Count -->
                                             @php
-                                            $passportsPerUser = $passports->count() / $users->count();
+                                            $leavesPerUser = $leaves->count() / $users->count();
                                             @endphp
                                             <table class="border border-slate-500">
                                                 <th class="border border-slate-500 text-left p-2">User</th>
@@ -41,10 +41,10 @@
                                                         {{ $user->name }}
                                                     </td>
                                                     <td class="border border-slate-500 text-center p-2">
-                                                        {{ $passports->where('user_id', $user->id)->count() }}
+                                                        {{ $leaves->where('user_id', $user->id)->count() }}
                                                     </td>
                                                     <td class="border border-slate-500 text-center p-2">
-                                                        {{ $passports->where('user_id', $user->id)
+                                                        {{ $leaves->where('user_id', $user->id)
                                         ->where('is_data_entered', true)
                                         ->count() }}
 
@@ -59,9 +59,9 @@
                                 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-2">
                                     <div class="p-2 text-gray-900 flex flex-col py-2">
                                         <div class="px-1 py-2">
-                                            <!-- Passport per User Count -->
+                                            <!-- Leaves per User Count -->
                                             @php
-                                            $passportsPerUser = $passports->count() / $users->count();
+                                            $leavesPerUser = $leaves->count() / $users->count();
                                             @endphp
                                             <table class="border border-slate-500">
                                                 <th class="border border-slate-500 text-left p-2">User</th>
@@ -74,12 +74,12 @@
                                                         {{ $user->name }}
                                                     </td>
                                                     <td class="border border-slate-500 text-center p-2">
-                                                        {{ $passports->where('verifier1', $user->id)->count() + 
-                                        $passports->where('verifier2', $user->id)->count() }}
+                                                        {{ $leaves->where('verifier1', $user->id)->count() + 
+                                        $leaves->where('verifier2', $user->id)->count() }}
                                                     </td>
                                                     <td class="border border-slate-500 text-center p-2">
-                                                        {{ $passports->where('verifier1_id', $user->id) ->count() + 
-                                        $passports->where('verifier2_id', $user->id) ->count() }}
+                                                        {{ $leaves->where('verifier1_id', $user->id) ->count() + 
+                                        $leaves->where('verifier2_id', $user->id) ->count() }}
 
                                                     </td>
                                                 </tr>
@@ -96,7 +96,7 @@
 
 
                     </div>
-                    <!-- end of passport per user count -->
+                    <!-- end of leaves per user count -->
 
 
 
@@ -144,7 +144,7 @@
                         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-1 text-gray-900 p-2">
-                                    <form action="{{ route('set-admin') }}" method="POST">
+                                    <form action="{{ route('lr-set-admin') }}" method="POST">
                                         @csrf
                                         <label class="block text-sm font-medium text-gray-700">Admins</label>
                                         <div class="mt-1 max-h-48 overflow-y-auto border rounded-md p-2">
@@ -186,7 +186,7 @@
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-2 text-gray-900">
                                     <!-- {{ __("Welcome! ") }} -->
-                                    <form action="{{ route('set-verifier') }}" method="POST">
+                                    <form action="{{ route('lr-set-verifier') }}" method="POST">
                                         @csrf
                                         <label class="block text-sm font-medium text-gray-700">Verifiers</label>
                                         <div class="mt-1 max-h-48 overflow-y-auto border rounded-md p-2">
@@ -240,10 +240,10 @@
                                 <div class="p-2 text-gray-900 flex flex-row">
                                     <div class="px-1">
 
-                                        <form action="{{ route('assign-passports') }}" method="POST" class="flex flex-col gap-4">
+                                        <form action="{{ route('assign-leaves') }}" method="POST" class="flex flex-col gap-4">
                                             @csrf
                                             <div>
-                                                <label for="count" class="block text-sm font-medium text-gray-700">Passports per User</label>
+                                                <label for="count" class="block text-sm font-medium text-gray-700">Leaves per User</label>
                                                 <input type="number"
                                                     name="count"
                                                     id="count"
@@ -254,7 +254,7 @@
                                             <div class="">
                                                 <button type="submit"
                                                     class="inline-flex items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
-                                                    Assign Passports
+                                                    Assign Leaves
                                                 </button>
                                             </div>
                                         </form>
@@ -267,19 +267,19 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end of assign passports to all users -->
+                    <!-- end of assign leaves to all users -->
 
-                    <!-- assign passport to user -->
+                    <!-- assign leaves to user -->
                     <div class="pt-1">
                         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-2 text-gray-900 flex flex-col">
                                     <div class="px-3">
 
-                                        <form action="{{ route('assign-users') }}" method="POST" class="flex flex-col items-left gap-4">
+                                        <form action="{{ route('lr-assign-users') }}" method="POST" class="flex flex-col items-left gap-4">
                                             @csrf
                                             <div>
-                                                <label for="users" class="block text-sm font-medium text-gray-700">Passport Count</label>
+                                                <label for="users" class="block text-sm font-medium text-gray-700">Leaves Count</label>
                                                 <input type="number"
                                                     name="count"
                                                     id="count"
@@ -309,7 +309,7 @@
                                             <div class="">
                                                 <button type="submit"
                                                     class="inline-flex w-32 items-center px-4 py-2 bg-blue-500 hover:bg-blue-700 text-white font-bold rounded-md mt-6">
-                                                    Assign Passports
+                                                    Assign Leaves
                                                 </button>
                                             </div>
                                         </form>
@@ -322,18 +322,18 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end of assign passport to user -->
+                    <!-- end of assign leaves to user -->
 
-                    <!-- remove passport -->
+                    <!-- remove leaves -->
                     <div class="pt-1">
                         <div class="max-w-7xl mx-auto sm:px-1 lg:px-2">
                             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                                 <div class="p-2 text-gray-900 flex flex-col">
                                     <div class="px-3 flex flex-col">
-                                        <form action="{{ route('remove-passport-assignments') }}" method="POST" class="flex flex-col gap-4">
+                                        <form action="{{ route('remove-leaves-assignments') }}" method="POST" class="flex flex-col gap-4">
                                             @csrf
                                             <div class="flex flex-col">
-                                                <label class="block text-sm font-medium text-gray-700">Remove Passport Assignments</label>
+                                                <label class="block text-sm font-medium text-gray-700">Remove Leaves Assignments</label>
                                                 <select name="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                                     <option value="">Select User</option>
                                                     @foreach($users as $user)
@@ -345,7 +345,7 @@
                                                 <button type="submit"
                                                     class="inline-flex items-center px-4 py-2 bg-red-500 hover:bg-red-700 text-white rounded-md mt-6"
                                                     onclick="return confirm('Are you sure you want to remove all assignments from this user?')">
-                                                    Remove Passport
+                                                    Remove Leaves
                                                 </button>
                                             </div>
                                         </form>
@@ -357,7 +357,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- end of remove passport -->
+                    <!-- end of remove leaves -->
 
 
 
@@ -374,7 +374,7 @@
                                 <div class="p-2 text-gray-900 flex flex-col">
                                     <div class="px-3">
 
-                                        <form action="{{ route('assign-verifiers') }}" method="POST" class="flex flex-col gap-4">
+                                        <form action="{{ route('lr-assign-verifiers') }}" method="POST" class="flex flex-col gap-4">
                                             @csrf
                                             <div>
                                                 <label for="count" class="block text-sm font-medium text-gray-700">Verifiers per User</label>

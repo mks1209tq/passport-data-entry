@@ -13,21 +13,23 @@
                     {{ __("Welcome! ") }}
 
                     <!-- to be removed--mk -->
-                    
+                    @php
+    $currentRoute = Route::currentRouteName();
+@endphp   
                 </div>
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class="px-3">
                         <a href="{{ route('ppdashboard') }}">
-                            <button class="bg-gray-800 text-white px-4 py-2 rounded-md">
-                                Passportt
-                            </button>
+                        <button class="{{ $currentRoute == 'ppdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
+                Passport
+            </button>
                         </a>
                     </div>
                     <div class="px-3">
                         <a href="{{ route('lrdashboard') }}">
-                            <button class="bg-gray-800 text-white px-4 py-2 rounded-md">
-                                Leave
-                            </button>
+                        <button class="{{ $currentRoute == 'lrdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
+                Leave
+            </button>
                         </a>
                     </div>
                      

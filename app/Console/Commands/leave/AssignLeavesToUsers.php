@@ -3,10 +3,12 @@
 namespace App\Console\Commands\leave;
 
 use Illuminate\Console\Command;
+use App\Models\LeaveRequest;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class AssignLeavesToUsers extends Command
 {
-
     protected $signature = 'leaves:assign {count=10 : Number of leaves to assign per user}';
     protected $description = 'Assign unassigned leaves to users';
 
@@ -36,7 +38,7 @@ class AssignLeavesToUsers extends Command
             }
 
             DB::commit();
-                $this->info('Leave assignment completed successfully.');
+            $this->info('Leave assignment completed successfully.');
         } catch (\Exception $e) {
             DB::rollBack();
             $this->error('An error occurred: ' . $e->getMessage());
@@ -53,10 +55,8 @@ class AssignLeavesToUsers extends Command
             ->limit($count)
             ->get();
 
-        // check if $unsassignedLeaves is not empty
         if ($unassignedLeaves->isEmpty()) {
             $this->error('No unassigned leaves(is_data_entered = false) found for user ID : ' . $user->id);
-            
         }
 
         foreach ($unassignedLeaves as $leave) {

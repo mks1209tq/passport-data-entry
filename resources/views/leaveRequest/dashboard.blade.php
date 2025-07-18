@@ -1,9 +1,9 @@
 <x-app-layout>
     
     <x-slot name="header">
-        @include('passport.partials.subnav')
+        @include('leaveRequest.partials.subnav')
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Passport Dashboard') }}
+            {{ __('Leave Dashboard') }}
         </h2>
     </x-slot>
 
@@ -16,13 +16,13 @@
 
                     <!-- to be removed--mk -->
                     <p>
-                        Total records assigned: {{ App\Models\Passport::where('user_id', auth()->user()->id)->count() }}
+                        Total records assigned: {{ App\Models\LeaveRequest::where('user_id', auth()->user()->id)->count() }}
                     </p>
                     <div>
-                        Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->where('user_id', auth()->user()->id)->count() }}
+                        Leaves Data Entered: {{ App\Models\LeaveRequest::where('is_data_entered', true)->where('user_id', auth()->user()->id)->count() }}
                     </div>
                     <div>
-                        Passports Data Verified: {{ App\Models\Passport::where('verify_count', '>', 1)->where('user_id', auth()->user()->id)->count() }}
+                        Leaves Data Verified: {{ App\Models\LeaveRequest::where('verify_count', '>', 1)->where('user_id', auth()->user()->id)->count() }}
                     </div>
                     @if (Auth::user()->is_admin)
                     <div>
@@ -44,28 +44,28 @@
                     <div class="px-3">
                         <?php
                         if (Auth::user()->is_admin) {
-                            $passports = App\Models\Passport::all()->where('is_data_entered', false);
+                            $leaves = App\Models\LeaveRequest::all()->where('is_data_entered', false);
                         } else {
-                            $passports = App\Models\Passport::all()->where('is_data_entered', false)->where('user_id', auth()->user()->id);
+                            $leaves = App\Models\LeaveRequest::all()->where('is_data_entered', false)->where('user_id', auth()->user()->id);
                         }
                         ?>
                         <table class="">
                             <th class="">&nbsp; &nbsp; </th>
-                            <th class="text-left">Passport ID</th>
-                            @foreach ($passports as $passport)
-                            <!-- <p>{{ $passport->employee_id }}</p> -->
+                            <th class="text-left">Leave ID</th>
+                            @foreach ($leaves as $leave)
+                            <!-- <p>{{ $leave->employee_id }}</p> -->
 
                             <tr>
                                 <td>
-                                    @if ($passport->verify_count > 1)
+                                    @if ($leave->verify_count > 1)
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('passports.edit', $passport->id) }}">{{ $passport->id}}&nbsp;
-                                        {{ $passport->file_name }}
+                                    <a href="{{ route('leave-requests.edit', $leave->id) }}">{{ $leave->id}}&nbsp;
+                                        {{ $leave->employee_id }}
                                     </a>
                                 </td>
                             </tr>

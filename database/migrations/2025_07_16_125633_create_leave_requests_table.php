@@ -44,8 +44,25 @@ return new class extends Migration
             $table->boolean('approvedByHRManager')->nullable();
             $table->boolean('approvedByCEO')->nullable();
             $table->string('status', 100)->nullable();
+            
+            // Assignment system fields
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->boolean('is_data_entered')->default(false);
+            $table->integer('verify_count')->default(0);
+            $table->unsignedBigInteger('verifier1')->nullable();
+            $table->unsignedBigInteger('verifier2')->nullable();
+            $table->unsignedBigInteger('verifier1_id')->nullable();
+            $table->unsignedBigInteger('verifier2_id')->nullable();
+            
             $table->timestamps();
             $table->softDeletes();
+            
+            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('verifier1')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('verifier2')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('verifier1_id')->references('id')->on('users')->onDelete('set null');
+            $table->foreign('verifier2_id')->references('id')->on('users')->onDelete('set null');
         });
     }
 
