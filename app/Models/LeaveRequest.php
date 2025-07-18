@@ -11,6 +11,30 @@ class LeaveRequest extends Model
     use HasFactory, SoftDeletes;
 
     /**
+     * Get the user assigned to this leave request.
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    /**
+     * Get the first verifier assigned to this leave request.
+     */
+    public function verifier1User()
+    {
+        return $this->belongsTo(User::class, 'verifier1');
+    }
+
+    /**
+     * Get the second verifier assigned to this leave request.
+     */
+    public function verifier2User()
+    {
+        return $this->belongsTo(User::class, 'verifier2');
+    }
+
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
@@ -46,6 +70,13 @@ class LeaveRequest extends Model
         'approvedByHRManager',
         'approvedByCEO',
         'status',
+        'user_id',
+        'is_data_entered',
+        'verify_count',
+        'verifier1',
+        'verifier2',
+        'verifier1_id',
+        'verifier2_id',
     ];
 
     /**
@@ -71,5 +102,7 @@ class LeaveRequest extends Model
         'leaveSalaryEligibility' => 'boolean',
         'approvedByHRManager' => 'boolean',
         'approvedByCEO' => 'boolean',
+        'is_data_entered' => 'boolean',
+        'verify_count' => 'integer',
     ];
 }

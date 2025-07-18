@@ -12,10 +12,13 @@ Route::resource('leave-requests', App\Http\Controllers\LeaveRequestController::c
 
 Route::middleware('auth')->group(function () {
     Route::get('/LRadminpanel', [LRAdminPanelController::class, 'index'])->name('LRadminpanel.index');
-    Route::POST('/set-admin', [LRAdminPanelController::class, 'setAdmin'])->name('set-admin');
+    Route::POST('/lr-set-admin', [LRAdminPanelController::class, 'setAdmin'])->name('lr-set-admin');
+    Route::POST('/lr-set-verifier', [LRAdminPanelController::class, 'setVerifier'])->name('lr-set-verifier');
     Route::POST('/assign-leaves', [LRAdminPanelController::class, 'assignLeaves'])->name('assign-leaves');
-    Route::POST('/assign-users', [LRAdminPanelController::class, 'assignUsers'])->name('assign-users');
-    Route::POST('/assign-verifiers', [LRAdminPanelController::class, 'assignVerifiers'])->name('assign-verifiers');
+    Route::POST('/lr-assign-users', [LRAdminPanelController::class, 'assignUsers'])->name('lr-assign-users');
+    Route::POST('/lr-assign-verifiers', [LRAdminPanelController::class, 'assignVerifiers'])->name('lr-assign-verifiers');
+    Route::POST('/remove-leaves-assignments', [LRAdminPanelController::class, 'removeLeaveAssignments'])->name('remove-leaves-assignments');
+    Route::POST('/remove-verifier-assignments', [LRAdminPanelController::class, 'removeVerifierAssignments'])->name('remove-verifier-assignments');
 });
 
 
