@@ -48,12 +48,12 @@ return new class extends Migration
             // Assignment system fields
             $table->unsignedBigInteger('user_id')->nullable();
             $table->boolean('is_data_entered')->default(false);
-            $table->integer('verify_count')->default(0);
+            // $table->integer('verify_count')->default(0);
             $table->unsignedBigInteger('verifier1')->nullable();
             $table->unsignedBigInteger('verifier2')->nullable();
             $table->unsignedBigInteger('verifier1_id')->nullable();
             $table->unsignedBigInteger('verifier2_id')->nullable();
-            $table->boolean('re_entry')->nullable();
+            // $table->boolean('re_entry')->nullable();
             $table->boolean('is_data_correct')->default(false);
             $table->boolean('is_issue')->default(false);
             $table->boolean('is_leave')->default(false);

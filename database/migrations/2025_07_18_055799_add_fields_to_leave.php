@@ -13,14 +13,9 @@ return new class extends Migration
      public function up(): void
      {
          Schema::table('leave_requests', function (Blueprint $table) {
-            $table->boolean('is_no_file_uploaded')->default(false);
-            $table->string('issue')->nullable();
+            
             $table->integer('verify_count')->nullable()->default(0);
-            $table->boolean('re_entry')->nullable();
-            $table->foreignId('verifier1_id')->nullable()->constrained('users');
-            $table->foreignId('verifier2_id')->nullable()->constrained('users');
-            $table->foreignId('verifier1')->nullable()->constrained('users');
-            $table->foreignId('verifier2')->nullable()->constrained('users');
+            
          });
      }
    
