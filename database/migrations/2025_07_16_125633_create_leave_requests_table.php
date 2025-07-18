@@ -30,10 +30,14 @@ return new class extends Migration
             $table->string('destinationPhone', 100)->nullable();
             $table->string('contactNumberUAE', 100)->nullable();
             $table->string('employeeEmail', 100)->nullable();
+
+            // Approval system fields
             $table->boolean('approvedByEngineer')->nullable()->nullable();
             $table->boolean('approvedByProjectManager')->nullable()->nullable();
             $table->boolean('approvedBySrPM')->nullable()->nullable();
             $table->boolean('approvedByHOD')->nullable()->nullable();
+
+            // Leave eligibility fields
             $table->string('eligibleDays')->nullable();
             $table->dateTime('passportEndDate')->nullable();
             $table->dateTime('visaEndDate')->nullable();
