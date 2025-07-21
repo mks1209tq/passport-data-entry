@@ -16,6 +16,7 @@ return new class extends Migration
             
             $table->integer('verify_count')->nullable()->default(0);
             
+            
          });
      }
    
