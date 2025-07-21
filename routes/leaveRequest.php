@@ -24,9 +24,9 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::resource('verify-passports', VerifyPassportController::class);
+Route::resource('verify-leaves', VerifyLeaveController::class);
 
-Route::resource('issue-passports', IssuePassportController::class);
+Route::resource('issue-leaves', IssueLeaveController::class);
 
 
 Route::get('/lrdashboard', function () {
