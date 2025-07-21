@@ -20,7 +20,7 @@ class LeaveRequestFactory extends Factory
      */
     public function definition(): array
     {
-        static $counter = 6;
+        static $counter = 0;
         
         return [
             'leaveRequestId' => 'LR-' . str_pad($counter++, 0, '0', STR_PAD_LEFT),

@@ -30,10 +30,14 @@ return new class extends Migration
             $table->string('destinationPhone', 100)->nullable();
             $table->string('contactNumberUAE', 100)->nullable();
             $table->string('employeeEmail', 100)->nullable();
+
+            // Approval system fields
             $table->boolean('approvedByEngineer')->nullable()->nullable();
             $table->boolean('approvedByProjectManager')->nullable()->nullable();
             $table->boolean('approvedBySrPM')->nullable()->nullable();
             $table->boolean('approvedByHOD')->nullable()->nullable();
+
+            // Leave eligibility fields
             $table->string('eligibleDays')->nullable();
             $table->dateTime('passportEndDate')->nullable();
             $table->dateTime('visaEndDate')->nullable();
@@ -48,11 +52,18 @@ return new class extends Migration
             // Assignment system fields
             $table->unsignedBigInteger('user_id')->nullable();
             $table->boolean('is_data_entered')->default(false);
-            $table->integer('verify_count')->default(0);
+            // $table->integer('verify_count')->default(0);
             $table->unsignedBigInteger('verifier1')->nullable();
             $table->unsignedBigInteger('verifier2')->nullable();
             $table->unsignedBigInteger('verifier1_id')->nullable();
             $table->unsignedBigInteger('verifier2_id')->nullable();
+            // $table->boolean('re_entry')->nullable();
+            $table->boolean('is_data_correct')->default(false);
+            $table->boolean('is_issue')->default(false);
+            $table->boolean('is_leave')->default(false);
+            $table->boolean('is_visa')->default(false);
+            $table->boolean('is_photo')->default(false);
+            $table->boolean('is_no_file_uploaded')->default(false);
             
             $table->timestamps();
             $table->softDeletes();

@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('leave_requests', function (Blueprint $table) {
-            $table->boolean('is_data_entered')->default(false);
-            $table->boolean('is_data_correct')->default(false);
+            // $table->boolean('is_data_entered')->default(false);
+            // $table->boolean('is_data_correct')->default(false);
         });
     }
 

@@ -1,5 +1,9 @@
 @extends('layouts.app')
 
+@section('header')
+@include('passport.partials.subnav')
+@endsection
+
 @section('content')
 
 <div class="pt-3">

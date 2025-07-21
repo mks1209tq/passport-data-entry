@@ -1,14 +1,16 @@
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Issue in Passports') }}
+        @include('leaveRequest.partials.subnav')
+     
+        <h2 class="font-semibold text-xl py-4 text-gray-800 leading-tight">
+            {{ __('Issue in Leaves LR') }}
         </h2>
     </x-slot>
 
     @section('content')
     
     <div class="pt-3">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
                     {{ __("Welcome! ") }} 
@@ -20,12 +22,12 @@
                         >
                             Register
                         </a><br>
-                        <div>
+                        <!-- <div>
                         Passports Data Entered: {{ App\Models\Passport::where('is_data_entered', true)->count() }}
-                        </div>
-                        <div>
+                        </div> -->
+                        <!-- <div>
                         Passports Data Correct: {{ App\Models\Passport::where('is_data_correct', true)->count() }}
-                        </div>
+                        </div> -->
                     @endif
                 </div>
             </div>
@@ -37,11 +39,11 @@
                 <div class="p-6 text-gray-900 flex flex-row">
                     <div class="px-3">
                     
-                    @foreach ($passports as $passport)
+                    @foreach ($leaveRequests as $leave)
                         <!-- <p>{{ $passport->employee_id }}</p> -->
                         <p>
-                            <a href="{{ route('issue-passports.edit', $passport->id) }}">{{ $passport->id}} &nbsp;
-                            {{ $passport->file_name }}</a>
+                            <a href="{{ route('issue-leaves.edit', $leaveRequests->id) }}">{{ $leaveRequests->id}} &nbsp;
+                            {{ $leaveRequests->leaveRequestId }}</a>
                         </p>
 
                         

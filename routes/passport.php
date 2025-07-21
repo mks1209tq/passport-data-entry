@@ -13,9 +13,8 @@ use App\Http\Controllers\AdminPanelController;
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    // Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+ 
     Route::get('/adminpanel', [AdminPanelController::class, 'index'])->name('adminpanel.index');
     Route::POST('/assign-passports', [AdminPanelController::class, 'assignPassports'])->name('assign-passports');
     Route::POST('/assign-users', [AdminPanelController::class, 'assignUsers'])->name('assign-users');
@@ -32,10 +31,8 @@ Route::resource('passports', PassportController::class);
 
 
 
-Route::get('applicants/send', [ApplicantController::class, 'showSend'])->name('applicants.show-send');
-Route::post('applicants/send', [ApplicantController::class, 'send'])->name('applicants.send');
 
-Route::resource('applicants', ApplicantController::class);
+
 
 Route::resource('verify-passports', VerifyPassportController::class);
 

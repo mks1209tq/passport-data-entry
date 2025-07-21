@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\LeaveStoreRequest;
-use App\Http\Requests\LeaveUpdateRequest;
-use App\Models\Leave;
+use App\Http\Requests\LeaveRequestStoreRequest;
+use App\Http\Requests\LeaveRequestUpdateRequest;
+use App\Models\LeaveRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -15,42 +15,42 @@ class VerifyLeaveController extends Controller
     {
         $user_id = auth()->user()->id;
     
-        $leaves = Leave::where('is_data_entered', 1)
+        $leaves = LeaveRequest::where('is_data_entered', 1)
         ->where('verify_count', '<', 2)
         // User must be assigned as a verifier
         ->where(function($query) use ($user_id) {
-        $query->where('verifier1', $user_id)
-              ->orWhere('verifier2', $user_id);
+            $query->where('verifier1', $user_id)
+                  ->orWhere('verifier2', $user_id);
         })
         // User must not have verified yet
         ->where(function($query) use ($user_id) {
-        $query->where(function($q) use ($user_id) {
-            // If user is verifier1, verifier1_id should be null
-            $q->where('verifier1', $user_id)
-              ->whereNull('verifier1_id');
-        })->orWhere(function($q) use ($user_id) {
-            // If user is verifier2, verifier2_id should be null
-            $q->where('verifier2', $user_id)
-              ->whereNull('verifier2_id');
+            $query->where(function($q) use ($user_id) {
+                // If user is verifier1, verifier1_id should be null
+                $q->where('verifier1', $user_id)
+                  ->whereNull('verifier1_id');
+            })->orWhere(function($q) use ($user_id) {
+                // If user is verifier2, verifier2_id should be null
+                $q->where('verifier2', $user_id)
+                  ->whereNull('verifier2_id');
             });
         })
-        ->get();    
+        ->paginate(50); // Add pagination to prevent memory issues
     
-        return view('verifyleave.index', compact('leaves'));
+        return view('LRverifyleave.index', compact('leaves'));
     }
 
     public function create(Request $request): View
     {
-        return view('verifyleave.create');
+        return view('LRverifyleave.create');
     }
 
     public function store(Request $request): RedirectResponse
     {
-        $leave = Leave::create($request->validated());
+        $leave = LeaveRequest::create($request->validated());
 
         $request->session()->flash('leave.id', $leave->id);
 
-        return redirect()->route('leaves.index');
+        return redirect()->route('leave-requests.index');
     }
 
     public function show(Request $request, $leave): View
@@ -60,16 +60,13 @@ class VerifyLeaveController extends Controller
 
     public function edit(Request $request, $leave): View
     {
-        // dd($leave);
-        $leave = Leave::find($leave);
+        $leave = LeaveRequest::findOrFail($leave);
         return view('verifyleave.edit', compact('leave'));
     }
 
-
     public function update(Request $request, $leave): RedirectResponse
     {
-
-        $leave = Leave::find($leave);
+        $leave = LeaveRequest::findOrFail($leave);
     
         // update db "re_entry","is_data_entered" if the action is reentry OR update db "verify_count" if the action is verify
         switch($request->input('action')) {
@@ -78,38 +75,18 @@ class VerifyLeaveController extends Controller
                 $updated = $leave->update([
                     'is_data_correct' => 0,
                     'is_data_entered' => 0,
-                    'leave_expiry_date' => null,
-                    'visa_expiry_date' => null,
-                    'is_leave' => 0,
-                    'is_visa' => 0,
-                    'is_photo' => 0,
-                    'is_no_file_uploaded' => 0,
                     'verify_count' => 0,
                     're_entry' => $re_entry,
-                    
                 ]);
     
                 if ($updated) {
-                    return redirect()->route('verify-leaves.index')
+                    return redirect()->route('LRverify-leaves.index')
                                    ->with('success', 'Leave has been marked for re-entry');
                 }
                 return back()->with('error', 'Failed to mark leave for re-entry');
     
             case 'mark-as-verified':
-
-                // dd($leave->verifier1, $leave->verifier2);
-                $verify_data_correct_count = $leave->verify_count;
-
-
-
-                // if($verify_data_correct_count == 0){
-                //     $leave->update(['verifier1_id' => auth()->user()->id]);
-                // }
-
-                // if($verify_data_correct_count == 1){
-                //     $leave->update(['verifier2_id' => auth()->user()->id]);
-                // }             
-                
+                // Update verifier ID based on which verifier the user is
                 if($leave->verifier1 == auth()->user()->id){
                     $leave->update(['verifier1_id' => auth()->user()->id]);
                 }
@@ -118,28 +95,24 @@ class VerifyLeaveController extends Controller
                     $leave->update(['verifier2_id' => auth()->user()->id]);
                 }
                 
-                
                 $verify_data_correct_count = $request->data_correct_value + $leave->verify_count;
                 
                 $updated = $leave->update(['verify_count' => $verify_data_correct_count]);
-
-                
                 
                 if ($updated) {
                     $request->session()->flash('leave.id', $leave->id);
-                    return redirect()->route('verify-leaves.index')
+                    return redirect()->route('LRverify-leaves.index')
                                    ->with('success', 'Leave updated successfully');
                 }
                 return back()->with('error', 'Failed to update leave');
         }
     }
 
-    
-
-    public function destroy(Request $request, $leave): Response
+    public function destroy(Request $request, $leave): RedirectResponse
     {
+        $leave = LeaveRequest::findOrFail($leave);
         $leave->delete();
 
-        return redirect()->route('verifyleave.index');
+        return redirect()->route('LRverify-leaves.index');
     }
 }

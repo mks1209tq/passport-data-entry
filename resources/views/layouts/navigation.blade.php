@@ -15,11 +15,11 @@
                 <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link> 
-                    <x-nav-link :href="route('ppdashboard')" :active="request()->routeIs('ppdashboard')">
+                    <x-nav-link :href="route('ppdashboard')" :active="request()->routeIs('ppdashboard') || request()->routeIs('issue-passports.*') || request()->routeIs('verify-passports.*') || request()->routeIs('adminpanel.*')">
                         {{ __('Passport') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('lrdashboard')" :active="request()->routeIs('lrdashboard')">
-                        {{ __('Leave') }}
+                    <x-nav-link :href="route('lrdashboard')" :active="request()->routeIs('lrdashboard') || request()->routeIs('issue-leaves.*') || request()->routeIs('verify-leaves.*') || request()->routeIs('LRadminpanel.*')">
+                        {{ __('LeaveRequest') }}
                     </x-nav-link>
                 </div>
             </div>
