@@ -9,7 +9,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class VerifyLeaveController extends Controller
+class LRVerifyLeaveController extends Controller
 {
     public function index(Request $request): View
     {

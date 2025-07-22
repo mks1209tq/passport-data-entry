@@ -5,6 +5,7 @@ use App\Http\Controllers\VerifyLeaveController;
 use App\Http\Controllers\LeaveRequestController;
 use App\Http\Controllers\IssueLeaveController;
 use App\Http\Controllers\LRAdminPanelController;
+use App\Http\Controllers\LRVerifyLeaveController;
 
 
 Route::resource('leave-requests', App\Http\Controllers\LeaveRequestController::class);

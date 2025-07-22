@@ -46,6 +46,8 @@ class LeaveRequestController extends Controller
     {
         $leaveRequest->update($request->validated());
 
+        $leaveRequest->update(['is_data_entered' => true]);
+
         $request->session()->flash('leaveRequest.id', $leaveRequest->id);
 
         return redirect()->route('lrdashboard');
