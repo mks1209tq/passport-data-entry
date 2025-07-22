@@ -48,7 +48,7 @@ class LeaveRequestController extends Controller
 
         $request->session()->flash('leaveRequest.id', $leaveRequest->id);
 
-        return redirect()->route('leaveRequests.index');
+        return redirect()->route('lrdashboard');
     }
 
     public function destroy(Request $request, LeaveRequest $leaveRequest): RedirectResponse

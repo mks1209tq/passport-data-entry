@@ -6,40 +6,112 @@ use Illuminate\Support\Facades\Storage;
 @extends('layouts.app')
 
 @section('content')
-<div class="pt-3">
-    <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+<div class="pt-2">
+    <div class="max-w-7xl mx-auto sm:px-2 lg:px-0">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
             <div class="p-6 text-gray-900 flex flex-row">
-                <div class="w-4/12 px-3">
-                    <form action="{{ route('leave-requests.update', $leaveRequest->id) }}" method="POST" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+                <div class="w-4/12 px-2">
+                    <form action="{{ route('leave-requests.update', $leaveRequest->id) }}" method="POST" class="bg-white shadow-md rounded px-8 pt-2 pb-1 mb-1">
                         @csrf
                         @method('PUT')
                         <input type="hidden" name="id" value="{{ $leaveRequest->id }}">
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="employee_id">
-                                ID
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="id"
-                                type="text"
-                                name="id"
-                                value="{{ old('id', $leaveRequest->id) }}"
-                                readonly>
-                        </div>
-                        <div class="mb-4">
-                            <label class="block text-gray-700 text-sm font-bold mb-2" for="passport_expiry_date">
-                                Passport Expiry Date
-                            </label>
-                            <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                                id="passport_expiry_date"
-                                type="date"
-                                name="passport_expiry_date"
-                                value="{{ old('passport_expiry_date', $leaveRequest->passport_expiry_date) }}"
-                                autofocus>
-                        </div>
-                   
+
+                       <!-- LEAVE APPLICATION FORM -->
+<div class="max-w-3xl mx-auto p-1 bg-white shadow-md rounded">
+    <h2 class="text-2xl font-bold text-center mb-2">Leave Application Form</h2>
+
+    <!-- Submission Date -->
+    <div class="mb-1">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Submission Date</label>
+        <input type="date" name="submissionDate"
+            class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+        <!-- ID No -->
+    <div class="mb-1">
+        <label class="block text-gray-700 text-sm font-bold mb-2">ID No</label>
+        <input required type="text" name="employeeId"
+            class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+    
+
+    <!-- Leave Type -->
+    <div class="mb-1">
+    <label class="block text-gray-700 text-sm font-bold mb-2">Leave Type</label>
+    <div class="flex gap-6">
+        <label class="inline-flex items-center">
+            <input type="radio" name="leaveType" value="Annual"
+                class="form-radio text-blue-500">
+            <span class="ml-2">Annual</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="radio" name="leaveType" value="Medical"
+                class="form-radio text-blue-500">
+            <span class="ml-2">Medical</span>
+        </label>
+        <label class="inline-flex items-center">
+            <input type="radio" name="leaveType" value="Emergency"
+                class="form-radio text-blue-500">
+            <span class="ml-2">Emergency</span>
+        </label>
+    </div>
+</div>
+
+    <!-- Leave Period -->
+    <div class="grid grid-cols-3 gap-4 mb-1">
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Leave Start Date</label>
+            <input type="date" name="leaveStartDate"
+                class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Leave End Date</label>
+            <input type="date" name="leaveEndDate"
+                class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <!-- <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Duration (Days)</label>
+            <input type="number" name="duration"
+                class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div> -->
+    </div>
+
+    <!-- Contact Address -->
+    <div class="mb-1">
+        <label class="block text-gray-700 text-sm font-bold mb-2">Contact Address (Home Country)</label>
+        <textarea name="destinationAddress" rows="2"
+            class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"></textarea>
+    </div>
+
+    <!-- Contact Numbers -->
+    <div class="grid grid-cols-2 gap-4 mb-1">
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Contact No.</label>
+            <input type="number" name="destinationPhone"
+                class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+        <div>
+            <label class="block text-gray-700 text-sm font-bold mb-2">Contact No. (UAE)</label>
+            <input type="number" name="contactNumberUAE"
+                class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+        </div>
+    </div>
+
+    <!-- Email -->
+    <div class="mb-1">
+        <label class="block text-gray-700 text-sm font-bold mb-2">E-Mail</label>
+        <input type="email" name="employeeEmail"
+            class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+    </div>
+
+    
+</div>
+
+
+
                         <div class="flex items-center justify-between">
-                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2 rounded focus:outline-none focus:shadow-outline"
+                            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1  px-3 mr-4 my-5 rounded focus:outline-none focus:shadow-outline"
                                 type="submit">
                                 Update Leave Request
                             </button>
