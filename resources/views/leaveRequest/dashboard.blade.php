@@ -14,16 +14,6 @@
                 <div class="p-6 text-gray-900">
                     {{ __("Welcome! ") }}
 
-                    <!-- to be removed--mk -->
-                    <p>
-                        Total records assigned: {{ App\Models\LeaveRequest::where('user_id', auth()->user()->id)->count() }}
-                    </p>
-                    <div>
-                        Leaves Data Entered: {{ App\Models\LeaveRequest::where('is_data_entered', true)->where('user_id', auth()->user()->id)->count() }}
-                    </div>
-                    <div>
-                        Leaves Data Verified: {{ App\Models\LeaveRequest::where('verify_count', '>', 1)->where('user_id', auth()->user()->id)->count() }}
-                    </div>
                     @if (Auth::user()->is_admin)
                     <div>
                     <a
@@ -31,6 +21,15 @@
                         class="rounded-md text-black ring-1 ring-transparent transition hover:text-black/70 focus:outline-none focus-visible:ring-[#FF2D20] dark:text-white dark:hover:text-white/80 dark:focus-visible:ring-white">
                         Register a new user
                     </a>
+                    <div>
+                        Total records assigned: {{ App\Models\LeaveRequest::where('user_id', auth()->user()->id)->count() }}
+                    </div>
+                    <div>
+                        Leaves Data Entered: {{ App\Models\LeaveRequest::where('is_data_entered', true)->where('user_id', auth()->user()->id)->count() }}
+                    </div>
+                    <div>
+                        Leaves Data Verified: {{ App\Models\LeaveRequest::where('verify_count', '>', 0)->where('user_id', auth()->user()->id)->count() }}
+                    </div>
                     </div>
                     @endif
                 </div>
@@ -49,29 +48,23 @@
                             $leaves = App\Models\LeaveRequest::all()->where('is_data_entered', false)->where('user_id', auth()->user()->id);
                         }
                         ?>
-                        <table class="">
-                            <th class="">&nbsp; &nbsp; </th>
-                            <th class="text-left">Leave ID</th>
                             @foreach ($leaves as $leave)
                             <!-- <p>{{ $leave->employee_id }}</p> -->
 
-                            <tr>
-                                <td>
-                                    @if ($leave->verify_count > 1)
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-4">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
-                                    @endif
-                                </td>
-                                <td>
-                                    <a href="{{ route('leave-requests.edit', $leave->id) }}">{{ $leave->id}}&nbsp;
-                                        {{ $leave->employee_id }}
+                            <div class="border-b border-gray-200 pb-4">
+                                    <a href="{{ route('leave-requests.edit', $leave->id) }}" class="block hover:bg-gray-50 p-3 rounded">
+                                        <div class="flex justify-between items-center">
+                                            <div>
+                                                <span class="font-medium">ID: {{ $leave->id }}</span>
+                                                @if($leave->verify_count > 0)
+                                                    <span class="ml-4 text-gray-600">Request ID: {{ $leave->leaveRequestId }}</span>
+                                                @endif
+                                            </div>
+                                        </div>
                                     </a>
-                                </td>
-                            </tr>
+                                </div>
 
                             @endforeach
-                        </table>
                     </div>
                     <!-- make the below border -->
                     <div class="px-3">

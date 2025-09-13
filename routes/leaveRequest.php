@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
 
 
 
-Route::resource('verify-leaves', LRVerifyLeaveController::class);
+Route::resource('verify-leaves', LRVerifyLeaveController::class)->parameter('verify-leaves', 'leave');
 
 Route::resource('issue-leaves', IssueLeaveController::class);
 

@@ -59,7 +59,7 @@ use Illuminate\Support\Facades\Storage;
 </div>
 
     <!-- Leave Period -->
-    <div class="grid grid-cols-3 gap-4 mb-1">
+    <div class="grid grid-cols-2 gap-4 mb-1">
         <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Leave Start Date</label>
             <input type="date" name="leaveStartDate"

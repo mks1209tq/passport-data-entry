@@ -5,7 +5,7 @@
             {{ __('Verify Leaves') }}
         </h2>
     </x-slot>
-
+    @section('content')
     <div class="pt-3">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             @if (session('success'))
@@ -82,10 +82,7 @@
                             @endforeach
                         </div>
                         
-                        <!-- Pagination -->
-                        <div class="mt-6">
-                            {{ $leaves->links() }}
-                        </div>
+
                     @else
                         <div class="text-center py-8 text-gray-500">
                             No leaves available for verification.
@@ -95,4 +92,5 @@
             </div>
         </div>
     </div>
+    @endsection
 </x-app-layout>
