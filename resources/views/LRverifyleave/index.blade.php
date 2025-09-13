@@ -64,9 +64,9 @@
                                         <div class="flex justify-between items-center">
                                             <div>
                                                 <span class="font-medium">ID: {{ $leave->id }}</span>
-                                                @if($leave->leaveRequestId)
+                                                <!-- @if($leave->leaveRequestId)
                                                     <span class="ml-4 text-gray-600">Request ID: {{ $leave->leaveRequestId }}</span>
-                                                @endif
+                                                @endif -->
                                             </div>
                                             <!-- <div class="text-sm text-gray-500">
                                                 @if($leave->verifier1)
