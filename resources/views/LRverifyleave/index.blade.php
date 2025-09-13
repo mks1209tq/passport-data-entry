@@ -68,14 +68,14 @@
                                                     <span class="ml-4 text-gray-600">Request ID: {{ $leave->leaveRequestId }}</span>
                                                 @endif
                                             </div>
-                                            <div class="text-sm text-gray-500">
+                                            <!-- <div class="text-sm text-gray-500">
                                                 @if($leave->verifier1)
                                                     <span>Verifier 1: {{ $leave->verifier1 }}</span>
                                                 @endif
                                                 @if($leave->verifier2)
                                                     <span class="ml-2">Verifier 2: {{ $leave->verifier2 }}</span>
                                                 @endif
-                                            </div>
+                                            </div> -->
                                         </div>
                                     </a>
                                 </div>
