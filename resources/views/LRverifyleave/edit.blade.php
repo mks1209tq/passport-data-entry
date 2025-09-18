@@ -27,7 +27,7 @@ use Illuminate\Support\Facades\Storage;
         <input type="text" name="submissionDate"
             class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="submissionDate"
-            value="{{ old('submissionDate', $leaveRequest->submissionDate->format('d/m/Y')) }}" disabled>
+            value="{{ old('submissionDate', $leaveRequest->submissionDate) }}" disabled>
     </div>
 
         <!-- ID No -->
@@ -82,14 +82,14 @@ use Illuminate\Support\Facades\Storage;
             <input type="datetime" name="leaveStartDate"
                 class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="leaveStartDate"
-                value="{{ old('leaveStartDate', $leaveRequest->leaveStartDate->format('d/m/Y')) }}" disabled>
+                value="{{ old('leaveStartDate', $leaveRequest->leaveStartDate) }}" disabled>
         </div>
         <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Leave End Date</label>
             <input type="datetime" name="leaveEndDate"
                 class="shadow appearance-none border rounded w-full py-1 px-2 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id="leaveEndDate"
-                value="{{ old('leaveEndDate', $leaveRequest->leaveEndDate->format('d/m/Y')) }}" disabled>
+                value="{{ old('leaveEndDate', $leaveRequest->leaveEndDate) }}" disabled>
         </div>
         <!-- <div>
             <label class="block text-gray-700 text-sm font-bold mb-2">Duration (Days)</label>
