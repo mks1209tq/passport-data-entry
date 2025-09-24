@@ -77,12 +77,6 @@ class LRVerifyLeaveController extends Controller
                 $updated = $leaveRequest->update([
                     'is_data_correct' => 0,
                     'is_data_entered' => 0,
-                    'passport_expiry_date' => null,
-                    'visa_expiry_date' => null,
-                    'is_passport' => 0,
-                    'is_visa' => 0,
-                    'is_photo' => 0,
-                    'is_no_file_uploaded' => 0,
                     'verify_count' => 0,
                     're_entry' => $re_entry,
                     'verifier1_id' => null,
