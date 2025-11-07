@@ -1,16 +1,16 @@
 created:
-    - app/Http/Controllers/LeaveRequestController.php
-    - database/factories/LeaveRequestFactory.php
-    - database/migrations/2025_07_16_125633_create_leave_requests_table.php
-    - app/Models/LeaveRequest.php
-    - database/seeders/LeaveRequestSeeder.php
-    - tests/Feature/Http/Controllers/LeaveRequestControllerTest.php
-    - app/Http/Requests/LeaveRequestStoreRequest.php
-    - app/Http/Requests/LeaveRequestUpdateRequest.php
-    - resources/views/leaveRequest/index.blade.php
-    - resources/views/leaveRequest/create.blade.php
-    - resources/views/leaveRequest/show.blade.php
-    - resources/views/leaveRequest/edit.blade.php
+    - app/Http/Controllers/eventController.php
+    - database/factories/EventFactory.php
+    - database/migrations/2025_11_07_153350_create_events_table.php
+    - app/Models/event.php
+    - database/seeders/EventsSeeder.php
+    - tests/Feature/Http/Controllers/eventControllerTest.php
+    - app/Http/Requests/eventStoreRequest.php
+    - app/Http/Requests/eventUpdateRequest.php
+    - resources/views/event/index.blade.php
+    - resources/views/event/create.blade.php
+    - resources/views/event/show.blade.php
+    - resources/views/event/edit.blade.php
 updated:
     - routes/web.php
 models:
@@ -19,3 +19,4 @@ models:
     Passport: { employee_id: string, file_name: string, is_data_correct: "boolean nullable default:'0'", is_data_entered: "boolean nullable default:'0'", passport_expiry_date: 'date nullable', visa_expiry_date: 'date nullable', user_id: 'integer nullable', is_passport: "boolean default:'0'", is_visa: "boolean default:'0'", is_photo: "boolean default:'0'", is_no_file_uploaded: "boolean default:'0'", issue: 'string nullable', verify_count: 'integer nullable', re_entry: 'boolean nullable', verifier_id: 'integer nullable', verifier1_id: 'integer nullable', verifier2_id: 'integer nullable', verifier1: 'integer nullable', verifier2: 'integer nullable', is_issue: "boolean default:'0'" }
     User: { name: string, is_admin: "string default:'0'", email: string, email_verified_at: 'datetime nullable', password: string, remember_token: 'string nullable', is_verifier: "boolean default:'0'" }
     LeaveRequest: { formId: 'string:100 nullable', submissionDate: 'datetime nullable', employeeId: 'string:100 nullable', leaveType: 'nullable enum:Annual,Medical,Other', isEmergency: 'boolean nullable', lastRejoinDate: 'datetime nullable', residence: 'string:100 nullable', leaveStartDate: 'datetime nullable', leaveEndDate: 'datetime nullable', duration: 'int nullable', travelDestination: 'string:100 nullable', reason: 'text:500 nullable', destinationAddress: 'string:100 nullable', destinationPhone: 'string:100 nullable', contactNumberUAE: 'string:100 nullable', employeeEmail: 'string:100 nullable index', approvedByEngineer: 'nullable boolean nullable', approvedByProjectManager: 'nullable boolean nullable', approvedBySrPM: 'nullable boolean nullable', approvedByHOD: 'nullable boolean nullable', eligibleDays: 'int nullable', passportEndDate: 'datetime nullable', visaEndDate: 'datetime nullable', workPermitEndDate: 'datetime nullable', ticketEligibility: 'boolean nullable', leaveSalaryEligibility: 'boolean nullable', eligibiltyCheckedBy: 'string:100 nullable', approvedByHRManager: 'boolean nullable', approvedByCEO: 'boolean nullable', status: 'string:100 nullable', softdeletes: softDeletes }
+    event: { name: 'string:100 index', designation: 'string:100 nullable', comapanyName: 'string:100 nullable', category: 'string:100 nullable', proposalBy: 'string:100 nullable', company: 'string:100 nullable', RSVP: 'string:100 nullable', tableAllocation: 'string:100 nullable', softdeletes: softDeletes }

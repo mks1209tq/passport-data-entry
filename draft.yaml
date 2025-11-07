@@ -1,42 +1,20 @@
 models:
-  LeaveRequest:
-    formId: string:100 nullable
-    submissionDate: datetime nullable
-    employeeId: string:100 nullable
-    leaveType: nullable enum:Annual,Medical,Other
-    isEmergency: boolean nullable
-    lastRejoinDate: datetime nullable
-    residence: string:100 nullable
-    leaveStartDate: datetime nullable
-    leaveEndDate: datetime nullable
-    duration: int nullable
-    travelDestination: string:100 nullable
-    reason: text:500 nullable
-    destinationAddress: string:100 nullable
-    destinationPhone: string:100 nullable
-    contactNumberUAE: string:100 nullable
-    employeeEmail: string:100 nullable index
-    approvedByEngineer: nullable boolean nullable
-    approvedByProjectManager: nullable boolean nullable
-    approvedBySrPM: nullable boolean nullable
-    approvedByHOD: nullable boolean nullable
-    eligibleDays: int nullable
-    passportEndDate: datetime nullable
-    visaEndDate: datetime nullable
-    workPermitEndDate: datetime nullable
-    ticketEligibility: boolean nullable
-    leaveSalaryEligibility: boolean nullable
-    eligibiltyCheckedBy: string:100 nullable
-    approvedByHRManager: boolean nullable
-    approvedByCEO: boolean nullable
-    status: string:100 nullable
+  event:
+    name: string:100 index
+    designation: string:100 nullable
+    comapanyName: string:100 nullable
+    category: string:100 nullable
+    proposalBy: string:100 nullable
+    company: string:100 nullable
+    RSVP: string:100 nullable
+    tableAllocation: string:100 nullable
     softDeletes
   
 
 controllers:
-  LeaveRequest:
+  event:
     resource
 
-seeders: LeaveRequest
+seeders: events
 
     

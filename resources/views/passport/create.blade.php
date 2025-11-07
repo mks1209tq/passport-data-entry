@@ -1,1 +1,0 @@
-@include('passport.partials.subnav')

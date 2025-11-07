@@ -33,3 +33,6 @@ require __DIR__.'/leaveRequest.php';
 require __DIR__.'/passport.php';
 
 
+
+
+Route::resource('events', App\Http\Controllers\eventController::class);
