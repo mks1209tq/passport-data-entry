@@ -15,12 +15,7 @@
                 <x-nav-link :href="route('home')" :active="request()->routeIs('home')">
                         {{ __('Home') }}
                     </x-nav-link> 
-                    <x-nav-link :href="route('ppdashboard')" :active="request()->routeIs('ppdashboard') || request()->routeIs('issue-passports.*') || request()->routeIs('verify-passports.*') || request()->routeIs('adminpanel.*')">
-                        {{ __('Passport') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('lrdashboard')" :active="request()->routeIs('lrdashboard') || request()->routeIs('issue-leaves.*') || request()->routeIs('verify-leaves.*') || request()->routeIs('LRadminpanel.*')">
-                        {{ __('LeaveRequest') }}
-                    </x-nav-link>
+                   
                 </div>
             </div>
 
@@ -81,24 +76,7 @@
             </x-responsive-nav-link>
         </div>
         @if (Auth::user()->is_admin || Auth::user()->is_verifier)
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('issue-passports.index')" :active="request()->routeIs('issue-passports.index')">
-                {{ __('Issues') }}
-            </x-responsive-nav-link>
-        </div>
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('verify-passports.index')" :active="request()->routeIs('verify-passports.index')">
-                {{ __('Verify') }}
-            </x-responsive-nav-link>
-        </div>
-        @endif
-
-        @if (Auth::user()->is_admin)
-        <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('adminpanel.index')" :active="request()->routeIs('adminpanel.index')">
-                {{ __('Admin Panel') }}
-            </x-responsive-nav-link>
-        </div>
+       
         @endif
 
 
