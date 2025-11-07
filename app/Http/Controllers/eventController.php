@@ -5,14 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\eventStoreRequest;
 use App\Http\Requests\eventUpdateRequest;
 use App\Models\Event;
-use App\Models\event;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class eventController extends Controller
 {
-    public function index(Request $request): Response
+    public function index(Request $request): View
     {
         $events = Event::all();
 
@@ -21,12 +20,12 @@ class eventController extends Controller
         ]);
     }
 
-    public function create(Request $request): Response
+    public function create(Request $request): View
     {
         return view('event.create');
     }
 
-    public function store(eventStoreRequest $request): Response
+    public function store(eventStoreRequest $request): RedirectResponse
     {
         $event = Event::create($request->validated());
 
@@ -35,21 +34,21 @@ class eventController extends Controller
         return redirect()->route('events.index');
     }
 
-    public function show(Request $request, event $event): Response
+    public function show(Request $request, Event $event): View
     {
         return view('event.show', [
             'event' => $event,
         ]);
     }
 
-    public function edit(Request $request, event $event): Response
+    public function edit(Request $request, Event $event): View
     {
         return view('event.edit', [
             'event' => $event,
         ]);
     }
 
-    public function update(eventUpdateRequest $request, event $event): Response
+    public function update(eventUpdateRequest $request, Event $event): RedirectResponse
     {
         $event->update($request->validated());
 
@@ -58,7 +57,7 @@ class eventController extends Controller
         return redirect()->route('events.index');
     }
 
-    public function destroy(Request $request, event $event): Response
+    public function destroy(Request $request, Event $event): RedirectResponse
     {
         $event->delete();
 

@@ -21,14 +21,21 @@
                     <div class="px-3">
                         <a href="{{ route('ppdashboard') }}">
                             <button class="{{ $currentRoute == 'ppdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
-                                Passport
+                                Attendance 1235
                             </button>
                         </a>
                     </div>
                     <div class="px-3">
                         <a href="{{ route('lrdashboard') }}">
                             <button class="{{ $currentRoute == 'lrdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
-                                Leave
+                                Status 123
+                            </button>
+                        </a>
+                    </div>
+                    <div class="px-3">
+                        <a href="{{ route('lrdashboard') }}">
+                            <button class="{{ $currentRoute == 'lrdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
+                                Report 123
                             </button>
                         </a>
                     </div>
