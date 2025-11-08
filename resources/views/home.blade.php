@@ -18,7 +18,7 @@
                     @endphp   
                 </div>
                 <div class="p-6 text-gray-900 flex flex-row">
-                    <div class="px-3">
+                    <div class="px-3 bg-red-500">
                         <a href="{{ route('ppdashboard') }}">
                             <button class="{{ $currentRoute == 'ppdashboard' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
                                 Passport
