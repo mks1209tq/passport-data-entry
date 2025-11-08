@@ -32,12 +32,12 @@
                             </button>
                         </a>
                     </div>
-
-
-                    <!-- make the below border -->
                     <div class="px-3">
-
-
+                        <a href="{{ route('events.index') }}">
+                            <button class="{{ $currentRoute == 'events.index' || $currentRoute == 'events.create' || $currentRoute == 'events.show' || $currentRoute == 'events.edit' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white' }} px-4 py-2 rounded-md">
+                                Events
+                            </button>
+                        </a>
                     </div>
                 </div>
             </div>

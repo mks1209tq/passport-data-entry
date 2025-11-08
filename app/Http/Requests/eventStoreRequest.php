@@ -20,7 +20,14 @@ class eventStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'event' => ['required'],
+            'name' => ['required', 'string', 'max:100'],
+            'designation' => ['nullable', 'string', 'max:100'],
+            'comapanyName' => ['nullable', 'string', 'max:100'],
+            'category' => ['nullable', 'string', 'max:100'],
+            'proposalBy' => ['nullable', 'string', 'max:100'],
+            'company' => ['nullable', 'string', 'max:100'],
+            'RSVP' => ['nullable', 'string', 'max:100'],
+            'tableAllocation' => ['nullable', 'string', 'max:100'],
         ];
     }
 }
