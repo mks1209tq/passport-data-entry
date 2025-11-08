@@ -18,10 +18,44 @@ class GuestController extends Controller
      */
     public function index(Request $request): View
     {
-        $guests = Guest::all();
+        $query = trim($request->input('q', ''));
+        
+        // Eager load all guests data into memory for faster search
+        $allGuests = Guest::select([
+            'id',
+            'name',
+            'designation',
+            'company',
+            'category',
+            'proposalBy',
+            'guestOf',
+            'RSVP',
+            'tableAllocation',
+            'attendance',
+        ])->get();
+        
+        $guests = $allGuests;
+
+        if (!empty($query)) {
+            $searchTerm = strtolower($query);
+            
+            // Filter guests in memory using collection methods for faster search
+            $guests = $allGuests->filter(function ($guest) use ($searchTerm) {
+                return str_contains(strtolower($guest->name ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->designation ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->company ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->category ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->proposalBy ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->guestOf ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->RSVP ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->tableAllocation ?? ''), $searchTerm) ||
+                       str_contains(strtolower($guest->attendance ?? ''), $searchTerm);
+            })->values();
+        }
 
         return view('guest.index', [
             'guests' => $guests,
+            'searchQuery' => $query,
         ]);
     }
 
@@ -269,5 +303,79 @@ class GuestController extends Controller
         };
 
         return response()->stream($callback, 200, $headers);
+    }
+
+    /**
+     * Show attendance report.
+     */
+    public function report(Request $request): View
+    {
+        $totalGuests = Guest::count();
+        $presentGuests = Guest::where('attendance', 'Present')->count();
+        $absentGuests = Guest::where('attendance', 'Absent')->count();
+        $notMarkedGuests = Guest::where(function($query) {
+                $query->whereNull('attendance')
+                      ->orWhere('attendance', '')
+                      ->orWhere(function($q) {
+                          $q->where('attendance', '!=', 'Present')
+                            ->where('attendance', '!=', 'Absent');
+                      });
+            })->count();
+
+        $presentList = Guest::where('attendance', 'Present')
+            ->select([
+                'id',
+                'name',
+                'designation',
+                'company',
+                'category',
+                'tableAllocation',
+                'attendance',
+            ])
+            ->orderBy('name')
+            ->get();
+
+        $absentList = Guest::where('attendance', 'Absent')
+            ->select([
+                'id',
+                'name',
+                'designation',
+                'company',
+                'category',
+                'tableAllocation',
+                'attendance',
+            ])
+            ->orderBy('name')
+            ->get();
+
+        $notMarkedList = Guest::where(function($query) {
+                $query->whereNull('attendance')
+                      ->orWhere('attendance', '')
+                      ->orWhere(function($q) {
+                          $q->where('attendance', '!=', 'Present')
+                            ->where('attendance', '!=', 'Absent');
+                      });
+            })
+            ->select([
+                'id',
+                'name',
+                'designation',
+                'company',
+                'category',
+                'tableAllocation',
+                'attendance',
+            ])
+            ->orderBy('name')
+            ->get();
+
+        return view('guest.report', [
+            'totalGuests' => $totalGuests,
+            'presentGuests' => $presentGuests,
+            'absentGuests' => $absentGuests,
+            'notMarkedGuests' => $notMarkedGuests,
+            'presentList' => $presentList,
+            'absentList' => $absentList,
+            'notMarkedList' => $notMarkedList,
+        ]);
     }
 }

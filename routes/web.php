@@ -17,6 +17,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/guests/autocomplete', [App\Http\Controllers\GuestController::class, 'autocomplete'])->name('guests.autocomplete');
     Route::post('/guests/{guest}/mark-present', [App\Http\Controllers\GuestController::class, 'markPresent'])->name('guests.mark-present');
     Route::get('/guests/export', [App\Http\Controllers\GuestController::class, 'export'])->name('guests.export');
+    Route::get('/guests/report', [App\Http\Controllers\GuestController::class, 'report'])->name('guests.report');
 });
 
 Route::resource('guests', App\Http\Controllers\GuestController::class);
