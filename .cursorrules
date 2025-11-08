@@ -1,0 +1,20 @@
+# Cursor Rules for Passport Data Entry Project
+
+## Button Visibility Guidelines
+- Always ensure buttons have strong, visible styling with inline styles as fallback
+- Use dark backgrounds (bg-blue-600 or darker) with white text for primary buttons
+- Add border-2 with darker border color for better visibility
+- Include min-width to prevent buttons from being too small
+- Use whitespace-nowrap to prevent text wrapping
+- Add shadow-lg for depth and visibility
+- For search buttons specifically, always include:
+  - Inline style with background-color and color
+  - Strong border (border-2)
+  - Icon or emoji for visual clarity (🔍 for search)
+  - min-width to ensure button is always visible
+
+## Search Functionality
+- Search buttons must be clearly visible on all pages
+- Use consistent styling across dashboard and other pages
+- Always include a "Clear" button when search query is active
+
