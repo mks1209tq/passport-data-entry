@@ -9,6 +9,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class GuestController extends Controller
 {
@@ -81,6 +82,11 @@ class GuestController extends Controller
      */
     public function destroy(Request $request, Guest $guest): RedirectResponse
     {
+        // Only allow admins to delete guests
+        if (!auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can delete guests.');
+        }
+
         $guest->delete();
 
         return redirect()->route('guests.index')->with('success', 'Guest deleted successfully');
@@ -186,5 +192,82 @@ class GuestController extends Controller
             'message' => 'Guest marked as present successfully',
             'attendance' => $guest->attendance,
         ]);
+    }
+
+    /**
+     * Export guests to Excel (CSV format).
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filename = 'guests_export_' . date('Y-m-d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            // Add UTF-8 BOM for Excel compatibility
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Add headers
+            fputcsv($file, [
+                'ID',
+                'Name',
+                'Designation',
+                'Company',
+                'Category',
+                'Proposal By',
+                'Guest Of',
+                'RSVP',
+                'Table Allocation',
+                'Attendance',
+                'Created At',
+                'Updated At',
+            ]);
+
+            // Get all guests
+            $guests = Guest::select([
+                'id',
+                'name',
+                'designation',
+                'company',
+                'category',
+                'proposalBy',
+                'guestOf',
+                'RSVP',
+                'tableAllocation',
+                'attendance',
+                'created_at',
+                'updated_at',
+            ])->get();
+
+            // Add guest data
+            foreach ($guests as $guest) {
+                fputcsv($file, [
+                    $guest->id,
+                    $guest->name,
+                    $guest->designation ?? '',
+                    $guest->company ?? '',
+                    $guest->category ?? '',
+                    $guest->proposalBy ?? '',
+                    $guest->guestOf ?? '',
+                    $guest->RSVP ?? '',
+                    $guest->tableAllocation ?? '',
+                    $guest->attendance ?? '',
+                    $guest->created_at ? $guest->created_at->format('Y-m-d H:i:s') : '',
+                    $guest->updated_at ? $guest->updated_at->format('Y-m-d H:i:s') : '',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

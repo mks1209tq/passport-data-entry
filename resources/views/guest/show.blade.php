@@ -29,13 +29,15 @@
                             <a href="{{ route('guests.edit', $guest->id) }}" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded">
                                 Edit
                             </a>
-                            <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this guest?');">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
-                                    Delete
-                                </button>
-                            </form>
+                            @if(auth()->user()->isAdmin ?? false)
+                                <form action="{{ route('guests.destroy', $guest->id) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this guest?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
+                                        Delete
+                                    </button>
+                                </form>
+                            @endif
                         </div>
                     </div>
 

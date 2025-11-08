@@ -59,9 +59,16 @@
                             <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">
                                 Search Results ({{ $guests->count() }} found)
                             </h3>
-                            <a href="{{ route('guests.index') }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
-                                View All Guests →
-                            </a>
+                            <div class="flex items-center gap-3">
+                                <a href="{{ route('guests.export') }}" 
+                                   style="background-color: #059669; color: #ffffff; min-width: 140px;"
+                                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150 ease-in-out border-2 border-green-700 whitespace-nowrap">
+                                    📊 Export Excel
+                                </a>
+                                <a href="{{ route('guests.index') }}" class="text-blue-600 hover:text-blue-800 dark:text-blue-400">
+                                    View All Guests →
+                                </a>
+                            </div>
                         </div>
                         
                         <div class="overflow-x-auto">
@@ -72,8 +79,8 @@
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Name</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Table Allocation</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Actions</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Designation</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Company</th>
+                                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Designation</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">Category</th>
                                         <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">RSVP</th>
                                     </tr>
@@ -104,8 +111,8 @@
                                                     </button>
                                                 @endif
                                             </td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->designation ?? 'N/A' }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->company ?? 'N/A' }}</td>
+                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->designation ?? 'N/A' }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->category ?? 'N/A' }}</td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">{{ $guest->RSVP ?? 'N/A' }}</td>
                                         </tr>
