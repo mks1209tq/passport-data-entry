@@ -13,9 +13,6 @@
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         @if(auth()->user()->isAdmin)
-                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                                {{ __('Dashboard') }}
-                            </x-nav-link>
                             <x-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
                                 {{ __('Guests') }}
                             </x-nav-link>
@@ -23,8 +20,11 @@
                                 {{ __('Report') }}
                             </x-nav-link>
                         @endif
+                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
                         <x-nav-link :href="route('tipl.index')" :active="request()->routeIs('tipl.*')">
-                            {{ __('TIPL') }}
+                            {{ __('All Lists') }}
                         </x-nav-link>
                     </div>
                 </div>
@@ -80,9 +80,6 @@
         <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
                 @if(auth()->user()->isAdmin)
-                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
                         {{ __('Guests') }}
                     </x-responsive-nav-link>
@@ -90,8 +87,11 @@
                         {{ __('Report') }}
                     </x-responsive-nav-link>
                 @endif
+                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
                 <x-responsive-nav-link :href="route('tipl.index')" :active="request()->routeIs('tipl.*')">
-                    {{ __('TIPL') }}
+                    {{ __('All Lists') }}
                 </x-responsive-nav-link>
             </div>
 

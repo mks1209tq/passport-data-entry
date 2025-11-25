@@ -10,6 +10,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class TIPLController extends Controller
 {
@@ -21,8 +22,19 @@ class TIPLController extends Controller
         // Allow all authenticated users to view the list
         $tipls = TIPL::orderBy('created_at', 'desc')->paginate(20);
         
+        // Calculate pick up point statistics
+        $pickUpPointStats = TIPL::selectRaw('COALESCE(pick_up_point, "Not Specified") as pick_up_point, COUNT(*) as count')
+            ->groupBy('pick_up_point')
+            ->orderByRaw('CASE WHEN pick_up_point IS NULL THEN 1 ELSE 0 END, pick_up_point')
+            ->get();
+        
+        // Get total count
+        $totalEntries = TIPL::count();
+        
         return view('tipl.index', [
             'tipls' => $tipls,
+            'pickUpPointStats' => $pickUpPointStats,
+            'totalEntries' => $totalEntries,
         ]);
     }
 
@@ -146,6 +158,7 @@ class TIPLController extends Controller
             return response()->json([
                 'valid' => true,
                 'name' => $tqUser->name,
+                'employee_id' => $tqUser->id_code,
                 'message' => 'ID verified successfully.',
             ]);
         }
@@ -154,5 +167,76 @@ class TIPLController extends Controller
             'valid' => false,
             'message' => 'ID not found. Please enter a valid ID.',
         ], 404);
+    }
+
+    /**
+     * Export TIPL entries to Excel (CSV format).
+     */
+    public function export(Request $request): StreamedResponse
+    {
+        $filename = 'tipl_export_' . date('Y-m-d_His') . '.csv';
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => "attachment; filename=\"{$filename}\"",
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0',
+        ];
+
+        $callback = function () {
+            $file = fopen('php://output', 'w');
+
+            // Add UTF-8 BOM for Excel compatibility
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+
+            // Add headers
+            fputcsv($file, [
+                'ID',
+                'Name',
+                'Employee ID',
+                'Company Name',
+                'Phone Number',
+                'Expected Guests',
+                'Pick Up Point',
+                'In-House Talent',
+                'Created At',
+                'Updated At',
+            ]);
+
+            // Get all TIPL entries
+            $tipls = TIPL::select([
+                'id',
+                'name',
+                'employee_id',
+                'company_name',
+                'phone_number',
+                'expected_guests',
+                'pick_up_point',
+                'in_house_talent',
+                'created_at',
+                'updated_at',
+            ])->get();
+
+            // Add TIPL data
+            foreach ($tipls as $tipl) {
+                fputcsv($file, [
+                    $tipl->id,
+                    $tipl->name,
+                    $tipl->employee_id ?? '',
+                    $tipl->company_name ?? '',
+                    $tipl->phone_number ?? '',
+                    $tipl->expected_guests ?? '',
+                    $tipl->pick_up_point ?? '',
+                    $tipl->in_house_talent ?? '',
+                    $tipl->created_at ? $tipl->created_at->format('Y-m-d H:i:s') : '',
+                    $tipl->updated_at ? $tipl->updated_at->format('Y-m-d H:i:s') : '',
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 }

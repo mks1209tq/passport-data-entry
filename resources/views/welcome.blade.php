@@ -357,19 +357,30 @@
                         body: JSON.stringify({ id_code: idCode })
                     })
                     .then(response => response.json())
-                    .then(data => {
-                        if (data.valid) {
-                            showMessage('✓ ID verified! Welcome, ' + data.name + '. You can now fill in the form.', 'success');
-                            hiddenIdInput.value = idCode;
-                            form.style.display = 'block';
-                            idInput.disabled = true;
-                            verifyBtn.style.display = 'none';
-                        } else {
-                            showMessage('✗ ' + data.message, 'error');
-                            form.style.display = 'none';
-                            hiddenIdInput.value = '';
+                .then(data => {
+                    if (data.valid) {
+                        showMessage('✓ ID verified! Welcome, ' + data.name + '. You can now fill in the form.', 'success');
+                        hiddenIdInput.value = idCode;
+                        
+                        // Auto-fill employee_id and name fields
+                        const employeeIdField = document.getElementById('employee_id');
+                        const nameField = document.getElementById('name');
+                        if (employeeIdField && data.employee_id) {
+                            employeeIdField.value = data.employee_id;
                         }
-                    })
+                        if (nameField && data.name) {
+                            nameField.value = data.name;
+                        }
+                        
+                        form.style.display = 'block';
+                        idInput.disabled = true;
+                        verifyBtn.style.display = 'none';
+                    } else {
+                        showMessage('✗ ' + data.message, 'error');
+                        form.style.display = 'none';
+                        hiddenIdInput.value = '';
+                    }
+                })
                     .catch(error => {
                         showMessage('✗ An error occurred. Please try again.', 'error');
                         console.error('Error:', error);

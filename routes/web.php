@@ -28,6 +28,7 @@ Route::post('/tipl/verify-id', [App\Http\Controllers\TIPLController::class, 'ver
 // Admin TIPL routes (require authentication)
 Route::middleware('auth')->group(function () {
     Route::get('/tipl', [App\Http\Controllers\TIPLController::class, 'index'])->name('tipl.index');
+    Route::get('/tipl/export', [App\Http\Controllers\TIPLController::class, 'export'])->name('tipl.export');
     Route::get('/tipl/{tipl}', [App\Http\Controllers\TIPLController::class, 'show'])->name('tipl.show');
     Route::get('/tipl/{tipl}/edit', [App\Http\Controllers\TIPLController::class, 'edit'])->name('tipl.edit');
     Route::put('/tipl/{tipl}', [App\Http\Controllers\TIPLController::class, 'update'])->name('tipl.update');
