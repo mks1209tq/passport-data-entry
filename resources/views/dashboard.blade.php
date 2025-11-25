@@ -49,7 +49,37 @@
                 </div>
             </div>
 
-            
+            <!-- TIPL Data Entry Section -->
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6">
+                <div class="p-6">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+                                Sports Event - TIPL Data Entry
+                            </h3>
+                            <p class="text-sm text-gray-600 dark:text-gray-400">
+                                Enter participant details for the sports event including name, employee ID, company, phone number, pick up point, and in-house talent status.
+                            </p>
+                        </div>
+                        <div class="flex gap-3">
+                            <a 
+                                href="{{ route('tipl.create') }}" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-150 ease-in-out border-2 border-blue-700 whitespace-nowrap"
+                                style="background-color: #2563eb; color: #ffffff; min-width: 140px;"
+                            >
+                                + New TIPL Entry
+                            </a>
+                            <a 
+                                href="{{ route('tipl.index') }}" 
+                                class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-150 ease-in-out border-2 border-green-700 whitespace-nowrap"
+                                style="background-color: #059669; color: #ffffff; min-width: 120px;"
+                            >
+                                View All Entries
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Search Results -->
             @if(isset($guests) && $guests->isNotEmpty())

@@ -21,5 +21,6 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('guests', App\Http\Controllers\GuestController::class);
+Route::resource('tipl', App\Http\Controllers\TIPLController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';
