@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
+use App\Models\TqUser;
 
 class TIPLStoreRequest extends FormRequest
 {
@@ -22,6 +24,16 @@ class TIPLStoreRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'tq_user_id' => [
+                'required',
+                'string',
+                function ($attribute, $value, $fail) {
+                    $tqUser = TqUser::where('id_code', $value)->first();
+                    if (!$tqUser) {
+                        $fail('The provided ID is not valid. Please verify your ID first.');
+                    }
+                },
+            ],
             'name' => ['required', 'string', 'max:100'],
             'employee_id' => [
                 'required',

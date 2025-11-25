@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TIPLStoreRequest;
 use App\Http\Requests\TIPLUpdateRequest;
 use App\Models\TIPL;
+use App\Models\TqUser;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
@@ -32,6 +34,14 @@ class TIPLController extends Controller
         // Check if registration is closed (255 entries limit)
         $totalEntries = TIPL::count();
         $isRegistrationClosed = $totalEntries >= 255;
+
+        // If accessed from root route, return welcome view, otherwise return tipl.create
+        if (request()->routeIs('welcome')) {
+            return view('welcome', [
+                'isRegistrationClosed' => $isRegistrationClosed,
+                'totalEntries' => $totalEntries,
+            ]);
+        }
 
         return view('tipl.create', [
             'isRegistrationClosed' => $isRegistrationClosed,
@@ -119,5 +129,30 @@ class TIPLController extends Controller
         $tipl->delete();
 
         return redirect()->route('tipl.index')->with('success', 'TIPL entry deleted successfully');
+    }
+
+    /**
+     * Verify if the provided ID exists in tqUsers table.
+     */
+    public function verifyId(Request $request): JsonResponse
+    {
+        $request->validate([
+            'id_code' => 'required|string',
+        ]);
+
+        $tqUser = TqUser::where('id_code', $request->id_code)->first();
+
+        if ($tqUser) {
+            return response()->json([
+                'valid' => true,
+                'name' => $tqUser->name,
+                'message' => 'ID verified successfully.',
+            ]);
+        }
+
+        return response()->json([
+            'valid' => false,
+            'message' => 'ID not found. Please enter a valid ID.',
+        ], 404);
     }
 }

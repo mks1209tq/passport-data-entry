@@ -36,8 +36,33 @@
                             <p class="text-xs mt-2 text-gray-600">Total entries: {{ $totalEntries ?? 255 }}</p>
                         </div>
                     @else
-                        <form method="POST" action="{{ route('tipl.store') }}" class="space-y-6">
+                        <!-- ID Verification Section -->
+                        <div id="id-verification-section" class="mb-6 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900">
+                            <label for="tq_user_id_input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                Enter ID <span class="text-red-500">*</span>
+                            </label>
+                            <div class="flex gap-3">
+                                <input 
+                                    type="text" 
+                                    id="tq_user_id_input" 
+                                    placeholder="Enter ID"
+                                    class="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:outline-none focus:border-indigo-500 focus:ring-indigo-500"
+                                >
+                                <button 
+                                    type="button" 
+                                    id="verify-id-btn"
+                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors border-2 border-indigo-700 whitespace-nowrap"
+                                    style="background-color: #2563eb; color: #ffffff; min-width: 120px;"
+                                >
+                                    Verify ID
+                                </button>
+                            </div>
+                            <div id="id-verification-message" class="mt-2 text-sm hidden"></div>
+                        </div>
+
+                        <form method="POST" action="{{ route('tipl.store') }}" class="space-y-6" id="tipl-form" style="display: none;">
                             @csrf
+                            <input type="hidden" name="tq_user_id" id="tq_user_id" value="">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Name -->
@@ -259,5 +284,76 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const verifyBtn = document.getElementById('verify-id-btn');
+            const idInput = document.getElementById('tq_user_id_input');
+            const messageDiv = document.getElementById('id-verification-message');
+            const form = document.getElementById('tipl-form');
+            const hiddenIdInput = document.getElementById('tq_user_id');
+
+            verifyBtn.addEventListener('click', function() {
+                const idCode = idInput.value.trim();
+                
+                if (!idCode) {
+                    showMessage('Please enter an ID.', 'error');
+                    return;
+                }
+
+                verifyBtn.disabled = true;
+                verifyBtn.textContent = 'Verifying...';
+
+                fetch('{{ route("tipl.verify-id") }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    },
+                    body: JSON.stringify({ id_code: idCode })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.valid) {
+                        showMessage('✓ ID verified! Welcome, ' + data.name + '. You can now fill in the form.', 'success');
+                        hiddenIdInput.value = idCode;
+                        form.style.display = 'block';
+                        idInput.disabled = true;
+                        verifyBtn.style.display = 'none';
+                    } else {
+                        showMessage('✗ ' + data.message, 'error');
+                        form.style.display = 'none';
+                        hiddenIdInput.value = '';
+                    }
+                })
+                .catch(error => {
+                    showMessage('✗ An error occurred. Please try again.', 'error');
+                    console.error('Error:', error);
+                })
+                .finally(() => {
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = 'Verify ID';
+                });
+            });
+
+            function showMessage(message, type) {
+                messageDiv.textContent = message;
+                messageDiv.classList.remove('hidden');
+                if (type === 'success') {
+                    messageDiv.className = 'mt-2 text-sm text-green-600 dark:text-green-400';
+                } else {
+                    messageDiv.className = 'mt-2 text-sm text-red-600 dark:text-red-400';
+                }
+            }
+
+            // Allow Enter key to trigger verification
+            idInput.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    verifyBtn.click();
+                }
+            });
+        });
+    </script>
 </x-app-layout>
 

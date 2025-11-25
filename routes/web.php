@@ -23,6 +23,7 @@ Route::resource('guests', App\Http\Controllers\GuestController::class);
 // Public TIPL routes (create only - no login required)
 Route::get('/tipl/register', [App\Http\Controllers\TIPLController::class, 'create'])->name('tipl.create');
 Route::post('/tipl/register', [App\Http\Controllers\TIPLController::class, 'store'])->name('tipl.store');
+Route::post('/tipl/verify-id', [App\Http\Controllers\TIPLController::class, 'verifyId'])->name('tipl.verify-id');
 
 // Admin TIPL routes (require authentication)
 Route::middleware('auth')->group(function () {
