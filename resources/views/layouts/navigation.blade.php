@@ -1,5 +1,4 @@
 @auth
-    @if(auth()->user()->isAdmin)
     <nav x-data="{ open: false }" class="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -14,15 +13,17 @@
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
-                            {{ __('Guests') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('guests.report')" :active="request()->routeIs('guests.report')">
-                            {{ __('Report') }}
-                        </x-nav-link>
+                        @if(auth()->user()->isAdmin)
+                            <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                                {{ __('Dashboard') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
+                                {{ __('Guests') }}
+                            </x-nav-link>
+                            <x-nav-link :href="route('guests.report')" :active="request()->routeIs('guests.report')">
+                                {{ __('Report') }}
+                            </x-nav-link>
+                        @endif
                         <x-nav-link :href="route('tipl.index')" :active="request()->routeIs('tipl.*')">
                             {{ __('TIPL') }}
                         </x-nav-link>
@@ -79,15 +80,17 @@
         <!-- Responsive Navigation Menu -->
         <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
             <div class="pt-2 pb-3 space-y-1">
-                <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                    {{ __('Dashboard') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
-                    {{ __('Guests') }}
-                </x-responsive-nav-link>
-                <x-responsive-nav-link :href="route('guests.report')" :active="request()->routeIs('guests.report')">
-                    {{ __('Report') }}
-                </x-responsive-nav-link>
+                @if(auth()->user()->isAdmin)
+                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                        {{ __('Dashboard') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('guests.index')" :active="request()->routeIs('guests.*') && !request()->routeIs('guests.report')">
+                        {{ __('Guests') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('guests.report')" :active="request()->routeIs('guests.report')">
+                        {{ __('Report') }}
+                    </x-responsive-nav-link>
+                @endif
                 <x-responsive-nav-link :href="route('tipl.index')" :active="request()->routeIs('tipl.*')">
                     {{ __('TIPL') }}
                 </x-responsive-nav-link>
@@ -119,5 +122,4 @@
             </div>
         </div>
     </nav>
-    @endif
 @endauth

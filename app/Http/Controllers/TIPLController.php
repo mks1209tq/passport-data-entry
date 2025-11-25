@@ -16,11 +16,7 @@ class TIPLController extends Controller
      */
     public function index(Request $request): View
     {
-        // Only allow admin users to view the list
-        if (!auth()->user() || !auth()->user()->isAdmin) {
-            abort(403, 'Unauthorized action. Only administrators can view TIPL entries.');
-        }
-
+        // Allow all authenticated users to view the list
         $tipls = TIPL::orderBy('created_at', 'desc')->paginate(20);
         
         return view('tipl.index', [
@@ -72,11 +68,7 @@ class TIPLController extends Controller
      */
     public function show(Request $request, TIPL $tipl): View
     {
-        // Only allow admin users to view details
-        if (!auth()->user() || !auth()->user()->isAdmin) {
-            abort(403, 'Unauthorized action. Only administrators can view TIPL entry details.');
-        }
-
+        // Allow all authenticated users to view details
         return view('tipl.show', [
             'tipl' => $tipl,
         ]);
