@@ -16,6 +16,11 @@ class TIPLController extends Controller
      */
     public function index(Request $request): View
     {
+        // Only allow admin users to view the list
+        if (!auth()->user() || !auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can view TIPL entries.');
+        }
+
         $tipls = TIPL::orderBy('created_at', 'desc')->paginate(20);
         
         return view('tipl.index', [
@@ -67,6 +72,11 @@ class TIPLController extends Controller
      */
     public function show(Request $request, TIPL $tipl): View
     {
+        // Only allow admin users to view details
+        if (!auth()->user() || !auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can view TIPL entry details.');
+        }
+
         return view('tipl.show', [
             'tipl' => $tipl,
         ]);
@@ -77,6 +87,11 @@ class TIPLController extends Controller
      */
     public function edit(Request $request, TIPL $tipl): View
     {
+        // Only allow admin users to edit
+        if (!auth()->user() || !auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can edit TIPL entries.');
+        }
+
         return view('tipl.edit', [
             'tipl' => $tipl,
         ]);
@@ -87,6 +102,11 @@ class TIPLController extends Controller
      */
     public function update(TIPLUpdateRequest $request, TIPL $tipl): RedirectResponse
     {
+        // Only allow admin users to update
+        if (!auth()->user() || !auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can update TIPL entries.');
+        }
+
         $tipl->update($request->validated());
 
         $request->session()->flash('tipl.id', $tipl->id);
@@ -99,6 +119,11 @@ class TIPLController extends Controller
      */
     public function destroy(Request $request, TIPL $tipl): RedirectResponse
     {
+        // Only allow admin users to delete
+        if (!auth()->user() || !auth()->user()->isAdmin) {
+            abort(403, 'Unauthorized action. Only administrators can delete TIPL entries.');
+        }
+
         $tipl->delete();
 
         return redirect()->route('tipl.index')->with('success', 'TIPL entry deleted successfully');

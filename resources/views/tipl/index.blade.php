@@ -68,12 +68,16 @@
                                                 @endif
                                             </td>
                                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                                <a href="{{ route('tipl.edit', $tipl->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 mr-3">Edit</a>
-                                                <form action="{{ route('tipl.destroy', $tipl->id) }}" method="POST" class="inline">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400" onclick="return confirm('Are you sure you want to delete this entry?')">Delete</button>
-                                                </form>
+                                                @if(auth()->user() && auth()->user()->isAdmin)
+                                                    <a href="{{ route('tipl.edit', $tipl->id) }}" class="text-indigo-600 hover:text-indigo-900 dark:text-indigo-400 mr-3">Edit</a>
+                                                    <form action="{{ route('tipl.destroy', $tipl->id) }}" method="POST" class="inline">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="text-red-600 hover:text-red-900 dark:text-red-400" onclick="return confirm('Are you sure you want to delete this entry?')">Delete</button>
+                                                    </form>
+                                                @else
+                                                    <span class="text-gray-400 dark:text-gray-500">View Only</span>
+                                                @endif
                                             </td>
                                         </tr>
                                     @endforeach

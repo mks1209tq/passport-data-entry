@@ -76,13 +76,15 @@
                         >
                             Back
                         </a>
-                        <a 
-                            href="{{ route('tipl.edit', $tipl->id) }}" 
-                            class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-150 ease-in-out border-2 border-blue-700 whitespace-nowrap"
-                            style="background-color: #2563eb; color: #ffffff; min-width: 100px;"
-                        >
-                            Edit
-                        </a>
+                        @if(auth()->user() && auth()->user()->isAdmin)
+                            <a 
+                                href="{{ route('tipl.edit', $tipl->id) }}" 
+                                class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg shadow-lg hover:shadow-xl transition duration-150 ease-in-out border-2 border-blue-700 whitespace-nowrap"
+                                style="background-color: #2563eb; color: #ffffff; min-width: 100px;"
+                            >
+                                Edit
+                            </a>
+                        @endif
                     </div>
                 </div>
             </div>
