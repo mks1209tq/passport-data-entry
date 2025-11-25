@@ -20,45 +20,48 @@
         @endif
     </head>
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6">
-            @if (Route::has('login'))
-                <nav class="flex items-center justify-end gap-4">
-                    @auth
-                        @if(auth()->user()->isAdmin)
-                            <a
-                                href="{{ url('/dashboard') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                            >
-                                Dashboard
-                            </a>
-                        @endif
-                        <form method="POST" action="{{ route('logout') }}" class="inline">
-                            @csrf
-                            <button
-                                type="submit"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
-                            >
-                                Log out
-                            </button>
-                        </form>
-                    @else
+        <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6" style="display: block !important;">
+            <nav class="flex items-center justify-end gap-4" style="display: flex !important;">
+                @auth
+                    @if(auth()->user()->isAdmin)
                         <a
-                            href="{{ route('login') }}"
-                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
+                            href="{{ url('/dashboard') }}"
+                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            style="display: inline-block !important;"
                         >
-                            Log in
+                            Dashboard
                         </a>
+                    @endif
+                    <form method="POST" action="{{ route('logout') }}" class="inline" style="display: inline !important;">
+                        @csrf
+                        <button
+                            type="submit"
+                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            style="display: inline-block !important; background-color: #1b1b18; color: #ffffff; min-width: 100px; border: 2px solid #19140035;"
+                        >
+                            Log out
+                        </button>
+                    </form>
+                @else
+                    <a
+                        href="{{ route('login') }}"
+                        class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
+                        style="display: inline-block !important; background-color: #1b1b18; color: #ffffff; min-width: 100px; border: 2px solid #19140035;"
+                    >
+                        Log in
+                    </a>
 
-                        @if (Route::has('register'))
-                            <a
-                                href="{{ route('register') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal">
-                                Register
-                            </a>
-                        @endif
-                    @endauth
-                </nav>
-            @endif
+                    @if (Route::has('register'))
+                        <a
+                            href="{{ route('register') }}"
+                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                            style="display: inline-block !important; background-color: #1b1b18; color: #ffffff; min-width: 100px; border: 2px solid #19140035;"
+                        >
+                            Register
+                        </a>
+                    @endif
+                @endauth
+            </nav>
         </header>
         
         <div class="w-full lg:max-w-4xl max-w-[335px] transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
