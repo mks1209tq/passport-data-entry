@@ -28,7 +28,14 @@ class TIPLController extends Controller
      */
     public function create(): View
     {
-        return view('tipl.create');
+        // Check if registration is closed (255 entries limit)
+        $totalEntries = TIPL::count();
+        $isRegistrationClosed = $totalEntries >= 255;
+
+        return view('tipl.create', [
+            'isRegistrationClosed' => $isRegistrationClosed,
+            'totalEntries' => $totalEntries,
+        ]);
     }
 
     /**
@@ -36,10 +43,22 @@ class TIPLController extends Controller
      */
     public function store(TIPLStoreRequest $request): RedirectResponse
     {
+        // Check if registration is closed (255 entries limit)
+        $totalEntries = TIPL::count();
+        if ($totalEntries >= 255) {
+            return redirect()->route('tipl.create')
+                ->with('error', 'Registration is closed. Maximum of 255 entries have been reached.');
+        }
+
         $tipl = TIPL::create($request->validated());
 
-        $request->session()->flash('tipl.id', $tipl->id);
+        // For public submissions, redirect back to form with success message
+        if (!auth()->check()) {
+            return redirect()->route('tipl.create')
+                ->with('success', 'Thank you! Your registration has been submitted successfully.');
+        }
 
+        // For authenticated users, redirect to index
         return redirect()->route('tipl.index')->with('success', 'TIPL entry created successfully');
     }
 

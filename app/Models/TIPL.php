@@ -29,5 +29,6 @@ class TIPL extends Model
         'phone_number',
         'pick_up_point',
         'in_house_talent',
+        'expected_guests',
     ];
 }

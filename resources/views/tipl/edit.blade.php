@@ -39,13 +39,14 @@
                             <!-- Employee ID -->
                             <div>
                                 <label for="employee_id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Employee ID
+                                    Employee ID <span class="text-red-500">*</span>
                                 </label>
                                 <input 
                                     type="text" 
                                     name="employee_id" 
                                     id="employee_id" 
                                     value="{{ old('employee_id', $tipl->employee_id) }}"
+                                    required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('employee_id') border-red-500 @enderror"
                                 >
                                 @error('employee_id')
@@ -56,13 +57,14 @@
                             <!-- Company Name -->
                             <div>
                                 <label for="company_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Company Name
+                                    Company Name <span class="text-red-500">*</span>
                                 </label>
                                 <input 
                                     type="text" 
                                     name="company_name" 
                                     id="company_name" 
                                     value="{{ old('company_name', $tipl->company_name) }}"
+                                    required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('company_name') border-red-500 @enderror"
                                 >
                                 @error('company_name')
@@ -73,16 +75,37 @@
                             <!-- Phone Number -->
                             <div>
                                 <label for="phone_number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                                    Phone Number
+                                    Phone Number <span class="text-red-500">*</span>
                                 </label>
                                 <input 
                                     type="tel" 
                                     name="phone_number" 
                                     id="phone_number" 
                                     value="{{ old('phone_number', $tipl->phone_number) }}"
+                                    required
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('phone_number') border-red-500 @enderror"
                                 >
                                 @error('phone_number')
+                                    <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Expected Guests -->
+                            <div>
+                                <label for="expected_guests" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                    Expected Guests <span class="text-red-500">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="expected_guests" 
+                                    id="expected_guests" 
+                                    value="{{ old('expected_guests', $tipl->expected_guests) }}"
+                                    required
+                                    min="0"
+                                    max="9999"
+                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('expected_guests') border-red-500 @enderror"
+                                >
+                                @error('expected_guests')
                                     <p class="mt-1 text-sm text-red-600 dark:text-red-400">{{ $message }}</p>
                                 @enderror
                             </div>

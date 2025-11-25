@@ -35,6 +35,11 @@
                         </div>
 
                         <div>
+                            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Expected Guests</label>
+                            <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $tipl->expected_guests ?? 'N/A' }}</p>
+                        </div>
+
+                        <div>
                             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400">Pick Up Point</label>
                             <p class="mt-1 text-sm text-gray-900 dark:text-gray-100">{{ $tipl->pick_up_point ?? 'N/A' }}</p>
                         </div>

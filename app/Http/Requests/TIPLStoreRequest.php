@@ -23,11 +23,17 @@ class TIPLStoreRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:100'],
-            'employee_id' => ['nullable', 'string', 'max:100'],
-            'company_name' => ['nullable', 'string', 'max:100'],
-            'phone_number' => ['nullable', 'string', 'max:20'],
+            'employee_id' => [
+                'required',
+                'string',
+                'max:100',
+                'unique:tipl,employee_id,NULL,id,deleted_at,NULL'
+            ],
+            'company_name' => ['required', 'string', 'max:100'],
+            'phone_number' => ['required', 'string', 'max:20'],
             'pick_up_point' => ['nullable', 'string', 'max:100'],
             'in_house_talent' => ['nullable', 'string', 'in:yes,no'],
+            'expected_guests' => ['required', 'integer', 'min:0', 'max:9999'],
         ];
     }
 }
