@@ -3,9 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [App\Http\Controllers\TIPLController::class, 'create'])->name('welcome');
 
 Route::get('/dashboard', [App\Http\Controllers\GuestController::class, 'search'])->middleware(['auth', 'verified'])->name('dashboard');
 

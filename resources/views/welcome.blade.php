@@ -20,7 +20,6 @@
         @endif
     </head>
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
-    <h1>Dear visitor, welcome to the event management system.</h1>
         <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6 not-has-[nav]:hidden">
             @if (Route::has('login'))
                 <nav class="flex items-center justify-end gap-4">
@@ -50,7 +49,241 @@
                 </nav>
             @endif
         </header>
-        <div class="flex items-center justify-center w-full transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+        
+        <div class="w-full lg:max-w-4xl max-w-[335px] transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+            <h1 class="text-xl lg:text-2xl font-medium mb-6 text-center dark:text-[#EDEDEC]">Sports Event - TIPL Registration</h1>
+            
+            @if(session('success'))
+                <div class="mb-6 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative dark:bg-green-900 dark:border-green-700 dark:text-green-200" role="alert">
+                    <span class="block sm:inline">{{ session('success') }}</span>
+                </div>
+            @endif
+
+            @if(session('error'))
+                <div class="mb-6 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative dark:bg-red-900 dark:border-red-700 dark:text-red-200" role="alert">
+                    <span class="block sm:inline">{{ session('error') }}</span>
+                </div>
+            @endif
+
+            @if(isset($isRegistrationClosed) && $isRegistrationClosed)
+                <div class="mb-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-lg text-center dark:bg-red-900 dark:border-red-700 dark:text-red-200" role="alert">
+                    <h3 class="text-lg font-bold mb-2">Registration is Closed</h3>
+                    <p class="text-sm">We have reached the maximum limit of 255 entries. Thank you for your interest!</p>
+                    <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Total entries: {{ $totalEntries ?? 255 }}</p>
+                </div>
+            @else
+                <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] p-6 lg:p-8">
+                    <form method="POST" action="{{ route('tipl.store') }}" class="space-y-6">
+                        @csrf
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <!-- Name -->
+                            <div class="md:col-span-2">
+                                <label for="name" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
+                                    Name <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="name" 
+                                    id="name" 
+                                    value="{{ old('name') }}" 
+                                    required
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('name') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                >
+                                @error('name')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Employee ID -->
+                            <div>
+                                <label for="employee_id" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
+                                    Employee ID <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="employee_id" 
+                                    id="employee_id" 
+                                    value="{{ old('employee_id') }}"
+                                    required
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('employee_id') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                >
+                                @error('employee_id')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Company Name -->
+                            <div>
+                                <label for="company_name" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
+                                    Company Name <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                </label>
+                                <input 
+                                    type="text" 
+                                    name="company_name" 
+                                    id="company_name" 
+                                    value="{{ old('company_name') }}"
+                                    required
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('company_name') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                >
+                                @error('company_name')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Phone Number -->
+                            <div>
+                                <label for="phone_number" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
+                                    Phone Number <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                </label>
+                                <input 
+                                    type="tel" 
+                                    name="phone_number" 
+                                    id="phone_number" 
+                                    value="{{ old('phone_number') }}"
+                                    required
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('phone_number') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                >
+                                @error('phone_number')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Expected Guests -->
+                            <div>
+                                <label for="expected_guests" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
+                                    Expected Guests <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                </label>
+                                <input 
+                                    type="number" 
+                                    name="expected_guests" 
+                                    id="expected_guests" 
+                                    value="{{ old('expected_guests') }}"
+                                    required
+                                    min="0"
+                                    max="9999"
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('expected_guests') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                >
+                                @error('expected_guests')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- Pick Up Point (Radio Buttons) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
+                                    Pick Up Point
+                                </label>
+                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_1" 
+                                            value="Point 1"
+                                            {{ old('pick_up_point') == 'Point 1' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="pick_up_point_1" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Point 1
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_2" 
+                                            value="Point 2"
+                                            {{ old('pick_up_point') == 'Point 2' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="pick_up_point_2" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Point 2
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_3" 
+                                            value="Point 3"
+                                            {{ old('pick_up_point') == 'Point 3' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="pick_up_point_3" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Point 3
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_4" 
+                                            value="Point 4"
+                                            {{ old('pick_up_point') == 'Point 4' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="pick_up_point_4" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Point 4
+                                        </label>
+                                    </div>
+                                </div>
+                                @error('pick_up_point')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <!-- In-House Talent (Yes/No Radio Buttons) -->
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
+                                    In-House Talent
+                                </label>
+                                <div class="flex gap-6">
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="in_house_talent" 
+                                            id="in_house_talent_yes" 
+                                            value="yes"
+                                            {{ old('in_house_talent') == 'yes' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="in_house_talent_yes" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Yes
+                                        </label>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="in_house_talent" 
+                                            id="in_house_talent_no" 
+                                            value="no"
+                                            {{ old('in_house_talent') == 'no' ? 'checked' : '' }}
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="in_house_talent_no" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                                @error('in_house_talent')
+                                    <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
+                                @enderror
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-end space-x-4 pt-4 border-t border-[#e3e3e0] dark:border-[#3E3E3A]">
+                            <button 
+                                type="submit" 
+                                class="inline-block px-5 py-1.5 bg-[#1b1b18] dark:bg-[#EDEDEC] text-white dark:text-[#1b1b18] border border-[#1b1b18] dark:border-[#EDEDEC] hover:bg-black dark:hover:bg-white rounded-sm text-sm leading-normal font-medium transition-all"
+                                style="background-color: #1b1b18; color: #ffffff; min-width: 120px;"
+                            >
+                                Submit Entry
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            @endif
         </div>
 
         @if (Route::has('login'))

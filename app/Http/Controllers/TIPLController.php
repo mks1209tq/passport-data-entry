@@ -46,15 +46,15 @@ class TIPLController extends Controller
         // Check if registration is closed (255 entries limit)
         $totalEntries = TIPL::count();
         if ($totalEntries >= 255) {
-            return redirect()->route('tipl.create')
+            return redirect()->route('welcome')
                 ->with('error', 'Registration is closed. Maximum of 255 entries have been reached.');
         }
 
         $tipl = TIPL::create($request->validated());
 
-        // For public submissions, redirect back to form with success message
+        // For public submissions, redirect back to welcome page with success message
         if (!auth()->check()) {
-            return redirect()->route('tipl.create')
+            return redirect()->route('welcome')
                 ->with('success', 'Thank you! Your registration has been submitted successfully.');
         }
 
