@@ -222,7 +222,7 @@
                             <!-- Expected Guests -->
                             <div>
                                 <label for="expected_guests" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-1">
-                                    Expected Guests <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                    Expected Guests(Enter 0 if you no guests) <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                                 </label>
                                 <input 
                                     type="number" 
@@ -320,7 +320,7 @@
                             <!-- In-House Talent (Yes/No Radio Buttons) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
-                                    In-House Talent
+                                    Participate in musical performance(Solo/Group song)
                                 </label>
                                 <div class="flex gap-6">
                                     <div class="flex items-center">
