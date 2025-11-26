@@ -14,5 +14,6 @@ class TqUser extends Model
     protected $fillable = [
         'id_code',
         'name',
+        'company_name',
     ];
 }

@@ -7,6 +7,11 @@
 
     <div class="py-12">
         <div class="max-w-4xl mx-auto sm:px-6 lg:px-8">
+            <!-- Logo Section -->
+            <div class="mb-6 text-center">
+                <img src="{{ asset('images/tipl-logo.png') }}" alt="TIPL Logo" class="mx-auto max-h-24 mb-4" onerror="this.style.display='none'">
+            </div>
+            
             <div class="bg-white dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="mb-4">
@@ -312,20 +317,31 @@
                     },
                     body: JSON.stringify({ id_code: idCode })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 409) {
+                        return response.json().then(data => {
+                            throw new Error(JSON.stringify(data));
+                        });
+                    }
+                    return response.json();
+                })
                 .then(data => {
                     if (data.valid) {
                         showMessage('✓ ID verified! Welcome, ' + data.name + '. You can now fill in the form.', 'success');
                         hiddenIdInput.value = idCode;
                         
-                        // Auto-fill employee_id and name fields
+                        // Auto-fill employee_id, name, and company_name fields
                         const employeeIdField = document.getElementById('employee_id');
                         const nameField = document.getElementById('name');
+                        const companyNameField = document.getElementById('company_name');
                         if (employeeIdField && data.employee_id) {
                             employeeIdField.value = data.employee_id;
                         }
                         if (nameField && data.name) {
                             nameField.value = data.name;
+                        }
+                        if (companyNameField && data.company_name) {
+                            companyNameField.value = data.company_name;
                         }
                         
                         form.style.display = 'block';
@@ -338,7 +354,18 @@
                     }
                 })
                 .catch(error => {
-                    showMessage('✗ An error occurred. Please try again.', 'error');
+                    try {
+                        const data = JSON.parse(error.message);
+                        if (data.duplicate) {
+                            showMessage('✗ ' + data.message, 'error');
+                        } else {
+                            showMessage('✗ ' + (data.message || 'An error occurred. Please try again.'), 'error');
+                        }
+                    } catch (e) {
+                        showMessage('✗ An error occurred. Please try again.', 'error');
+                    }
+                    form.style.display = 'none';
+                    hiddenIdInput.value = '';
                     console.error('Error:', error);
                 })
                 .finally(() => {

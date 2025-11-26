@@ -154,19 +154,31 @@ class TIPLController extends Controller
 
         $tqUser = TqUser::where('id_code', $request->id_code)->first();
 
-        if ($tqUser) {
+        if (!$tqUser) {
             return response()->json([
-                'valid' => true,
-                'name' => $tqUser->name,
-                'employee_id' => $tqUser->id_code,
-                'message' => 'ID verified successfully.',
-            ]);
+                'valid' => false,
+                'message' => 'ID not found. Please enter a valid ID.',
+            ], 404);
+        }
+
+        // Check for duplicate TIPL entry with this employee_id
+        $existingEntry = TIPL::where('employee_id', $tqUser->id_code)->first();
+
+        if ($existingEntry) {
+            return response()->json([
+                'valid' => false,
+                'duplicate' => true,
+                'message' => 'You have already registered.',
+            ], 409);
         }
 
         return response()->json([
-            'valid' => false,
-            'message' => 'ID not found. Please enter a valid ID.',
-        ], 404);
+            'valid' => true,
+            'name' => $tqUser->name,
+            'employee_id' => $tqUser->id_code,
+            'company_name' => $tqUser->company_name ?? '',
+            'message' => 'ID verified successfully.',
+        ]);
     }
 
     /**

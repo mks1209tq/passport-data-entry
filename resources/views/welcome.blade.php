@@ -19,7 +19,9 @@
             </style>
         @endif
     </head>
+    
     <body class="bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] flex p-6 lg:p-8 items-center lg:justify-center min-h-screen flex-col">
+        <!-- tipl logo here -->
             <header class="w-full lg:max-w-4xl max-w-[335px] text-sm mb-6" style="display: block !important; visibility: visible !important; opacity: 1 !important; position: relative !important; z-index: 1000 !important;">
                 <nav class="flex items-center justify-end gap-4" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
                     @auth
@@ -43,13 +45,13 @@
                             </button>
                         </form>
                     @else
-                        <a
+                        <!-- <a
                             href="{{ route('login') }}"
                             class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] text-[#1b1b18] border border-transparent hover:border-[#19140035] dark:hover:border-[#3E3E3A] rounded-sm text-sm leading-normal"
                             style="display: inline-block !important; visibility: visible !important; opacity: 1 !important; background-color: #1b1b18; color: #ffffff; min-width: 100px; border: 2px solid #19140035; text-decoration: none;"
                         >
                             Log in
-                        </a>
+                        </a> -->
 
                         @if (Route::has('register'))
                             <a
@@ -65,6 +67,11 @@
             </header>
         
         <div class="w-full lg:max-w-4xl max-w-[335px] transition-opacity opacity-100 duration-750 lg:grow starting:opacity-0">
+            <!-- Logo Section -->
+            <div class="mb-6 text-center">
+                <img src="{{ asset('images/tq.jpg') }}" alt="TIPL Logo" class="mx-auto max-h-24 mb-4" onerror="this.style.display='none'">
+            </div>
+            
             <h1 class="text-xl lg:text-2xl font-medium mb-6 text-center dark:text-[#EDEDEC]">Sports Event - TIPL Registration</h1>
             
             @if(session('success'))
@@ -90,13 +97,13 @@
                     <!-- ID Verification Section -->
                     <div id="id-verification-section" class="mb-6 p-4 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg bg-[#FDFDFC] dark:bg-[#0a0a0a]">
                         <label for="tq_user_id_input" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2">
-                            Enter Your ID <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                            Enter Your Employee ID <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                         </label>
                         <div class="flex gap-3">
                             <input 
                                 type="text" 
                                 id="tq_user_id_input" 
-                                placeholder="Enter your ID"
+                                placeholder="Enter your Employee ID"
                                 class="flex-1 px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC]"
                             >
                             <button 
@@ -224,7 +231,7 @@
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_1" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Point 1
+                                            Al Quoz
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -237,7 +244,7 @@
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_2" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Point 2
+                                            International City
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -250,7 +257,7 @@
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_3" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Point 3
+                                            ADCB
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -263,7 +270,7 @@
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_4" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            Point 4
+                                            Head Office
                                         </label>
                                     </div>
                                 </div>
@@ -356,20 +363,31 @@
                         },
                         body: JSON.stringify({ id_code: idCode })
                     })
-                    .then(response => response.json())
+                    .then(response => {
+                        if (response.status === 409) {
+                            return response.json().then(data => {
+                                throw new Error(JSON.stringify(data));
+                            });
+                        }
+                        return response.json();
+                    })
                 .then(data => {
                     if (data.valid) {
                         showMessage('✓ ID verified! Welcome, ' + data.name + '. You can now fill in the form.', 'success');
                         hiddenIdInput.value = idCode;
                         
-                        // Auto-fill employee_id and name fields
+                        // Auto-fill employee_id, name, and company_name fields
                         const employeeIdField = document.getElementById('employee_id');
                         const nameField = document.getElementById('name');
+                        const companyNameField = document.getElementById('company_name');
                         if (employeeIdField && data.employee_id) {
                             employeeIdField.value = data.employee_id;
                         }
                         if (nameField && data.name) {
                             nameField.value = data.name;
+                        }
+                        if (companyNameField && data.company_name) {
+                            companyNameField.value = data.company_name;
                         }
                         
                         form.style.display = 'block';
@@ -380,6 +398,20 @@
                         form.style.display = 'none';
                         hiddenIdInput.value = '';
                     }
+                })
+                .catch(error => {
+                    try {
+                        const data = JSON.parse(error.message);
+                        if (data.duplicate) {
+                            showMessage('✗ ' + data.message, 'error');
+                        } else {
+                            showMessage('✗ ' + (data.message || 'An error occurred. Please try again.'), 'error');
+                        }
+                    } catch (e) {
+                        showMessage('✗ An error occurred. Please try again.', 'error');
+                    }
+                    form.style.display = 'none';
+                    hiddenIdInput.value = '';
                 })
                     .catch(error => {
                         showMessage('✗ An error occurred. Please try again.', 'error');
