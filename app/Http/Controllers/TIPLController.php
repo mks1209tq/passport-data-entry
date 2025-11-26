@@ -35,7 +35,7 @@ class TIPLController extends Controller
         
         // Get unsuccessful registrations (only for admins)
         $unsuccessfulRegistrations = [];
-        if (auth()->user() && auth()->user()->isAdmin) {
+        if (auth()->user()) {
             $unsuccessfulRegistrations = UnsuccessfulRegistration::orderBy('created_at', 'desc')->get();
         }
         

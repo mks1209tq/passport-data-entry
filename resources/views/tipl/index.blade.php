@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            @if(auth()->user() && auth()->user()->isAdmin && isset($unsuccessfulRegistrations))
+            @if(auth()->user() && isset($unsuccessfulRegistrations))
                 <!-- Unsuccessful Registrations Section -->
                 <div class="bg-red-50 dark:bg-red-900/20 border-2 border-red-300 dark:border-red-700 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6">
