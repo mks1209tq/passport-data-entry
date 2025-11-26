@@ -199,12 +199,17 @@ class TIPLController extends Controller
         $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
 
         if ($isRegistrationClosed) {
-            // Insert into unsuccessful_registration table
-            \App\Models\UnsuccessfulRegistration::create([
-                'id_code' => $tqUser->id_code,
-                'name' => $tqUser->name,
-                'company_name' => $tqUser->company_name ?? null,
-            ]);
+            // Check if this ID already exists in unsuccessful_registration table
+            $existingUnsuccessful = UnsuccessfulRegistration::where('id_code', $tqUser->id_code)->first();
+            
+            // Only insert if it doesn't already exist (prevent duplicates)
+            if (!$existingUnsuccessful) {
+                UnsuccessfulRegistration::create([
+                    'id_code' => $tqUser->id_code,
+                    'name' => $tqUser->name,
+                    'company_name' => $tqUser->company_name ?? null,
+                ]);
+            }
 
             return response()->json([
                 'valid' => false,

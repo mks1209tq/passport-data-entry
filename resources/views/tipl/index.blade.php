@@ -58,7 +58,7 @@
                 </div>
             </div>
 
-            @if(auth()->user() && auth()->user()->isAdmin && isset($unsuccessfulRegistrations) && $unsuccessfulRegistrations->count() > 0)
+            @if(auth()->user() && auth()->user()->isAdmin && isset($unsuccessfulRegistrations))
                 <!-- Unsuccessful Registrations Section -->
                 <div class="bg-red-50 dark:bg-red-900/20 border-2 border-red-300 dark:border-red-700 overflow-hidden shadow-sm sm:rounded-lg mb-6">
                     <div class="p-6">
@@ -68,28 +68,32 @@
                         <p class="text-sm text-red-700 dark:text-red-300 mb-4">
                             These users attempted to register but registration was closed at the time of verification.
                         </p>
-                        <div class="overflow-x-auto">
-                            <table class="min-w-full divide-y divide-red-200 dark:divide-red-700">
-                                <thead class="bg-red-100 dark:bg-red-800">
-                                    <tr>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">ID Code</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Name</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Company</th>
-                                        <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Attempted At</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="bg-white dark:bg-red-900/10 divide-y divide-red-200 dark:divide-red-700">
-                                    @foreach($unsuccessfulRegistrations as $unsuccessful)
-                                        <tr class="hover:bg-red-50 dark:hover:bg-red-900/20">
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-900 dark:text-red-100">{{ $unsuccessful->id_code }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-900 dark:text-red-100">{{ $unsuccessful->name ?? 'N/A' }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-700 dark:text-red-300">{{ $unsuccessful->company_name ?? 'N/A' }}</td>
-                                            <td class="px-6 py-4 whitespace-nowrap text-sm text-red-700 dark:text-red-300">{{ $unsuccessful->created_at->format('Y-m-d H:i:s') }}</td>
+                        @if($unsuccessfulRegistrations->count() > 0)
+                            <div class="overflow-x-auto">
+                                <table class="min-w-full divide-y divide-red-200 dark:divide-red-700">
+                                    <thead class="bg-red-100 dark:bg-red-800">
+                                        <tr>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">ID Code</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Name</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Company</th>
+                                            <th class="px-6 py-3 text-left text-xs font-medium text-red-800 dark:text-red-200 uppercase tracking-wider">Attempted At</th>
                                         </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                                    </thead>
+                                    <tbody class="bg-white dark:bg-red-900/10 divide-y divide-red-200 dark:divide-red-700">
+                                        @foreach($unsuccessfulRegistrations as $unsuccessful)
+                                            <tr class="hover:bg-red-50 dark:hover:bg-red-900/20">
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-900 dark:text-red-100">{{ $unsuccessful->id_code }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-900 dark:text-red-100">{{ $unsuccessful->name ?? 'N/A' }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-700 dark:text-red-300">{{ $unsuccessful->company_name ?? 'N/A' }}</td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-sm text-red-700 dark:text-red-300">{{ $unsuccessful->created_at->format('Y-m-d H:i:s') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        @else
+                            <p class="text-sm text-red-600 dark:text-red-400 italic">No unsuccessful registrations found.</p>
+                        @endif
                     </div>
                 </div>
             @endif
