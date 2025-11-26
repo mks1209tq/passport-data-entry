@@ -73,7 +73,11 @@ class TIPLController extends Controller
                 ->with('error', 'Registration is closed. Maximum of 255 entries have been reached.');
         }
 
-        $tipl = TIPL::create($request->validated());
+        $validated = $request->validated();
+        // Remove tq_user_id as it's only for validation, not a database column
+        unset($validated['tq_user_id']);
+        
+        $tipl = TIPL::create($validated);
 
         // For public submissions, redirect back to welcome page with success message
         if (!auth()->check()) {

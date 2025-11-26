@@ -104,7 +104,7 @@
                 
                 <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] p-6 lg:p-8">
                     <!-- ID Verification Section -->
-                    <div id="id-verification-section" class="mb-6 p-4 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg bg-[#FDFDFC] dark:bg-[#0a0a0a]">
+                    <div id="id-verification-section" class="mb-6 p-4 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg bg-[#FDFDFC] dark:bg-[#0a0a0a]" style="display: {{ $errors->any() ? 'none' : 'block' }};">
                         <label for="tq_user_id_input" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2">
                             Enter Your Employee ID <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                         </label>
@@ -113,6 +113,7 @@
                                 type="text" 
                                 id="tq_user_id_input" 
                                 placeholder="Enter your Employee ID"
+                                value="{{ old('tq_user_id') }}"
                                 class="flex-1 px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC]"
                             >
                             <button 
@@ -127,9 +128,20 @@
                         <div id="id-verification-message" class="mt-2 text-sm hidden"></div>
                     </div>
 
-                    <form method="POST" action="{{ route('tipl.store') }}" class="space-y-6" id="tipl-form" style="display: none;">
+                    <form method="POST" action="{{ route('tipl.store') }}" class="space-y-6" id="tipl-form" style="display: {{ $errors->any() ? 'block' : 'none' }};">
                         @csrf
-                        <input type="hidden" name="tq_user_id" id="tq_user_id" value="">
+                        <input type="hidden" name="tq_user_id" id="tq_user_id" value="{{ old('tq_user_id', '') }}">
+                        
+                        @if($errors->any())
+                            <div class="mb-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-lg dark:bg-red-900 dark:border-red-700 dark:text-red-200" role="alert">
+                                <h3 class="text-lg font-bold mb-2">Please fix the following errors:</h3>
+                                <ul class="list-disc list-inside space-y-1">
+                                    @foreach($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <!-- Name -->
@@ -369,6 +381,21 @@
                 const messageDiv = document.getElementById('id-verification-message');
                 const form = document.getElementById('tipl-form');
                 const hiddenIdInput = document.getElementById('tq_user_id');
+                const idVerificationSection = document.getElementById('id-verification-section');
+                
+                // If form is visible (validation errors), hide ID verification section and disable ID input
+                if (form && (form.style.display === 'block' || window.getComputedStyle(form).display === 'block')) {
+                    if (idVerificationSection) {
+                        idVerificationSection.style.display = 'none';
+                    }
+                    if (idInput && hiddenIdInput && hiddenIdInput.value) {
+                        idInput.value = hiddenIdInput.value;
+                        idInput.disabled = true;
+                    }
+                    if (verifyBtn) {
+                        verifyBtn.style.display = 'none';
+                    }
+                }
 
                 verifyBtn.addEventListener('click', function() {
                     const idCode = idInput.value.trim();
