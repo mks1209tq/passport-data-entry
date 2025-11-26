@@ -86,21 +86,14 @@
                 </div>
             @endif
 
-            @if(isset($isRegistrationClosed) && $isRegistrationClosed === true)
-                <div class="mb-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-lg text-center dark:bg-red-900 dark:border-red-700 dark:text-red-200" role="alert">
-                    <h3 class="text-lg font-bold mb-2">Registration is Closed</h3>
-                    <p class="text-sm">We have reached the maximum limit of available seats. Thank you for your interest!</p>
-                    <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Total seats used: {{ $totalSeatsUsed ?? 230 }} / {{ $maxSeats ?? 230 }}</p> -->
-                </div>
-            @else
-                @php
-                    $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
-                @endphp
-                <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200" role="alert">
-                    <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
-                    <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
-                    <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p> -->
-                </div>
+            @php
+                $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
+            @endphp
+            <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200" role="alert">
+                <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
+                <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
+                <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p> -->
+            </div>
                 
                 <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] p-6 lg:p-8">
                     <!-- ID Verification Section -->

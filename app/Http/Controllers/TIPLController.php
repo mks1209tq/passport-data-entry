@@ -6,6 +6,7 @@ use App\Http\Requests\TIPLStoreRequest;
 use App\Http\Requests\TIPLUpdateRequest;
 use App\Models\TIPL;
 use App\Models\TqUser;
+use App\Models\UnsuccessfulRegistration;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -32,10 +33,17 @@ class TIPLController extends Controller
         // Get total count
         $totalEntries = TIPL::count();
         
+        // Get unsuccessful registrations (only for admins)
+        $unsuccessfulRegistrations = [];
+        if (auth()->user() && auth()->user()->isAdmin) {
+            $unsuccessfulRegistrations = UnsuccessfulRegistration::orderBy('created_at', 'desc')->get();
+        }
+        
         return view('tipl.index', [
             'tipls' => $tipls,
             'pickUpPointStats' => $pickUpPointStats,
             'totalEntries' => $totalEntries,
+            'unsuccessfulRegistrations' => $unsuccessfulRegistrations,
         ]);
     }
 
@@ -47,16 +55,11 @@ class TIPLController extends Controller
         // Calculate total seats used (1 seat per entry + expected_guests for each entry)
         $totalSeatsUsed = (int) (TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0);
         $maxSeats = 230;
-        $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
-        
-        // Debug: Log the values (remove after testing)
-        // \Log::info('Registration Status', ['totalSeatsUsed' => $totalSeatsUsed, 'maxSeats' => $maxSeats, 'isClosed' => $isRegistrationClosed]);
         $totalEntries = TIPL::count();
 
         // If accessed from root route, return welcome view, otherwise return tipl.create
         if (request()->routeIs('welcome')) {
             return view('welcome', [
-                'isRegistrationClosed' => $isRegistrationClosed,
                 'totalEntries' => $totalEntries,
                 'totalSeatsUsed' => $totalSeatsUsed,
                 'maxSeats' => $maxSeats,
@@ -64,7 +67,6 @@ class TIPLController extends Controller
         }
 
         return view('tipl.create', [
-            'isRegistrationClosed' => $isRegistrationClosed,
             'totalEntries' => $totalEntries,
             'totalSeatsUsed' => $totalSeatsUsed,
             'maxSeats' => $maxSeats,
