@@ -26,13 +26,13 @@
                 <nav class="flex items-center justify-end gap-4" style="display: flex !important; visibility: visible !important; opacity: 1 !important;">
                     @auth
                         @if(auth()->user()->isAdmin)
-                            <a
-                                href="{{ url('/dashboard') }}"
-                                class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
+                        <a
+                            href="{{ url('/dashboard') }}"
+                            class="inline-block px-5 py-1.5 dark:text-[#EDEDEC] border-[#19140035] hover:border-[#1915014a] border text-[#1b1b18] dark:border-[#3E3E3A] dark:hover:border-[#62605b] rounded-sm text-sm leading-normal"
                                 style="display: inline-block !important; visibility: visible !important; opacity: 1 !important; background-color: #1b1b18; color: #ffffff; min-width: 100px; border: 2px solid #19140035;"
-                            >
-                                Dashboard
-                            </a>
+                        >
+                            Dashboard
+                        </a>
                         @endif
                         <form method="POST" action="{{ route('logout') }}" class="inline" style="display: inline !important;">
                             @csrf
@@ -89,11 +89,13 @@
             @php
                 $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
             @endphp
-            <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200" role="alert">
-                <h3 class="text-lg font-bold mb-2">Registration Open</h3>
-                <!-- <p class="text-2xl font-bold">{{ $seatsLeft }}</p> -->
-                <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p> -->
-            </div>
+            @if($seatsLeft > 0)
+                <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200" role="alert">
+                    <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
+                    <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
+                    <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p> -->
+                </div>
+            @endif
                 
                 <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] p-6 lg:p-8">
                     <!-- ID Verification Section -->

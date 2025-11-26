@@ -37,11 +37,13 @@
                     @php
                         $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
                     @endphp
-                    <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center" role="alert">
-                        <h3 class="text-lg font-bold mb-2">Registration Open</h3>
-                        <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
-                        <p class="text-xs mt-2 text-gray-600">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p>
-                    </div>
+                    @if($seatsLeft > 0)
+                        <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center" role="alert">
+                            <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
+                            <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
+                            <p class="text-xs mt-2 text-gray-600">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p>
+                        </div>
+                    @endif
                         <!-- ID Verification Section -->
                         <div id="id-verification-section" class="mb-6 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900">
                             <label for="tq_user_id_input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
