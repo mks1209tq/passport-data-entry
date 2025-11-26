@@ -242,7 +242,7 @@
                             <!-- Pick Up Point (Radio Buttons) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
-                                    Pick Up Point <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
+                                    Pick Up Point(2 PM) <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                                 </label>
                                 <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                                     <div class="flex items-center">
@@ -320,7 +320,7 @@
                             <!-- In-House Talent (Yes/No Radio Buttons) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
-                                    Participate in musical performance(Solo/Group song)
+                                    Be a part of the musical performance program(Solo/Group Song)
                                 </label>
                                 <div class="flex gap-6">
                                     <div class="flex items-center">
