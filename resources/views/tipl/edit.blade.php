@@ -113,20 +113,47 @@
                             <!-- Pick Up Point (Radio Buttons) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-                                    Pick Up Point
+                                    Pick Up Point <span class="text-red-500">*</span>
                                 </label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                @php
+                                    $pickUpPoint = old('pick_up_point', $tipl->pick_up_point);
+                                    // Map old values to new values for backward compatibility
+                                    $pickUpPointMap = [
+                                        'Point 1' => 'Al Quoz',
+                                        'Point 2' => 'International City',
+                                        'Point 3' => 'ADCB',
+                                        'Point 4' => 'Head Office',
+                                    ];
+                                    if (isset($pickUpPointMap[$pickUpPoint])) {
+                                        $pickUpPoint = $pickUpPointMap[$pickUpPoint];
+                                    }
+                                @endphp
+                                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_self" 
+                                            value="Self"
+                                            {{ $pickUpPoint == 'Self' ? 'checked' : '' }}
+                                            required
+                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                        >
+                                        <label for="pick_up_point_self" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
+                                            Self
+                                        </label>
+                                    </div>
                                     <div class="flex items-center">
                                         <input 
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_1" 
-                                            value="Point 1"
-                                            {{ old('pick_up_point', $tipl->pick_up_point) == 'Point 1' ? 'checked' : '' }}
+                                            value="Al Quoz"
+                                            {{ $pickUpPoint == 'Al Quoz' ? 'checked' : '' }}
                                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                         >
                                         <label for="pick_up_point_1" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                            Point 1
+                                            Al Quoz
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -134,12 +161,12 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_2" 
-                                            value="Point 2"
-                                            {{ old('pick_up_point', $tipl->pick_up_point) == 'Point 2' ? 'checked' : '' }}
+                                            value="International City"
+                                            {{ $pickUpPoint == 'International City' ? 'checked' : '' }}
                                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                         >
                                         <label for="pick_up_point_2" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                            Point 2
+                                            International City
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -147,12 +174,12 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_3" 
-                                            value="Point 3"
-                                            {{ old('pick_up_point', $tipl->pick_up_point) == 'Point 3' ? 'checked' : '' }}
+                                            value="ADCB"
+                                            {{ $pickUpPoint == 'ADCB' ? 'checked' : '' }}
                                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                         >
                                         <label for="pick_up_point_3" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                            Point 3
+                                            ADCB
                                         </label>
                                     </div>
                                     <div class="flex items-center">
@@ -160,12 +187,12 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_4" 
-                                            value="Point 4"
-                                            {{ old('pick_up_point', $tipl->pick_up_point) == 'Point 4' ? 'checked' : '' }}
+                                            value="Head Office"
+                                            {{ $pickUpPoint == 'Head Office' ? 'checked' : '' }}
                                             class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
                                         >
                                         <label for="pick_up_point_4" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
-                                            Point 4
+                                            Head Office
                                         </label>
                                     </div>
                                 </div>

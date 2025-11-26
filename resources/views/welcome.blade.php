@@ -93,6 +93,15 @@
                     <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Total entries: {{ $totalEntries ?? 255 }}</p>
                 </div>
             @else
+                @php
+                    $seatsLeft = 255 - ($totalEntries ?? 0);
+                @endphp
+                <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center dark:bg-blue-900 dark:border-blue-700 dark:text-blue-200" role="alert">
+                    <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
+                    <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
+                    <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Out of 255 total seats</p>
+                </div>
+                
                 <div class="bg-white dark:bg-[#161615] border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg shadow-[0px_0px_1px_0px_rgba(0,0,0,0.03),0px_1px_2px_0px_rgba(0,0,0,0.06)] p-6 lg:p-8">
                     <!-- ID Verification Section -->
                     <div id="id-verification-section" class="mb-6 p-4 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-lg bg-[#FDFDFC] dark:bg-[#0a0a0a]">
@@ -134,7 +143,8 @@
                                     id="name" 
                                     value="{{ old('name') }}" 
                                     required
-                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('name') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                    readonly
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-gray-100 dark:bg-gray-700 text-[#1b1b18] dark:text-[#EDEDEC] cursor-not-allowed @error('name') border-[#F53003] dark:border-[#FF4433] @enderror"
                                 >
                                 @error('name')
                                     <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
@@ -152,7 +162,8 @@
                                     id="employee_id" 
                                     value="{{ old('employee_id') }}"
                                     required
-                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('employee_id') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                    readonly
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-gray-100 dark:bg-gray-700 text-[#1b1b18] dark:text-[#EDEDEC] cursor-not-allowed @error('employee_id') border-[#F53003] dark:border-[#FF4433] @enderror"
                                 >
                                 @error('employee_id')
                                     <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
@@ -170,7 +181,8 @@
                                     id="company_name" 
                                     value="{{ old('company_name') }}"
                                     required
-                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('company_name') border-[#F53003] dark:border-[#FF4433] @enderror"
+                                    readonly
+                                    class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-gray-100 dark:bg-gray-700 text-[#1b1b18] dark:text-[#EDEDEC] cursor-not-allowed @error('company_name') border-[#F53003] dark:border-[#FF4433] @enderror"
                                 >
                                 @error('company_name')
                                     <p class="mt-1 text-sm text-[#F53003] dark:text-[#FF4433]">{{ $message }}</p>
@@ -218,16 +230,30 @@
                             <!-- Pick Up Point (Radio Buttons) -->
                             <div class="md:col-span-2">
                                 <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
-                                    Pick Up Point
+                                    Pick Up Point <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                                 </label>
-                                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                    <div class="flex items-center">
+                                        <input 
+                                            type="radio" 
+                                            name="pick_up_point" 
+                                            id="pick_up_point_self" 
+                                            value="Self"
+                                            {{ old('pick_up_point') == 'Self' ? 'checked' : '' }}
+                                            required
+                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                        >
+                                        <label for="pick_up_point_self" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
+                                            Self
+                                        </label>
+                                    </div>
                                     <div class="flex items-center">
                                         <input 
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_1" 
-                                            value="Point 1"
-                                            {{ old('pick_up_point') == 'Point 1' ? 'checked' : '' }}
+                                            value="Al Quoz"
+                                            {{ old('pick_up_point') == 'Al Quoz' ? 'checked' : '' }}
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_1" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
@@ -239,8 +265,8 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_2" 
-                                            value="Point 2"
-                                            {{ old('pick_up_point') == 'Point 2' ? 'checked' : '' }}
+                                            value="International City"
+                                            {{ old('pick_up_point') == 'International City' ? 'checked' : '' }}
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_2" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
@@ -252,8 +278,8 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_3" 
-                                            value="Point 3"
-                                            {{ old('pick_up_point') == 'Point 3' ? 'checked' : '' }}
+                                            value="ADCB"
+                                            {{ old('pick_up_point') == 'ADCB' ? 'checked' : '' }}
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_3" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
@@ -265,8 +291,8 @@
                                             type="radio" 
                                             name="pick_up_point" 
                                             id="pick_up_point_4" 
-                                            value="Point 4"
-                                            {{ old('pick_up_point') == 'Point 4' ? 'checked' : '' }}
+                                            value="Head Office"
+                                            {{ old('pick_up_point') == 'Head Office' ? 'checked' : '' }}
                                             class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
                                         >
                                         <label for="pick_up_point_4" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">

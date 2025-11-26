@@ -43,7 +43,7 @@ class TIPLStoreRequest extends FormRequest
             ],
             'company_name' => ['required', 'string', 'max:100'],
             'phone_number' => ['required', 'string', 'max:20'],
-            'pick_up_point' => ['nullable', 'string', 'max:100'],
+            'pick_up_point' => ['required', 'string', 'max:100', 'in:Self,Al Quoz,International City,ADCB,Head Office'],
             'in_house_talent' => ['nullable', 'string', 'in:yes,no'],
             'expected_guests' => ['required', 'integer', 'min:0', 'max:9999'],
         ];
