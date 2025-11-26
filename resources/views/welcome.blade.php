@@ -89,8 +89,8 @@
             @if(isset($isRegistrationClosed) && $isRegistrationClosed)
                 <div class="mb-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-lg text-center dark:bg-red-900 dark:border-red-700 dark:text-red-200" role="alert">
                     <h3 class="text-lg font-bold mb-2">Registration is Closed</h3>
-                    <p class="text-sm">We have reached the maximum limit of {{ $maxSeats ?? 225 }} seats. Thank you for your interest!</p>
-                    <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Total seats used: {{ $totalSeatsUsed ?? 225 }} / {{ $maxSeats ?? 225 }}</p>
+                    <p class="text-sm">We have reached the maximum limit of available seats. Thank you for your interest!</p>
+                    <!-- <p class="text-xs mt-2 text-gray-600 dark:text-gray-400">Total seats used: {{ $totalSeatsUsed ?? 225 }} / {{ $maxSeats ?? 225 }}</p> -->
                 </div>
             @else
                 @php
