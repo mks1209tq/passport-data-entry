@@ -45,9 +45,12 @@ class TIPLController extends Controller
     public function create(): View
     {
         // Calculate total seats used (1 seat per entry + expected_guests for each entry)
-        $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
+        $totalSeatsUsed = (int) (TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0);
         $maxSeats = 230;
         $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
+        
+        // Debug: Log the values (remove after testing)
+        // \Log::info('Registration Status', ['totalSeatsUsed' => $totalSeatsUsed, 'maxSeats' => $maxSeats, 'isClosed' => $isRegistrationClosed]);
         $totalEntries = TIPL::count();
 
         // If accessed from root route, return welcome view, otherwise return tipl.create
@@ -74,7 +77,7 @@ class TIPLController extends Controller
     public function store(TIPLStoreRequest $request): RedirectResponse
     {
         // Calculate total seats used (1 seat per entry + expected_guests for each entry)
-        $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
+        $totalSeatsUsed = (int) (TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0);
         $maxSeats = 230;
         $expectedGuests = (int)($request->input('expected_guests', 0));
         $seatsNeeded = 1 + $expectedGuests; // 1 for the user + expected guests
@@ -189,7 +192,7 @@ class TIPLController extends Controller
         }
 
         // Check if registration is closed
-        $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
+        $totalSeatsUsed = (int) (TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0);
         $maxSeats = 230;
         $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
 
