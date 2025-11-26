@@ -46,7 +46,7 @@ class TIPLController extends Controller
     {
         // Calculate total seats used (1 seat per entry + expected_guests for each entry)
         $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
-        $maxSeats = 225;
+        $maxSeats = 230;
         $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
         $totalEntries = TIPL::count();
 
@@ -75,7 +75,7 @@ class TIPLController extends Controller
     {
         // Calculate total seats used (1 seat per entry + expected_guests for each entry)
         $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
-        $maxSeats = 225;
+        $maxSeats = 230;
         $expectedGuests = (int)($request->input('expected_guests', 0));
         $seatsNeeded = 1 + $expectedGuests; // 1 for the user + expected guests
         

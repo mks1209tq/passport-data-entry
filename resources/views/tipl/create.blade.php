@@ -37,17 +37,17 @@
                     @if(isset($isRegistrationClosed) && $isRegistrationClosed)
                         <div class="mb-6 bg-red-100 border-2 border-red-400 text-red-700 px-6 py-4 rounded-lg text-center" role="alert">
                             <h3 class="text-lg font-bold mb-2">Registration is Closed</h3>
-                            <p class="text-sm">We have reached the maximum limit of {{ $maxSeats ?? 225 }} seats. Thank you for your interest!</p>
-                            <p class="text-xs mt-2 text-gray-600">Total seats used: {{ $totalSeatsUsed ?? 225 }} / {{ $maxSeats ?? 225 }}</p>
+                            <p class="text-sm">We have reached the maximum limit of {{ $maxSeats ?? 230 }} seats. Thank you for your interest!</p>
+                            <p class="text-xs mt-2 text-gray-600">Total seats used: {{ $totalSeatsUsed ?? 230 }} / {{ $maxSeats ?? 230 }}</p>
                         </div>
                     @else
                         @php
-                            $seatsLeft = ($maxSeats ?? 225) - ($totalSeatsUsed ?? 0);
+                            $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
                         @endphp
                         <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center" role="alert">
                             <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
                             <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
-                            <p class="text-xs mt-2 text-gray-600">Out of {{ $maxSeats ?? 225 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p>
+                            <p class="text-xs mt-2 text-gray-600">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p>
                         </div>
                         <!-- ID Verification Section -->
                         <div id="id-verification-section" class="mb-6 p-4 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-900">
