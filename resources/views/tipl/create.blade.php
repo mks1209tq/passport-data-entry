@@ -38,7 +38,7 @@
                         $seatsLeft = ($maxSeats ?? 230) - ($totalSeatsUsed ?? 0);
                     @endphp
                     <div class="mb-6 bg-blue-100 border-2 border-blue-400 text-blue-700 px-6 py-4 rounded-lg text-center" role="alert">
-                        <h3 class="text-lg font-bold mb-2">Registration Seats Available</h3>
+                        <h3 class="text-lg font-bold mb-2">Registration Open</h3>
                         <p class="text-2xl font-bold">{{ $seatsLeft }}</p>
                         <p class="text-xs mt-2 text-gray-600">Out of {{ $maxSeats ?? 230 }} total seats ({{ $totalSeatsUsed ?? 0 }} seats used)</p>
                     </div>
