@@ -54,7 +54,7 @@
                             <label for="tq_user_id_input" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                                 Enter ID <span class="text-red-500">*</span>
                             </label>
-                            <div class="flex gap-3">
+                            <div class="flex flex-col sm:flex-row gap-3">
                                 <input 
                                     type="text" 
                                     id="tq_user_id_input" 
@@ -64,7 +64,7 @@
                                 <button 
                                     type="button" 
                                     id="verify-id-btn"
-                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors border-2 border-indigo-700 whitespace-nowrap"
+                                    class="px-6 py-2 bg-indigo-600 text-white rounded-md font-medium hover:bg-indigo-700 transition-colors border-2 border-indigo-700 whitespace-nowrap w-full sm:w-auto"
                                     style="background-color: #2563eb; color: #ffffff; min-width: 120px;"
                                 >
                                     Verify ID
@@ -165,7 +165,7 @@
                                     value="{{ old('expected_guests') }}"
                                     required
                                     min="0"
-                                    max="9999"
+                                    max="3"
                                     class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white @error('expected_guests') border-red-500 @enderror"
                                 >
                                 @error('expected_guests')
@@ -178,7 +178,7 @@
                                 <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                                     Pick Up Point <span class="text-red-500">*</span>
                                 </label>
-                                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                                     <div class="flex items-center">
                                         <input 
                                             type="radio" 
@@ -187,7 +187,7 @@
                                             value="Self"
                                             {{ old('pick_up_point') == 'Self' ? 'checked' : '' }}
                                             required
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_self" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             Self
@@ -200,7 +200,7 @@
                                             id="pick_up_point_1" 
                                             value="Al Quoz"
                                             {{ old('pick_up_point') == 'Al Quoz' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_1" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             Al Quoz
@@ -213,7 +213,7 @@
                                             id="pick_up_point_2" 
                                             value="International City"
                                             {{ old('pick_up_point') == 'International City' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_2" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             International City
@@ -226,7 +226,7 @@
                                             id="pick_up_point_3" 
                                             value="ADCB"
                                             {{ old('pick_up_point') == 'ADCB' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_3" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             ADCB
@@ -239,7 +239,7 @@
                                             id="pick_up_point_4" 
                                             value="Head Office"
                                             {{ old('pick_up_point') == 'Head Office' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_4" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             Head Office
@@ -264,7 +264,7 @@
                                             id="in_house_talent_yes" 
                                             value="yes"
                                             {{ old('in_house_talent') == 'yes' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="in_house_talent_yes" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             Yes
@@ -277,7 +277,7 @@
                                             id="in_house_talent_no" 
                                             value="no"
                                             {{ old('in_house_talent') == 'no' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300"
+                                            class="h-4 w-4 text-indigo-600 dark:text-blue-500 focus:ring-indigo-500 dark:focus:ring-blue-500 border-gray-300 accent-indigo-600 dark:accent-blue-500"
                                         >
                                         <label for="in_house_talent_no" class="ml-2 block text-sm text-gray-700 dark:text-gray-300">
                                             No

@@ -8,7 +8,7 @@
     <div class="py-12" style="overflow: visible;">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8" style="overflow: visible;">
             <!-- Search Form -->
-            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6 display: none;" style="overflow: visible;">
+            <div class="bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg mb-6 display: none;" style="overflow: visible; display: none;">
                 <div class="p-6" style="overflow: visible;">
                     <form method="GET" action="{{ route('dashboard') }}" id="searchForm" class="flex items-center gap-3" style="overflow: visible;">
                         <div class="flex-1 relative" style="overflow: visible;">

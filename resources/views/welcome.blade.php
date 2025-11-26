@@ -108,7 +108,7 @@
                         <label for="tq_user_id_input" class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2">
                             Enter Your Employee ID <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                         </label>
-                        <div class="flex gap-3">
+                        <div class="flex flex-col sm:flex-row gap-3">
                             <input 
                                 type="text" 
                                 id="tq_user_id_input" 
@@ -119,7 +119,7 @@
                             <button 
                                 type="button" 
                                 id="verify-id-btn"
-                                class="px-6 py-2 bg-[#1b1b18] dark:bg-[#EDEDEC] text-white dark:text-[#1b1b18] rounded-sm font-medium hover:opacity-90 transition-opacity border-2 border-[#19140035] dark:border-[#3E3E3A] whitespace-nowrap"
+                                class="px-6 py-2 bg-[#1b1b18] dark:bg-[#EDEDEC] text-white dark:text-[#1b1b18] rounded-sm font-medium hover:opacity-90 transition-opacity border-2 border-[#19140035] dark:border-[#3E3E3A] whitespace-nowrap w-full sm:w-auto"
                                 style="background-color: #1b1b18; color: #ffffff; min-width: 120px;"
                             >
                                 Verify ID
@@ -231,7 +231,7 @@
                                     value="{{ old('expected_guests') }}"
                                     required
                                     min="0"
-                                    max="9999"
+                                    max="3"
                                     class="w-full px-3 py-2 border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-white dark:bg-[#161615] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:border-[#1b1b18] dark:focus:border-[#EDEDEC] @error('expected_guests') border-[#F53003] dark:border-[#FF4433] @enderror"
                                 >
                                 @error('expected_guests')
@@ -244,7 +244,7 @@
                                 <label class="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-3">
                                     Pick Up Point <span class="text-[#F53003] dark:text-[#FF4433]">*</span>
                                 </label>
-                                <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+                                <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-4">
                                     <div class="flex items-center">
                                         <input 
                                             type="radio" 
@@ -253,7 +253,7 @@
                                             value="Self"
                                             {{ old('pick_up_point') == 'Self' ? 'checked' : '' }}
                                             required
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_self" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             Self
@@ -266,7 +266,7 @@
                                             id="pick_up_point_1" 
                                             value="Al Quoz"
                                             {{ old('pick_up_point') == 'Al Quoz' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_1" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             Al Quoz
@@ -279,7 +279,7 @@
                                             id="pick_up_point_2" 
                                             value="International City"
                                             {{ old('pick_up_point') == 'International City' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_2" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             International City
@@ -292,7 +292,7 @@
                                             id="pick_up_point_3" 
                                             value="ADCB"
                                             {{ old('pick_up_point') == 'ADCB' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_3" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             ADCB
@@ -305,7 +305,7 @@
                                             id="pick_up_point_4" 
                                             value="Head Office"
                                             {{ old('pick_up_point') == 'Head Office' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="pick_up_point_4" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             Head Office
@@ -330,7 +330,7 @@
                                             id="in_house_talent_yes" 
                                             value="yes"
                                             {{ old('in_house_talent') == 'yes' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="in_house_talent_yes" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             Yes
@@ -343,7 +343,7 @@
                                             id="in_house_talent_no" 
                                             value="no"
                                             {{ old('in_house_talent') == 'no' ? 'checked' : '' }}
-                                            class="h-4 w-4 text-[#1b1b18] dark:text-[#EDEDEC] border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-[#1b1b18] dark:focus:ring-[#EDEDEC]"
+                                            class="h-4 w-4 text-blue-600 dark:text-blue-500 border-[#e3e3e0] dark:border-[#3E3E3A] focus:ring-blue-500 dark:focus:ring-blue-500 accent-blue-600 dark:accent-blue-500"
                                         >
                                         <label for="in_house_talent_no" class="ml-2 block text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
                                             No
