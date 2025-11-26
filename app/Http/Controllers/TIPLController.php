@@ -82,7 +82,7 @@ class TIPLController extends Controller
         if ($totalSeatsUsed + $seatsNeeded > $maxSeats) {
             $seatsLeft = max(0, $maxSeats - $totalSeatsUsed);
             return redirect()->route('welcome')
-                ->with('error', "Registration is closed. Only {$seatsLeft} seat(s) remaining, but you need {$seatsNeeded} seat(s).");
+                ->with('error', "Sorry. Only {$seatsLeft} seat(s) remaining, cannot accomodate {$seatsNeeded} seat(s).");
         }
 
         $validated = $request->validated();
