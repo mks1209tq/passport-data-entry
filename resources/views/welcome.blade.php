@@ -360,7 +360,6 @@
                         </div>
                     </form>
                 </div>
-            @endif
         </div>
 
         @if (Route::has('login'))
