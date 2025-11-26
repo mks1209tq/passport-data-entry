@@ -188,6 +188,26 @@ class TIPLController extends Controller
             ], 409);
         }
 
+        // Check if registration is closed
+        $totalSeatsUsed = (int) TIPL::selectRaw('SUM(1 + COALESCE(expected_guests, 0)) as total')->value('total') ?? 0;
+        $maxSeats = 230;
+        $isRegistrationClosed = $totalSeatsUsed >= $maxSeats;
+
+        if ($isRegistrationClosed) {
+            // Insert into unsuccessful_registration table
+            \App\Models\UnsuccessfulRegistration::create([
+                'id_code' => $tqUser->id_code,
+                'name' => $tqUser->name,
+                'company_name' => $tqUser->company_name ?? null,
+            ]);
+
+            return response()->json([
+                'valid' => false,
+                'registration_closed' => true,
+                'message' => 'Registration is closed. We have reached the maximum limit of available seats. Thank you for your interest!',
+            ], 410); // 410 Gone status code
+        }
+
         return response()->json([
             'valid' => true,
             'name' => $tqUser->name,

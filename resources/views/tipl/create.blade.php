@@ -348,6 +348,11 @@
                             throw new Error(JSON.stringify(data));
                         });
                     }
+                    if (response.status === 410) {
+                        return response.json().then(data => {
+                            throw new Error(JSON.stringify(data));
+                        });
+                    }
                     return response.json();
                 })
                 .then(data => {
@@ -381,7 +386,9 @@
                 .catch(error => {
                     try {
                         const data = JSON.parse(error.message);
-                        if (data.duplicate) {
+                        if (data.registration_closed) {
+                            showMessage('✗ ' + data.message, 'error');
+                        } else if (data.duplicate) {
                             showMessage('✗ ' + data.message, 'error');
                         } else {
                             showMessage('✗ ' + (data.message || 'An error occurred. Please try again.'), 'error');
