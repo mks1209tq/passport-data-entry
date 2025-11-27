@@ -7,6 +7,7 @@ use App\Http\Requests\TIPLUpdateRequest;
 use App\Models\TIPL;
 use App\Models\TqUser;
 use App\Models\UnsuccessfulRegistration;
+use App\Models\ReservedUser;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -186,6 +187,17 @@ class TIPLController extends Controller
         $existingEntry = TIPL::where('employee_id', $tqUser->id_code)->first();
 
         if ($existingEntry) {
+            return response()->json([
+                'valid' => false,
+                'duplicate' => true,
+                'message' => 'You have already registered.',
+            ], 409);
+        }
+
+        // Check if user exists in reserved_users table
+        $existingReservedUser = ReservedUser::where('id_code', $tqUser->id_code)->first();
+
+        if ($existingReservedUser) {
             return response()->json([
                 'valid' => false,
                 'duplicate' => true,
