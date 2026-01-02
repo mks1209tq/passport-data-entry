@@ -199,11 +199,6 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
-                            <input type="date" class="form-control" id="dob" name="dob" required>
-                        </div>
-
-                        <div class="mb-3">
                             <label for="contact_number" class="form-label">Contact Number <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="contact_number" name="contact_number" 
                                    placeholder="Contact Number" required>

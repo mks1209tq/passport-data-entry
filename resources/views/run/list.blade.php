@@ -119,7 +119,6 @@
                     <th>Designation</th>
                     <th>Department/Projects</th>
                     <th>Entity</th>
-                    <th>Date of Birth</th>
                     <th>Contact Number</th>
                     <th>UN Category</th>
                     <th>T-Shirt Size</th>
@@ -138,7 +137,6 @@
                     <td>{{ $r->designation }}</td>
                     <td>{{ $r->company }}</td>
                     <td>{{ $r->entity }}</td>
-                    <td>{{ $r->dob ? \Carbon\Carbon::parse($r->dob)->format('d/m/Y') : 'N/A' }}</td>
                     <td>{{ $r->contact_number }}</td>
                     <td>{{ $r->run_category }}</td>
                     <td>{{ $r->tshirt_size }}</td>
