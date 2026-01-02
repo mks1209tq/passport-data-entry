@@ -25,3 +25,6 @@ Thumbs.db
 *.xlsx
 *.xls
 Tanseeq Run Registration Form*.xlsx
+# Allow Excel files in data folder
+!/data/*.xlsx
+!/data/*.xls
