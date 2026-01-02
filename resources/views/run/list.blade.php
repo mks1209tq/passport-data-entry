@@ -104,6 +104,9 @@
         <div class="action-buttons">
             <a href="/tanseeq-run" class="btn btn-primary">Create New Registration</a>
             <a href="/tanseeq-run/export" class="btn btn-success">Download as CSV</a>
+            @if(isset($isSuperAdmin) && $isSuperAdmin)
+                <a href="{{ route('admin.register') }}" class="btn" style="background-color: #6c757d; color: white;">Create Admin Account</a>
+            @endif
             <a href="{{ route('admin.logout') }}" class="btn" style="background-color: #dc3545; color: white;">Logout</a>
         </div>
        
@@ -117,8 +120,7 @@
                     <th>Employee ID</th>
                     <th>Name</th>
                     <th>Designation</th>
-                    <th>Department/Projects</th>
-                    <th>Entity</th>
+                    <th>Company</th>
                     <th>Contact Number</th>
                     <th>UN Category</th>
                     <th>T-Shirt Size</th>
@@ -136,7 +138,6 @@
                     <td>{{ $r->name }}</td>
                     <td>{{ $r->designation }}</td>
                     <td>{{ $r->company }}</td>
-                    <td>{{ $r->entity }}</td>
                     <td>{{ $r->contact_number }}</td>
                     <td>{{ $r->run_category }}</td>
                     <td>{{ $r->tshirt_size }}</td>

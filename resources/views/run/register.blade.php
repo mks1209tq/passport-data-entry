@@ -187,15 +187,9 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="company" class="form-label">Department/Projects <span class="text-danger">*</span></label>
+                            <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="company" name="company" 
-                                   placeholder="Department/Projects" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label for="entity" class="form-label">Entity <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="entity" name="entity" 
-                                   placeholder="Entity" required>
+                                   placeholder="Company" required>
                         </div>
 
                         <div class="mb-3">
@@ -242,7 +236,6 @@
     let nameInput = document.getElementById('name');
     let designationInput = document.getElementById('designation');
     let companyInput = document.getElementById('company');
-    let entityInput = document.getElementById('entity');
     let errorDiv = document.getElementById('employee_id_error');
     let loadingDiv = document.getElementById('employee_id_loading');
     let timeout;
@@ -264,10 +257,6 @@
             if (companyInput) {
                 companyInput.value = '';
                 companyInput.removeAttribute('readonly');
-            }
-            if (entityInput) {
-                entityInput.value = '';
-                entityInput.removeAttribute('readonly');
             }
             if (errorDiv) {
                 errorDiv.style.display = 'none';
@@ -321,10 +310,6 @@
                                     companyInput.value = '';
                                     companyInput.removeAttribute('readonly');
                                 }
-                                if (entityInput) {
-                                    entityInput.value = '';
-                                    entityInput.removeAttribute('readonly');
-                                }
                             } else {
                                 // Auto-fill and make readonly when employee found
                                 console.log('Auto-filling fields...');
@@ -336,13 +321,10 @@
                                     designationInput.value = data.designation;
                                     designationInput.setAttribute('readonly', 'readonly');
                                 }
-                                if (companyInput && data.department_projects) {
-                                    companyInput.value = data.department_projects;
+                                // Use entity data for company field (since employee data has entity)
+                                if (companyInput && data.entity) {
+                                    companyInput.value = data.entity;
                                     companyInput.setAttribute('readonly', 'readonly');
-                                }
-                                if (entityInput && data.entity) {
-                                    entityInput.value = data.entity;
-                                    entityInput.setAttribute('readonly', 'readonly');
                                 }
                                 if (errorDiv) {
                                     errorDiv.style.display = 'none';
@@ -380,10 +362,6 @@
                                 companyInput.value = '';
                                 companyInput.removeAttribute('readonly');
                             }
-                            if (entityInput) {
-                                entityInput.value = '';
-                                entityInput.removeAttribute('readonly');
-                            }
                         });
                 }, 300); // Reduced to 300ms for faster response
             } else {
@@ -399,10 +377,6 @@
                 if (companyInput) {
                     companyInput.value = '';
                     companyInput.removeAttribute('readonly');
-                }
-                if (entityInput) {
-                    entityInput.value = '';
-                    entityInput.removeAttribute('readonly');
                 }
                 if (errorDiv) {
                     errorDiv.style.display = 'none';

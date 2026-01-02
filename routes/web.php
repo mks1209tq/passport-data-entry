@@ -16,8 +16,12 @@ Route::get('/api/check-database', [RunRegistrationController::class, 'checkDatab
 // Admin login and registration routes
 Route::get('/admin/login', [RunRegistrationController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [RunRegistrationController::class, 'login'])->name('admin.login.post');
-Route::get('/admin/register', [RunRegistrationController::class, 'showRegister'])->name('admin.register');
-Route::post('/admin/register', [RunRegistrationController::class, 'register'])->name('admin.register.post');
+
+// Admin registration (only accessible by super admins)
+Route::middleware('admin')->group(function () {
+    Route::get('/admin/register', [RunRegistrationController::class, 'showRegister'])->name('admin.register');
+    Route::post('/admin/register', [RunRegistrationController::class, 'register'])->name('admin.register.post');
+});
 
 // Admin routes (protected)
 Route::middleware('admin')->group(function () {

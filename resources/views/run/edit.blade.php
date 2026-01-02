@@ -57,11 +57,6 @@
                                    value="{{ $registration->company }}" required>
                         </div>
 
-                        <div class="mb-3">
-                            <label for="entity" class="form-label">Entity <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="entity" name="entity" 
-                                   value="{{ $registration->entity }}" required>
-                        </div>
 
                         <div class="mb-3">
                             <label for="contact_number" class="form-label">Contact Number <span class="text-danger">*</span></label>

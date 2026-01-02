@@ -85,12 +85,12 @@ class RunRegistrationController extends Controller
                     ?? $employee->projects 
                     ?? '';
                 
-                return response()->json([
-                    'name' => $employee->name ?? '',
-                    'designation' => $employee->designation ?? '',
-                    'department_projects' => $departmentProjects,
-                    'entity' => $employee->entity ?? '',
-                ]);
+            return response()->json([
+                'name' => $employee->name ?? '',
+                'designation' => $employee->designation ?? '',
+                'department_projects' => $departmentProjects,
+                'entity' => $employee->entity ?? '', // Map entity to company field in form
+            ]);
             }
             
             // Check if database has any employees at all
@@ -134,7 +134,6 @@ class RunRegistrationController extends Controller
             'name' => 'required',
             'designation' => 'required',
             'company' => 'required',
-            'entity' => 'required',
             'run_category' => 'required|in:2.5KM,5KM,10KM',
             'contact_number' => 'required|digits_between:10,12',
             'tshirt_size' => 'required|in:S,M,L,XL,XXL,XXXL',
@@ -189,7 +188,6 @@ class RunRegistrationController extends Controller
             'name' => $request->name,
             'designation' => $request->designation,
             'company' => $request->company,
-            'entity' => $request->entity,
             'run_category' => $request->run_category,
             'contact_number' => $request->contact_number,
             'tshirt_size' => $request->tshirt_size,
@@ -206,7 +204,8 @@ class RunRegistrationController extends Controller
     public function index()
     {
         $registrations = RunRegistration::latest()->get();
-        return view('run.list', compact('registrations'));
+        $isSuperAdmin = $this->isSuperAdmin();
+        return view('run.list', compact('registrations', 'isSuperAdmin'));
     }
 
     public function showLogin()
@@ -214,30 +213,72 @@ class RunRegistrationController extends Controller
         return view('admin.login');
     }
 
+    /**
+     * Check if current user is a super admin
+     * Only the 3 initial super admins (defined in .env) can create other admin accounts
+     * Admins created by super admins can access admin area but cannot create more admins
+     */
+    private function isSuperAdmin()
+    {
+        // Get super admin emails from .env (comma-separated)
+        // These are the 3 initial admins who can create other admins
+        $superAdminEmails = env('SUPER_ADMIN_EMAILS', '');
+        $superAdminList = array_map('trim', explode(',', $superAdminEmails));
+        $superAdminList = array_filter($superAdminList); // Remove empty values
+        
+        // Check if user is logged in and is one of the 3 super admins
+        if (Auth::check()) {
+            $userEmail = Auth::user()->email;
+            return in_array($userEmail, $superAdminList);
+        }
+        
+        return false;
+    }
+
+    /**
+     * Check if current user is an admin (any admin - super admin or regular admin)
+     * All users in the users table are admins and can access admin area
+     */
+    private function isAdmin()
+    {
+        // Any authenticated user is an admin
+        // Super admins are a subset of admins who can create more admins
+        return Auth::check() || session('admin_logged_in');
+    }
+
     public function showRegister()
     {
+        // Only super admins can access registration page
+        if (!$this->isSuperAdmin()) {
+            return redirect()->route('admin.login')->with('error', 'Access denied. Only super admins can create admin accounts.');
+        }
+        
         return view('admin.register');
     }
 
     public function register(Request $request)
     {
+        // Only super admins can create admin accounts
+        if (!$this->isSuperAdmin()) {
+            return redirect()->route('admin.login')->with('error', 'Access denied. Only super admins can create admin accounts.');
+        }
+
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
         ]);
 
+        // Create new admin account
+        // This user will be able to access admin area but cannot create more admins
+        // Only the 3 super admins (defined in .env) can create admin accounts
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
         ]);
 
-        // Auto-login after registration
-        session(['admin_logged_in' => true]);
-        session(['admin_user_id' => $user->id]);
-
-        return redirect()->route('registrations.list')->with('success', 'Account created successfully! You are now logged in.');
+        return redirect()->route('registrations.list')->with('success', 'Admin account created successfully! The new admin can now login and access the admin area.');
     }
 
     public function login(Request $request)
@@ -295,7 +336,6 @@ class RunRegistrationController extends Controller
             'name' => 'required',
             'designation' => 'required',
             'company' => 'required',
-            'entity' => 'required',
             'run_category' => 'required|in:2.5KM,5KM,10KM',
             'contact_number' => 'required|digits_between:10,12',
             'tshirt_size' => 'required|in:S,M,L,XL,XXL,XXXL',
@@ -305,7 +345,6 @@ class RunRegistrationController extends Controller
             'name' => $request->name,
             'designation' => $request->designation,
             'company' => $request->company,
-            'entity' => $request->entity,
             'run_category' => $request->run_category,
             'contact_number' => $request->contact_number,
             'tshirt_size' => $request->tshirt_size,
@@ -338,8 +377,7 @@ class RunRegistrationController extends Controller
                 'Employee ID',
                 'Name',
                 'Designation',
-                'Department/Projects',
-                'Entity',
+                'Company',
                 'Contact Number',
                 'UN Category',
                 'T-Shirt Size',
@@ -355,7 +393,6 @@ class RunRegistrationController extends Controller
                     $r->name,
                     $r->designation,
                     $r->company,
-                    $r->entity,
                     $r->contact_number,
                     $r->run_category,
                     $r->tshirt_size,
