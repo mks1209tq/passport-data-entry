@@ -140,17 +140,17 @@ class RunRegistrationController extends Controller
         ]);
 
         // Generate unique registration ID based on run category
-        // Format: TR26-XXXX where XXXX starts from category-specific number
+        // Format: S3-XXXX where XXXX starts from category-specific number
         $startNumber = 0;
         switch ($request->run_category) {
             case '2.5KM':
-                $startNumber = 2501; // Starts from TR26-2501
+                $startNumber = 2501; // Starts from S3-2501
                 break;
             case '5KM':
-                $startNumber = 5001; // Starts from TR26-5001
+                $startNumber = 5001; // Starts from S3-5001
                 break;
             case '10KM':
-                $startNumber = 10001; // Starts from TR26-10001
+                $startNumber = 10001; // Starts from S3-10001
                 break;
             default:
                 $startNumber = 1;
@@ -158,14 +158,14 @@ class RunRegistrationController extends Controller
         
         // Find the highest existing registration ID for this category
         $existingRegistrations = RunRegistration::where('run_category', $request->run_category)
-            ->where('registration_id', 'like', 'TR26-%')
+            ->where('registration_id', 'like', 'S3-%')
             ->get();
         
         $maxNumber = $startNumber - 1; // Start from the base number
         
         foreach ($existingRegistrations as $reg) {
-            // Extract number from registration_id (e.g., "TR26-2501" -> 2501)
-            if (preg_match('/TR26-(\d+)/', $reg->registration_id, $matches)) {
+            // Extract number from registration_id (e.g., "S3-2501" -> 2501)
+            if (preg_match('/S3-(\d+)/', $reg->registration_id, $matches)) {
                 $regNumber = (int)$matches[1];
                 if ($regNumber >= $startNumber && $regNumber > $maxNumber) {
                     $maxNumber = $regNumber;
@@ -175,12 +175,12 @@ class RunRegistrationController extends Controller
         
         // Generate next sequential number
         $nextNumber = $maxNumber + 1;
-        $registrationId = 'TR26-' . $nextNumber;
+        $registrationId = 'S3-' . $nextNumber;
         
         // Double-check it doesn't exist (safety check)
         while (RunRegistration::where('registration_id', $registrationId)->exists()) {
             $nextNumber++;
-            $registrationId = 'TR26-' . $nextNumber;
+            $registrationId = 'S3-' . $nextNumber;
         }
 
         $registration = RunRegistration::create([

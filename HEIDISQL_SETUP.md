@@ -55,13 +55,31 @@ php artisan employees:import "Tanseeq Run Registration Form(Employee Master).xls
 
 ## Step 5: Verify in HeidiSQL
 
-1. Refresh HeidiSQL (F5)
-2. Expand `tanseeq_run` database
-3. You should see these tables:
-   - `employees`
-   - `run_registrations`
-   - `migrations`
-   - And other Laravel default tables
+1. **Select the database:**
+   - Click the **database dropdown** at the top of HeidiSQL
+   - Make sure **`tanseeq_run`** is selected
+
+2. **Refresh HeidiSQL:**
+   - Press **F5** to refresh
+   - OR right-click on `tanseeq_run` → **"Refresh"**
+
+3. **Expand to see tables:**
+   - Click the **arrow** next to `tanseeq_run` to expand
+   - Click the **arrow** next to **"Tables"** folder
+   - You should see these tables:
+     - `employees`
+     - `run_registrations`
+     - `migrations`
+     - `users`
+     - `cache`
+     - `jobs`
+     - And other Laravel default tables
+
+**⚠️ Important:** If tables don't show:
+- Make sure you **selected** the `tanseeq_run` database (top dropdown)
+- Make sure migrations ran successfully
+- Press **F5** to refresh
+- See `HEIDISQL_TROUBLESHOOTING.md` for detailed help
 
 ## Troubleshooting
 
