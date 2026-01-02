@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tanseeq Run Registration</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .form-control:disabled {
+            background-color: #e9ecef;
+            cursor: not-allowed;
+        }
+        .notes-section {
+            font-size: 11px;
+            color: #666;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 3px solid #007bff;
+        }
+        .notes-section ol {
+            margin-bottom: 0;
+            padding-left: 20px;
+        }
+        .notes-section li {
+            margin-bottom: 5px;
+        }
+        .success-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+        .success-icon {
+            font-size: 64px;
+            color: #28a745;
+            margin-bottom: 20px;
+        }
+        .registration-id-box {
+            background-color: #f8f9fa;
+            border: 2px solid #28a745;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        .registration-id-label {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .registration-id-value {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h3 class="card-title mb-4">Tanseeq Run – Registration</h3>
+
+                    @if(session('success'))
+                        <div class="success-container">
+                            <div class="success-icon">✓</div>
+                            <h4 class="text-success mb-4">Registration Successful!</h4>
+                            <p class="mb-4">{{ session('success') }}</p>
+                            @if(session('registration_id'))
+                                <div class="registration-id-box">
+                                    <div class="registration-id-label">Your Registration ID:</div>
+                                    <div class="registration-id-value">{{ session('registration_id') }}</div>
+                                </div>
+                            @endif
+                            <p class="text-muted mt-4" style="font-size: 12px;">
+                                Please save your Registration ID for future reference.
+                            </p>
+                        </div>
+                    @else
+
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="/tanseeq-run" id="registrationForm">
+                        @csrf
+
+                        <div class="mb-3">
+                            <label for="employee_id" class="form-label">Employee ID <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="employee_id" name="employee_id" 
+                                   placeholder="Enter Employee ID" required autocomplete="off">
+                            <div id="employee_id_error" class="text-danger mt-1" style="display: none;"></div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" 
+                                   placeholder="Full Name" required readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="designation" name="designation" 
+                                   placeholder="Designation" required readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="company" class="form-label">Department/Projects <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="company" name="company" 
+                                   placeholder="Department/Projects" required readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="entity" class="form-label">Entity <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="entity" name="entity" 
+                                   placeholder="Entity" required readonly>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="dob" class="form-label">Date of Birth <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="dob" name="dob" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="contact_number" class="form-label">Contact Number <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="contact_number" name="contact_number" 
+                                   placeholder="Contact Number" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="run_category" class="form-label"> Category <span class="text-danger">*</span></label>
+                            <select class="form-control form-select" id="run_category" name="run_category" required>
+                                <option value="">Select Category</option>
+                                <option value="2.5KM">2.5KM</option>
+                                <option value="5KM">5KM</option>
+                                <option value="10KM">10KM</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="tshirt_size" class="form-label">T-Shirt Size <span class="text-danger">*</span></label>
+                            <select class="form-control form-select" id="tshirt_size" name="tshirt_size" required>
+                                <option value="">Select Size</option>
+                                <option value="S">S</option>
+                                <option value="M">M</option>
+                                <option value="L">L</option>
+                                <option value="XL">XL</option>
+                                <option value="XXL">XXL</option>
+                                <option value="XXXL">XXXL</option>
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Register</button>
+                    </form>
+                    @endif
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let employeeIdInput = document.getElementById('employee_id');
+    let nameInput = document.getElementById('name');
+    let designationInput = document.getElementById('designation');
+    let companyInput = document.getElementById('company');
+    let entityInput = document.getElementById('entity');
+    let errorDiv = document.getElementById('employee_id_error');
+    let timeout;
+
+    if (employeeIdInput) {
+        employeeIdInput.addEventListener('input', function() {
+            clearTimeout(timeout);
+            let employeeId = this.value.trim();
+            
+            // Clear previous data
+            if (nameInput) nameInput.value = '';
+            if (designationInput) designationInput.value = '';
+            if (companyInput) companyInput.value = '';
+            if (entityInput) entityInput.value = '';
+            if (errorDiv) {
+                errorDiv.style.display = 'none';
+                errorDiv.textContent = '';
+            }
+            
+            if (employeeId.length > 0) {
+                timeout = setTimeout(function() {
+                    fetch('/api/employee?employee_id=' + encodeURIComponent(employeeId))
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.error) {
+                                if (errorDiv) {
+                                    errorDiv.textContent = data.error;
+                                    errorDiv.style.display = 'block';
+                                    if (data.registration_id) {
+                                        errorDiv.innerHTML += '<br>Registration ID: ' + data.registration_id;
+                                    }
+                                }
+                                if (nameInput) nameInput.value = '';
+                                if (designationInput) designationInput.value = '';
+                                if (companyInput) companyInput.value = '';
+                                if (entityInput) entityInput.value = '';
+                            } else {
+                                if (nameInput) nameInput.value = data.name || '';
+                                if (designationInput) designationInput.value = data.designation || '';
+                                if (companyInput) companyInput.value = data.department_projects || '';
+                                if (entityInput) entityInput.value = data.entity || '';
+                                if (errorDiv) errorDiv.style.display = 'none';
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            if (errorDiv) {
+                                errorDiv.textContent = 'Error fetching employee data. Please try again.';
+                                errorDiv.style.display = 'block';
+                            }
+                        });
+                }, 500); // Wait 500ms after user stops typing
+            }
+        });
+    }
+</script>
+</body>
+</html>

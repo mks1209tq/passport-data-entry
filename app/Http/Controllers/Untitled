@@ -1,0 +1,37 @@
+use App\Models\TanseeqRegistration;
+use Illuminate\Http\Request;
+
+class TanseeqRunController extends Controller
+{
+    // Show public form
+    public function create()
+    {
+        return view('tanseeq.register');
+    }
+
+    // Store registration
+    public function store(Request $request)
+    {
+        $request->validate([
+            'id_number' => 'required|unique:tanseeq_registrations',
+            'name' => 'required',
+            'designation' => 'required',
+            'company' => 'required',
+            'dob' => 'required|date',
+            'run_category' => 'required',
+            'contact' => 'required',
+            'tshirt_size' => 'required'
+        ]);
+
+        TanseeqRegistration::create($request->all());
+
+        return redirect()->back()->with('success', 'Registration successful!');
+    }
+
+    // Admin view
+    public function index()
+    {
+        $registrations = TanseeqRegistration::latest()->get();
+        return view('tanseeq.admin', compact('registrations'));
+    }
+}
