@@ -210,7 +210,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="run_category" class="form-label"> Category <span class="text-danger">*</span></label>
+                            <label for="run_category" class="form-label">Run Category <span class="text-danger">*</span></label>
                             <select class="form-control form-select" id="run_category" name="run_category" required>
                                 <option value="">Select Category</option>
                                 <option value="2.5KM">2.5KM</option>
