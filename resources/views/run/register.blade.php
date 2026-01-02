@@ -176,25 +176,25 @@
                         <div class="mb-3">
                             <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="name" name="name" 
-                                   placeholder="Full Name" required readonly>
+                                   placeholder="Full Name" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="designation" name="designation" 
-                                   placeholder="Designation" required readonly>
+                                   placeholder="Designation" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="company" class="form-label">Department/Projects <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="company" name="company" 
-                                   placeholder="Department/Projects" required readonly>
+                                   placeholder="Department/Projects" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="entity" class="form-label">Entity <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="entity" name="entity" 
-                                   placeholder="Entity" required readonly>
+                                   placeholder="Entity" required>
                         </div>
 
                         <div class="mb-3">
@@ -255,11 +255,23 @@
             clearTimeout(timeout);
             let employeeId = this.value.trim();
             
-            // Clear previous data
-            if (nameInput) nameInput.value = '';
-            if (designationInput) designationInput.value = '';
-            if (companyInput) companyInput.value = '';
-            if (entityInput) entityInput.value = '';
+            // Clear previous data and make fields editable
+            if (nameInput) {
+                nameInput.value = '';
+                nameInput.removeAttribute('readonly');
+            }
+            if (designationInput) {
+                designationInput.value = '';
+                designationInput.removeAttribute('readonly');
+            }
+            if (companyInput) {
+                companyInput.value = '';
+                companyInput.removeAttribute('readonly');
+            }
+            if (entityInput) {
+                entityInput.value = '';
+                entityInput.removeAttribute('readonly');
+            }
             if (errorDiv) {
                 errorDiv.style.display = 'none';
                 errorDiv.textContent = '';
@@ -268,33 +280,91 @@
             if (employeeId.length > 0) {
                 timeout = setTimeout(function() {
                     fetch('/api/employee?employee_id=' + encodeURIComponent(employeeId))
-                        .then(response => response.json())
+                        .then(response => {
+                            if (!response.ok) {
+                                return response.json().then(data => {
+                                    throw new Error(data.error || 'Employee not found');
+                                });
+                            }
+                            return response.json();
+                        })
                         .then(data => {
                             if (data.error) {
                                 if (errorDiv) {
-                                    errorDiv.textContent = data.error;
+                                    let errorMsg = data.error;
+                                    if (data.error.includes('not found')) {
+                                        errorMsg += ' You can manually enter your details below.';
+                                    }
+                                    errorDiv.textContent = errorMsg;
                                     errorDiv.style.display = 'block';
                                     if (data.registration_id) {
                                         errorDiv.innerHTML += '<br>Registration ID: ' + data.registration_id;
                                     }
                                 }
-                                if (nameInput) nameInput.value = '';
-                                if (designationInput) designationInput.value = '';
-                                if (companyInput) companyInput.value = '';
-                                if (entityInput) entityInput.value = '';
+                                // Keep fields editable for manual entry
+                                if (nameInput) {
+                                    nameInput.value = '';
+                                    nameInput.removeAttribute('readonly');
+                                }
+                                if (designationInput) {
+                                    designationInput.value = '';
+                                    designationInput.removeAttribute('readonly');
+                                }
+                                if (companyInput) {
+                                    companyInput.value = '';
+                                    companyInput.removeAttribute('readonly');
+                                }
+                                if (entityInput) {
+                                    entityInput.value = '';
+                                    entityInput.removeAttribute('readonly');
+                                }
                             } else {
-                                if (nameInput) nameInput.value = data.name || '';
-                                if (designationInput) designationInput.value = data.designation || '';
-                                if (companyInput) companyInput.value = data.department_projects || '';
-                                if (entityInput) entityInput.value = data.entity || '';
+                                // Auto-fill and make readonly when employee found
+                                if (nameInput) {
+                                    nameInput.value = data.name || '';
+                                    nameInput.setAttribute('readonly', 'readonly');
+                                }
+                                if (designationInput) {
+                                    designationInput.value = data.designation || '';
+                                    designationInput.setAttribute('readonly', 'readonly');
+                                }
+                                if (companyInput) {
+                                    companyInput.value = data.department_projects || '';
+                                    companyInput.setAttribute('readonly', 'readonly');
+                                }
+                                if (entityInput) {
+                                    entityInput.value = data.entity || '';
+                                    entityInput.setAttribute('readonly', 'readonly');
+                                }
                                 if (errorDiv) errorDiv.style.display = 'none';
                             }
                         })
                         .catch(error => {
                             console.error('Error:', error);
                             if (errorDiv) {
-                                errorDiv.textContent = 'Error fetching employee data. Please try again.';
+                                let errorMsg = error.message || 'Error fetching employee data. Please try again.';
+                                if (errorMsg.includes('not found')) {
+                                    errorMsg += ' You can manually enter your details below.';
+                                }
+                                errorDiv.textContent = errorMsg;
                                 errorDiv.style.display = 'block';
+                            }
+                            // Keep fields editable for manual entry
+                            if (nameInput) {
+                                nameInput.value = '';
+                                nameInput.removeAttribute('readonly');
+                            }
+                            if (designationInput) {
+                                designationInput.value = '';
+                                designationInput.removeAttribute('readonly');
+                            }
+                            if (companyInput) {
+                                companyInput.value = '';
+                                companyInput.removeAttribute('readonly');
+                            }
+                            if (entityInput) {
+                                entityInput.value = '';
+                                entityInput.removeAttribute('readonly');
                             }
                         });
                 }, 500); // Wait 500ms after user stops typing

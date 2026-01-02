@@ -16,37 +16,79 @@ class RunRegistrationController extends Controller
 
     public function getEmployee(Request $request)
     {
-        $employeeId = $request->input('employee_id');
+        $employeeId = trim($request->input('employee_id'));
         
-        // Try to find employee - works with any table name you specify in Employee model
-        $employee = Employee::where('employee_id', $employeeId)->first();
-        
-        if ($employee) {
-            // Check if already registered
-            $existing = RunRegistration::where('employee_id', $employeeId)->first();
-            if ($existing) {
-                return response()->json([
-                    'error' => 'This employee ID has already been registered.',
-                    'registration_id' => $existing->registration_id
-                ], 400);
-            }
-            
-            // Get department/projects - try different possible field names
-            $departmentProjects = $employee->department_projects 
-                ?? $employee->department 
-                ?? $employee->projects 
-                ?? $employee->department_projects 
-                ?? '';
-            
-            return response()->json([
-                'name' => $employee->name,
-                'designation' => $employee->designation,
-                'department_projects' => $departmentProjects,
-                'entity' => $employee->entity,
-            ]);
+        if (empty($employeeId)) {
+            return response()->json(['error' => 'Employee ID is required'], 400);
         }
         
-        return response()->json(['error' => 'Employee not found'], 404);
+        try {
+            // Try multiple search methods to handle different formats
+            $employee = null;
+            
+            // Method 1: Exact match (case sensitive)
+            $employee = Employee::where('employee_id', $employeeId)->first();
+            
+            // Method 2: Case insensitive with trimmed values
+            if (!$employee) {
+                $employee = Employee::whereRaw('LOWER(TRIM(employee_id)) = ?', [strtolower(trim($employeeId))])->first();
+            }
+            
+            // Method 3: Try with just trimmed (in case of extra spaces)
+            if (!$employee) {
+                $employee = Employee::whereRaw('TRIM(employee_id) = ?', [trim($employeeId)])->first();
+            }
+            
+            // Method 4: Try case insensitive without trim (fallback)
+            if (!$employee) {
+                $employee = Employee::whereRaw('LOWER(employee_id) = ?', [strtolower($employeeId)])->first();
+            }
+            
+            if ($employee) {
+                // Check if already registered - use the actual employee_id from database
+                $actualEmployeeId = $employee->employee_id;
+                $existing = RunRegistration::where('employee_id', $actualEmployeeId)->first();
+                if ($existing) {
+                    return response()->json([
+                        'error' => 'This employee ID has already been registered.',
+                        'registration_id' => $existing->registration_id
+                    ], 400);
+                }
+                
+                // Get department/projects - try different possible field names
+                $departmentProjects = $employee->department_projects 
+                    ?? $employee->department 
+                    ?? $employee->projects 
+                    ?? '';
+                
+                return response()->json([
+                    'name' => $employee->name ?? '',
+                    'designation' => $employee->designation ?? '',
+                    'department_projects' => $departmentProjects,
+                    'entity' => $employee->entity ?? '',
+                ]);
+            }
+            
+            // Log for debugging (optional - remove in production if not needed)
+            \Log::info('Employee not found', [
+                'employee_id' => $employeeId,
+                'total_employees' => Employee::count()
+            ]);
+            
+            return response()->json([
+                'error' => 'Employee not found. Please check your Employee ID and try again. You can also manually enter your details below.'
+            ], 404);
+            
+        } catch (\Exception $e) {
+            \Log::error('Error fetching employee', [
+                'employee_id' => $employeeId,
+                'error' => $e->getMessage()
+            ]);
+            
+            return response()->json([
+                'error' => 'Error fetching employee data. Please try again or enter your details manually.'
+            ], 500);
+        }
     }
 
     public function store(Request $request)
