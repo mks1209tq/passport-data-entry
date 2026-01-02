@@ -41,15 +41,27 @@
                         <form method="POST" action="{{ route('admin.login.post') }}">
                             @csrf
                             <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="email" name="email" 
+                                       placeholder="Enter your email" value="{{ old('email') }}" autofocus>
+                            </div>
+                            <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
                                 <input type="password" class="form-control" id="password" name="password" 
-                                       placeholder="Enter admin password" required autofocus>
+                                       placeholder="Enter password" required>
+                                <small class="text-muted">Or use admin password for quick access</small>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
 
-                        <div class="mt-4 text-center">
+                        <div class="mt-3 text-center">
+                            <a href="{{ route('admin.register') }}" class="text-primary" style="text-decoration: none;">
+                                Create Admin Account
+                            </a>
+                        </div>
+
+                        <div class="mt-3 text-center">
                             <a href="/tanseeq-run" class="text-muted" style="text-decoration: none;">
                                 ← Back to Registration
                             </a>

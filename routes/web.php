@@ -13,9 +13,11 @@ Route::post('/tanseeq-run', [RunRegistrationController::class, 'store']);
 Route::get('/api/employee', [RunRegistrationController::class, 'getEmployee']);
 Route::get('/api/check-database', [RunRegistrationController::class, 'checkDatabase']); // Diagnostic endpoint
 
-// Admin login routes
+// Admin login and registration routes
 Route::get('/admin/login', [RunRegistrationController::class, 'showLogin'])->name('admin.login');
 Route::post('/admin/login', [RunRegistrationController::class, 'login'])->name('admin.login.post');
+Route::get('/admin/register', [RunRegistrationController::class, 'showRegister'])->name('admin.register');
+Route::post('/admin/register', [RunRegistrationController::class, 'register'])->name('admin.register.post');
 
 // Admin routes (protected)
 Route::middleware('admin')->group(function () {
@@ -25,4 +27,3 @@ Route::middleware('admin')->group(function () {
     Route::put('/tanseeq-run/update/{id}', [RunRegistrationController::class, 'update'])->name('registrations.update');
     Route::get('/admin/logout', [RunRegistrationController::class, 'logout'])->name('admin.logout');
 });
-

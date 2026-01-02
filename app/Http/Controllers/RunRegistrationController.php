@@ -214,22 +214,66 @@ class RunRegistrationController extends Controller
         return view('admin.login');
     }
 
+    public function showRegister()
+    {
+        return view('admin.register');
+    }
+
+    public function register(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
+
+        $user = \App\Models\User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => \Hash::make($request->password),
+        ]);
+
+        // Auto-login after registration
+        session(['admin_logged_in' => true]);
+        session(['admin_user_id' => $user->id]);
+
+        return redirect()->route('registrations.list')->with('success', 'Account created successfully! You are now logged in.');
+    }
+
     public function login(Request $request)
     {
+        // Try user login first
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (\Auth::attempt($credentials)) {
+            $request->session()->regenerate();
+            session(['admin_logged_in' => true]);
+            session(['admin_user_id' => \Auth::id()]);
+            return redirect()->route('registrations.list')->with('success', 'Login successful!');
+        }
+
+        // Fallback to password-based login (for backward compatibility)
         $password = $request->input('password');
-        $adminPassword = env('ADMIN_PASSWORD', 'admin123'); // Default password, change in .env
+        $adminPassword = env('ADMIN_PASSWORD', 'admin123');
 
         if ($password === $adminPassword) {
             session(['admin_logged_in' => true]);
             return redirect()->route('registrations.list')->with('success', 'Login successful!');
         }
 
-        return redirect()->back()->with('error', 'Invalid password');
+        return redirect()->back()->with('error', 'Invalid email or password');
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        \Auth::logout();
         session()->forget('admin_logged_in');
+        session()->forget('admin_user_id');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
         return redirect()->route('admin.login')->with('success', 'Logged out successfully');
     }
 
