@@ -171,6 +171,7 @@
                             <input type="text" class="form-control" id="employee_id" name="employee_id" 
                                    placeholder="Enter Employee ID" required autocomplete="off">
                             <div id="employee_id_error" class="text-danger mt-1" style="display: none;"></div>
+                            <div id="employee_id_loading" class="text-info mt-1" style="display: none; font-size: 12px;">Looking up employee...</div>
                         </div>
 
                         <div class="mb-3">
@@ -248,6 +249,7 @@
     let companyInput = document.getElementById('company');
     let entityInput = document.getElementById('entity');
     let errorDiv = document.getElementById('employee_id_error');
+    let loadingDiv = document.getElementById('employee_id_loading');
     let timeout;
 
     if (employeeIdInput) {
@@ -279,6 +281,14 @@
             
             if (employeeId.length > 0) {
                 timeout = setTimeout(function() {
+                    // Show loading indicator
+                    if (errorDiv) {
+                        errorDiv.style.display = 'none';
+                    }
+                    if (loadingDiv) {
+                        loadingDiv.style.display = 'block';
+                    }
+                    
                     fetch('/api/employee?employee_id=' + encodeURIComponent(employeeId))
                         .then(response => {
                             if (!response.ok) {
@@ -289,6 +299,8 @@
                             return response.json();
                         })
                         .then(data => {
+                            console.log('Employee data received:', data);
+                            
                             if (data.error) {
                                 if (errorDiv) {
                                     let errorMsg = data.error;
@@ -320,27 +332,38 @@
                                 }
                             } else {
                                 // Auto-fill and make readonly when employee found
-                                if (nameInput) {
-                                    nameInput.value = data.name || '';
+                                console.log('Auto-filling fields...');
+                                if (nameInput && data.name) {
+                                    nameInput.value = data.name;
                                     nameInput.setAttribute('readonly', 'readonly');
                                 }
-                                if (designationInput) {
-                                    designationInput.value = data.designation || '';
+                                if (designationInput && data.designation) {
+                                    designationInput.value = data.designation;
                                     designationInput.setAttribute('readonly', 'readonly');
                                 }
-                                if (companyInput) {
-                                    companyInput.value = data.department_projects || '';
+                                if (companyInput && data.department_projects) {
+                                    companyInput.value = data.department_projects;
                                     companyInput.setAttribute('readonly', 'readonly');
                                 }
-                                if (entityInput) {
-                                    entityInput.value = data.entity || '';
+                                if (entityInput && data.entity) {
+                                    entityInput.value = data.entity;
                                     entityInput.setAttribute('readonly', 'readonly');
                                 }
-                                if (errorDiv) errorDiv.style.display = 'none';
+                                if (errorDiv) {
+                                    errorDiv.style.display = 'none';
+                                    errorDiv.textContent = '';
+                                }
+                                if (loadingDiv) {
+                                    loadingDiv.style.display = 'none';
+                                }
+                                console.log('Fields auto-filled successfully');
                             }
                         })
                         .catch(error => {
-                            console.error('Error:', error);
+                            console.error('Error fetching employee:', error);
+                            if (loadingDiv) {
+                                loadingDiv.style.display = 'none';
+                            }
                             if (errorDiv) {
                                 let errorMsg = error.message || 'Error fetching employee data. Please try again.';
                                 if (errorMsg.includes('not found')) {
@@ -367,7 +390,32 @@
                                 entityInput.removeAttribute('readonly');
                             }
                         });
-                }, 500); // Wait 500ms after user stops typing
+                }, 300); // Reduced to 300ms for faster response
+            } else {
+                // Clear fields when employee ID is empty
+                if (nameInput) {
+                    nameInput.value = '';
+                    nameInput.removeAttribute('readonly');
+                }
+                if (designationInput) {
+                    designationInput.value = '';
+                    designationInput.removeAttribute('readonly');
+                }
+                if (companyInput) {
+                    companyInput.value = '';
+                    companyInput.removeAttribute('readonly');
+                }
+                if (entityInput) {
+                    entityInput.value = '';
+                    entityInput.removeAttribute('readonly');
+                }
+                if (errorDiv) {
+                    errorDiv.style.display = 'none';
+                    errorDiv.textContent = '';
+                }
+                if (loadingDiv) {
+                    loadingDiv.style.display = 'none';
+                }
             }
         });
     }

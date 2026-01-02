@@ -14,6 +14,28 @@ class RunRegistrationController extends Controller
         return view('run.register');
     }
 
+    public function checkDatabase()
+    {
+        try {
+            $employeeCount = Employee::count();
+            $sampleEmployees = Employee::take(5)->get(['employee_id', 'name']);
+            
+            return response()->json([
+                'status' => 'ok',
+                'total_employees' => $employeeCount,
+                'sample_employee_ids' => $sampleEmployees->pluck('employee_id')->toArray(),
+                'message' => $employeeCount > 0 
+                    ? "Database has {$employeeCount} employees. Employee lookup should work." 
+                    : "⚠️ WARNING: No employees found in database! You need to import the Excel file."
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Database error: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function getEmployee(Request $request)
     {
         $employeeId = trim($request->input('employee_id'));
@@ -69,14 +91,26 @@ class RunRegistrationController extends Controller
                 ]);
             }
             
-            // Log for debugging (optional - remove in production if not needed)
+            // Check if database has any employees at all
+            $totalEmployees = Employee::count();
+            
+            // Log for debugging
             \Log::info('Employee not found', [
                 'employee_id' => $employeeId,
-                'total_employees' => Employee::count()
+                'total_employees' => $totalEmployees,
+                'searched_id' => $employeeId
             ]);
             
+            // Provide helpful error message
+            $errorMessage = 'Employee not found. Please check your Employee ID and try again.';
+            if ($totalEmployees === 0) {
+                $errorMessage .= ' (Note: No employees found in database. Please contact administrator to import employee data.)';
+            } else {
+                $errorMessage .= ' You can also manually enter your details below.';
+            }
+            
             return response()->json([
-                'error' => 'Employee not found. Please check your Employee ID and try again. You can also manually enter your details below.'
+                'error' => $errorMessage
             ], 404);
             
         } catch (\Exception $e) {

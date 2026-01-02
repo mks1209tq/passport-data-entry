@@ -11,6 +11,7 @@ Route::get('/', function () {
 Route::get('/tanseeq-run', [RunRegistrationController::class, 'create']);
 Route::post('/tanseeq-run', [RunRegistrationController::class, 'store']);
 Route::get('/api/employee', [RunRegistrationController::class, 'getEmployee']);
+Route::get('/api/check-database', [RunRegistrationController::class, 'checkDatabase']); // Diagnostic endpoint
 
 // Admin login routes
 Route::get('/admin/login', [RunRegistrationController::class, 'showLogin'])->name('admin.login');
