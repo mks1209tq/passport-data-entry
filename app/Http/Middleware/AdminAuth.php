@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Facades\Auth;
 
 class AdminAuth
 {
@@ -15,11 +16,11 @@ class AdminAuth
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // Check if admin is logged in
-        if (!session('admin_logged_in')) {
-            return redirect()->route('admin.login')->with('error', 'Please login to access admin area');
+        // Check if user is authenticated OR admin session exists
+        if (Auth::check() || session('admin_logged_in')) {
+            return $next($request);
         }
 
-        return $next($request);
+        return redirect()->route('admin.login')->with('error', 'Please login to access admin area');
     }
 }

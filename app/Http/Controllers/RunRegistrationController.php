@@ -6,6 +6,8 @@ use App\Models\RunRegistration;
 use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class RunRegistrationController extends Controller
 {
@@ -230,7 +232,7 @@ class RunRegistrationController extends Controller
         $user = \App\Models\User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => \Hash::make($request->password),
+            'password' => Hash::make($request->password),
         ]);
 
         // Auto-login after registration
@@ -242,21 +244,25 @@ class RunRegistrationController extends Controller
 
     public function login(Request $request)
     {
-        // Try user login first
-        $credentials = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
+        $email = $request->input('email');
+        $password = $request->input('password');
 
-        if (\Auth::attempt($credentials)) {
-            $request->session()->regenerate();
-            session(['admin_logged_in' => true]);
-            session(['admin_user_id' => \Auth::id()]);
-            return redirect()->route('registrations.list')->with('success', 'Login successful!');
+        // Try user login if email is provided
+        if ($email) {
+            $credentials = $request->validate([
+                'email' => 'required|email',
+                'password' => 'required',
+            ]);
+
+            if (Auth::attempt($credentials)) {
+                $request->session()->regenerate();
+                session(['admin_logged_in' => true]);
+                session(['admin_user_id' => Auth::id()]);
+                return redirect()->route('registrations.list')->with('success', 'Login successful!');
+            }
         }
 
         // Fallback to password-based login (for backward compatibility)
-        $password = $request->input('password');
         $adminPassword = env('ADMIN_PASSWORD', 'admin123');
 
         if ($password === $adminPassword) {
@@ -269,7 +275,7 @@ class RunRegistrationController extends Controller
 
     public function logout(Request $request)
     {
-        \Auth::logout();
+        Auth::logout();
         session()->forget('admin_logged_in');
         session()->forget('admin_user_id');
         $request->session()->invalidate();

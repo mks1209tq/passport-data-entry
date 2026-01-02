@@ -41,15 +41,16 @@
                         <form method="POST" action="{{ route('admin.login.post') }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email</label>
+                                <label for="email" class="form-label">Email (Optional)</label>
                                 <input type="email" class="form-control" id="email" name="email" 
-                                       placeholder="Enter your email" value="{{ old('email') }}" autofocus>
+                                       placeholder="Enter your email (optional)" value="{{ old('email') }}" autofocus>
+                                <small class="text-muted">Leave empty to use admin password</small>
                             </div>
                             <div class="mb-3">
-                                <label for="password" class="form-label">Password</label>
+                                <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control" id="password" name="password" 
                                        placeholder="Enter password" required>
-                                <small class="text-muted">Or use admin password for quick access</small>
+                                <small class="text-muted">Use your account password or admin password</small>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Login</button>
