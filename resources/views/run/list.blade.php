@@ -1,36 +1,51 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Tanseeq Run - Registrations List (Admin)</title>
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             font-family: Arial, sans-serif;
-            margin: 20px;
+            margin: 0;
+            padding: 10px;
             background-color: #f5f5f5;
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
         }
         .container {
             max-width: 100%;
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 5px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         h2 {
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            font-size: 20px;
         }
         .action-buttons {
-            margin-bottom: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .btn {
-            padding: 10px 20px;
+            padding: 10px 15px;
             text-decoration: none;
             border-radius: 4px;
             display: inline-block;
-            margin-right: 10px;
             border: none;
             cursor: pointer;
             font-size: 14px;
+            min-height: 44px;
+            text-align: center;
+            flex: 1 1 auto;
+            min-width: 120px;
         }
         .btn-primary {
             background-color: #007bff;
@@ -55,21 +70,29 @@
         .btn-edit:hover {
             background-color: #e0a800;
         }
+        .table-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin-top: 10px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
             font-size: 12px;
+            min-width: 800px;
         }
         th, td {
             border: 1px solid #ddd;
             padding: 8px;
             text-align: left;
+            white-space: nowrap;
         }
         th {
             background-color: #333;
             color: white;
             font-weight: bold;
+            position: sticky;
+            top: 0;
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -88,6 +111,42 @@
             padding: 10px;
             border-radius: 4px;
             margin-bottom: 15px;
+            font-size: 14px;
+        }
+        @media (max-width: 576px) {
+            body {
+                padding: 5px;
+                font-size: 14px;
+            }
+            .container {
+                padding: 10px;
+            }
+            h2 {
+                font-size: 18px;
+                margin-bottom: 12px;
+            }
+            .action-buttons {
+                flex-direction: column;
+                gap: 8px;
+            }
+            .btn {
+                width: 100%;
+                padding: 12px;
+                font-size: 15px;
+            }
+            .count {
+                font-size: 14px;
+            }
+            table {
+                font-size: 11px;
+            }
+            th, td {
+                padding: 6px 4px;
+            }
+            .btn-edit {
+                padding: 6px 12px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
@@ -110,7 +169,7 @@
             <a href="{{ route('admin.logout') }}" class="btn" style="background-color: #dc3545; color: white;">Logout</a>
         </div>
        
-        
+        <div class="table-wrapper">
         <table>
             <thead>
                 <tr>
@@ -155,6 +214,7 @@
                 @endforelse
             </tbody>
         </table>
+        </div>
     </div>
 </body>
 </html>

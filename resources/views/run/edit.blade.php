@@ -1,19 +1,80 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Edit Registration - Tanseeq Run</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
+        }
         .form-control:disabled {
             background-color: #e9ecef;
             cursor: not-allowed;
         }
+        .form-control, .form-select {
+            font-size: 16px;
+            padding: 12px;
+            height: auto;
+        }
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .btn {
+            font-size: 16px;
+            padding: 12px;
+            font-weight: 500;
+            min-height: 44px;
+        }
+        .card-title {
+            font-size: 20px;
+        }
+        @media (max-width: 576px) {
+            body {
+                font-size: 14px;
+            }
+            .container {
+                padding-left: 10px;
+                padding-right: 10px;
+                margin-top: 10px !important;
+            }
+            .card-body {
+                padding: 15px;
+            }
+            .card-title {
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+            .form-control, .form-select {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .form-label {
+                font-size: 13px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 10px;
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .d-flex {
+                flex-direction: column;
+            }
+        }
     </style>
 </head>
 <body class="bg-light">
-<div class="container mt-5">
+<div class="container-fluid px-2 px-md-3 mt-2 mt-md-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-12 col-md-8">
             <div class="card shadow">
                 <div class="card-body">
                     <h3 class="card-title mb-4">Edit Registration</h3>
@@ -52,7 +113,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="company" class="form-label">Department/Projects <span class="text-danger">*</span></label>
+                            <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="company" name="company" 
                                    value="{{ $registration->company }}" required>
                         </div>

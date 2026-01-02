@@ -1,26 +1,83 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Admin Login - Tanseeq Run</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        * {
+            box-sizing: border-box;
+        }
         body {
             background-color: #f5f5f5;
             display: flex;
             align-items: center;
             justify-content: center;
             min-height: 100vh;
+            padding: 10px;
+            font-size: 16px;
+            -webkit-text-size-adjust: 100%;
         }
         .login-card {
             max-width: 400px;
             width: 100%;
         }
+        .form-control {
+            font-size: 16px;
+            padding: 12px;
+            height: auto;
+        }
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+        .btn {
+            font-size: 16px;
+            padding: 12px;
+            font-weight: 500;
+            min-height: 44px;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .card-title {
+            font-size: 20px;
+        }
+        @media (max-width: 576px) {
+            body {
+                padding: 5px;
+                font-size: 14px;
+            }
+            .card-body {
+                padding: 15px;
+            }
+            .card-title {
+                font-size: 18px;
+                margin-bottom: 15px;
+            }
+            .form-control {
+                font-size: 16px;
+                padding: 10px;
+            }
+            .form-label {
+                font-size: 13px;
+            }
+            .btn {
+                font-size: 15px;
+                padding: 10px;
+            }
+            small {
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
+    <div class="container-fluid px-2 px-md-3">
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-12 col-md-6">
                 <div class="card shadow login-card">
                     <div class="card-body p-5">
                         <h3 class="card-title text-center mb-4">Admin Login</h3>
