@@ -286,30 +286,29 @@ class RunRegistrationController extends Controller
         $email = $request->input('email');
         $password = $request->input('password');
 
-        // Try user login if email is provided
-        if ($email) {
-            $credentials = $request->validate([
-                'email' => 'required|email',
-                'password' => 'required',
-            ]);
-
-            if (Auth::attempt($credentials)) {
-                $request->session()->regenerate();
-                session(['admin_logged_in' => true]);
-                session(['admin_user_id' => Auth::id()]);
-                return redirect()->route('registrations.list')->with('success', 'Login successful!');
-            }
+        // Email is now required for proper authentication
+        if (!$email) {
+            return redirect()->back()->with('error', 'Email address is required. Please enter your email to login.');
         }
 
-        // Fallback to password-based login (for backward compatibility)
-        $adminPassword = env('ADMIN_PASSWORD', 'admin123');
+        // Validate email and password
+        $credentials = $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        if ($password === $adminPassword) {
+        // Try to authenticate with email and password
+        if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             session(['admin_logged_in' => true]);
+            session(['admin_user_id' => Auth::id()]);
             return redirect()->route('registrations.list')->with('success', 'Login successful!');
         }
 
-        return redirect()->back()->with('error', 'Invalid email or password');
+        // If authentication fails, provide helpful error message
+        return redirect()->back()
+            ->withInput($request->only('email'))
+            ->with('error', 'Invalid email or password. Please check your credentials and try again.');
     }
 
     public function logout(Request $request)

@@ -98,25 +98,23 @@
                         <form method="POST" action="{{ route('admin.login.post') }}">
                             @csrf
                             <div class="mb-3">
-                                <label for="email" class="form-label">Email (Optional)</label>
+                                <label for="email" class="form-label">Email Address <span class="text-danger">*</span></label>
                                 <input type="email" class="form-control" id="email" name="email" 
-                                       placeholder="Enter your email (optional)" value="{{ old('email') }}" autofocus>
-                                <small class="text-muted">Leave empty to use admin password</small>
+                                       placeholder="Enter your email address" value="{{ old('email') }}" required autofocus>
+                                <small class="text-muted">Enter your admin email address</small>
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password <span class="text-danger">*</span></label>
                                 <input type="password" class="form-control" id="password" name="password" 
-                                       placeholder="Enter password" required>
-                                <small class="text-muted">Use your account password or admin password</small>
+                                       placeholder="Enter your password" required>
+                                <small class="text-muted">Enter your account password</small>
                             </div>
 
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </form>
 
                         <div class="mt-3 text-center">
-                            <a href="{{ route('admin.register') }}" class="text-primary" style="text-decoration: none;">
-                                Create Admin Account
-                            </a>
+                            <p class="text-muted small mb-2">Super admins can create new admin accounts after logging in.</p>
                         </div>
 
                         <div class="mt-3 text-center">
