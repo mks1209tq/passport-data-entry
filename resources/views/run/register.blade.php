@@ -107,6 +107,11 @@
             justify-content: center;
             gap: 10px;
         }
+        .card-date {
+            font-size: 1rem;   /* smaller date */
+            font-weight: 500;
+            opacity: 0.8;
+        }
         .running-icon {
             font-size: 24px;
         }
