@@ -225,7 +225,7 @@
             <div class="card shadow">
                 <div class="card-body">
                     <h3 class="card-title">
-                        <span class="running-icon">🏃</span>
+                        <span class="running-icon"></span>
                         Tanseeq Run Season 3
                     </h3>
                     <h3 class="card-title card-date">
