@@ -221,7 +221,10 @@
                 <div class="card-body">
                     <h3 class="card-title">
                         <span class="running-icon">🏃</span>
-                        Tanseeq Run
+                        Tanseeq Run Season 3
+                    </h3>
+                    <h3 class="card-title card-date">
+                        17 January 2026
                     </h3>
                     <p class="card-subtitle">Registration Form</p>
 
