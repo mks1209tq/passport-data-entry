@@ -38,6 +38,31 @@ class RunRegistrationController extends Controller
         }
     }
 
+    public function checkAdminStatus()
+    {
+        $isSuperAdmin = $this->isSuperAdmin();
+        $isAdmin = $this->isAdmin();
+        $user = Auth::user();
+        
+        $superAdminEmails = env('SUPER_ADMIN_EMAILS', '');
+        $superAdminList = array_map('trim', explode(',', $superAdminEmails));
+        $superAdminList = array_filter($superAdminList);
+        
+        return response()->json([
+            'is_authenticated' => Auth::check(),
+            'is_admin' => $isAdmin,
+            'is_super_admin' => $isSuperAdmin,
+            'current_user_email' => $user ? $user->email : null,
+            'super_admin_emails_configured' => $superAdminList,
+            'can_create_admins' => $isSuperAdmin,
+            'message' => $isSuperAdmin 
+                ? 'You are a super admin and can create admin accounts' 
+                : ($isAdmin 
+                    ? 'You are a regular admin and cannot create admin accounts' 
+                    : 'You are not logged in')
+        ]);
+    }
+
     public function getEmployee(Request $request)
     {
         $employeeId = trim($request->input('employee_id'));
@@ -206,6 +231,13 @@ class RunRegistrationController extends Controller
         $registrations = RunRegistration::latest()->get();
         $isSuperAdmin = $this->isSuperAdmin();
         return view('run.list', compact('registrations', 'isSuperAdmin'));
+    }
+
+    public function showAttendance()
+    {
+        $presentCount = RunRegistration::where('attendance_status', 'present')->count();
+        
+        return view('run.attendance', compact('presentCount'));
     }
 
     public function showLogin()
@@ -429,9 +461,11 @@ class RunRegistrationController extends Controller
             'name' => $registration->name,
             'designation' => $registration->designation,
             'company' => $registration->company,
+            'contact_number' => $registration->contact_number,
             'run_category' => $registration->run_category,
             'bib_number' => $registration->bib_number,
             'registration_id' => $registration->registration_id,
+            'tshirt_size' => $registration->tshirt_size,
             'attendance_status' => $registration->attendance_status ?? 'pending',
         ]);
     }
@@ -499,6 +533,69 @@ class RunRegistrationController extends Controller
                     $r->contact_number,
                     $r->run_category,
                     $r->tshirt_size,
+                    $r->created_at ? $r->created_at->format('d/m/Y H:i') : 'N/A'
+                ]);
+            }
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function exportAttendance()
+    {
+        // Export ALL registrations with attendance status
+        $registrations = RunRegistration::latest()->get();
+        
+        $filename = 'tanseeq_run_attendance_' . date('Y-m-d_His') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($registrations) {
+            $file = fopen('php://output', 'w');
+            
+            // Add BOM for UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Header row - Attendance Sheet with attendance status
+            fputcsv($file, [
+                'Registration ID',
+                'Bib Number',
+                'Employee ID',
+                'Name',
+                'Designation',
+                'Company',
+                'Contact Number',
+                'RUN Category',
+                'T-Shirt Size',
+                'Attendance Status',
+                'Registered At'
+            ]);
+            
+            // Data rows
+            foreach ($registrations as $r) {
+                $attendanceStatus = $r->attendance_status ?? 'Pending';
+                if ($attendanceStatus === 'present') {
+                    $attendanceStatus = 'Present';
+                } else {
+                    $attendanceStatus = 'Pending';
+                }
+                
+                fputcsv($file, [
+                    $r->registration_id ?? 'N/A',
+                    $r->bib_number ?? '-',
+                    $r->employee_id,
+                    $r->name,
+                    $r->designation,
+                    $r->company,
+                    $r->contact_number,
+                    $r->run_category,
+                    $r->tshirt_size,
+                    $attendanceStatus,
                     $r->created_at ? $r->created_at->format('d/m/Y H:i') : 'N/A'
                 ]);
             }

@@ -12,6 +12,7 @@ Route::get('/tanseeq-run', [RunRegistrationController::class, 'create']);
 Route::post('/tanseeq-run', [RunRegistrationController::class, 'store']);
 Route::get('/api/employee', [RunRegistrationController::class, 'getEmployee']);
 Route::get('/api/check-database', [RunRegistrationController::class, 'checkDatabase']); // Diagnostic endpoint
+Route::get('/api/check-admin-status', [RunRegistrationController::class, 'checkAdminStatus'])->middleware('admin'); // Admin status diagnostic
 
 // Admin login and registration routes
 Route::get('/admin/login', [RunRegistrationController::class, 'showLogin'])->name('admin.login');
@@ -33,6 +34,8 @@ Route::middleware('admin')->group(function () {
     Route::get('/admin/logout', [RunRegistrationController::class, 'logout'])->name('admin.logout');
     
     // Attendance routes
+    Route::get('/tanseeq-run/attendance', [RunRegistrationController::class, 'showAttendance'])->name('attendance.show');
+    Route::get('/tanseeq-run/attendance/export', [RunRegistrationController::class, 'exportAttendance'])->name('attendance.export');
     Route::post('/api/search-employee', [RunRegistrationController::class, 'searchEmployee'])->name('attendance.search');
     Route::post('/api/mark-attendance', [RunRegistrationController::class, 'markAttendance'])->name('attendance.mark');
 });
