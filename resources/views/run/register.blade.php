@@ -110,6 +110,13 @@
         .running-icon {
             font-size: 24px;
         }
+        .date-title {
+            display: block;
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 8px;
+        }
         .card-subtitle {
             text-align: center;
             color: #666;
@@ -221,9 +228,10 @@
                 <div class="card-body">
                     <h3 class="card-title">
                         <span class="running-icon">🏃</span>
-                        Tanseeq Run -Season 3
+                        Tanseeq Run - Season 3
                     </h3>
-                    <p class="card-subtitle">17th jan 2026</p>
+                    <span class="date-title">17th January 2026</span>
+                    <p class="card-subtitle">Registration Form</p>
 
                     @if(session('success'))
                         <div class="success-container">
@@ -264,24 +272,25 @@
                                        placeholder="Enter Employee ID" required autocomplete="off">
                                 <div id="employee_id_error" class="text-danger mt-1" style="display: none;"></div>
                                 <div id="employee_id_loading" class="text-info mt-1" style="display: none; font-size: 12px;">Looking up employee...</div>
+                                <div id="employee_id_success" class="text-success mt-1" style="display: none; font-size: 12px;">✓ Employee found</div>
                             </div>
 
                             <div class="mb-3">
-                                <label for="name" class="form-label">Name <span class="text-danger">*</span></label>
+                                <label for="name" class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name" name="name" 
-                                       placeholder="Full Name" required>
+                                       placeholder="auto-filled" readonly required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="designation" class="form-label">Designation <span class="text-danger">*</span></label>
+                                <label for="designation" class="form-label">Designation</label>
                                 <input type="text" class="form-control" id="designation" name="designation" 
-                                       placeholder="Designation" required>
+                                       placeholder="auto-filled" readonly required>
                             </div>
 
                             <div class="mb-3">
-                                <label for="company" class="form-label">Company <span class="text-danger">*</span></label>
+                                <label for="company" class="form-label">Company</label>
                                 <input type="text" class="form-control" id="company" name="company" 
-                                       placeholder="Company" required>
+                                       placeholder="auto-filled" readonly required>
                             </div>
 
                             <div class="mb-3">
@@ -337,29 +346,33 @@
     let companyInput = document.getElementById('company');
     let errorDiv = document.getElementById('employee_id_error');
     let loadingDiv = document.getElementById('employee_id_loading');
+    let successDiv = document.getElementById('employee_id_success');
+    let registrationForm = document.getElementById('registrationForm');
     let timeout;
+    let employeeFound = false;
 
     if (employeeIdInput) {
         employeeIdInput.addEventListener('input', function() {
             clearTimeout(timeout);
             let employeeId = this.value.trim();
             
-            // Clear previous data and make fields editable
+            // Clear previous data
+            employeeFound = false;
             if (nameInput) {
                 nameInput.value = '';
-                nameInput.removeAttribute('readonly');
             }
             if (designationInput) {
                 designationInput.value = '';
-                designationInput.removeAttribute('readonly');
             }
             if (companyInput) {
                 companyInput.value = '';
-                companyInput.removeAttribute('readonly');
             }
             if (errorDiv) {
                 errorDiv.style.display = 'none';
                 errorDiv.textContent = '';
+            }
+            if (successDiv) {
+                successDiv.style.display = 'none';
             }
             
             if (employeeId.length > 0) {
@@ -367,6 +380,9 @@
                     // Show loading indicator
                     if (errorDiv) {
                         errorDiv.style.display = 'none';
+                    }
+                    if (successDiv) {
+                        successDiv.style.display = 'none';
                     }
                     if (loadingDiv) {
                         loadingDiv.style.display = 'block';
@@ -385,45 +401,41 @@
                             console.log('Employee data received:', data);
                             
                             if (data.error) {
+                                employeeFound = false;
+                                if (successDiv) {
+                                    successDiv.style.display = 'none';
+                                }
                                 if (errorDiv) {
                                     let errorMsg = data.error;
-                                    if (data.error.includes('not found')) {
-                                        errorMsg += ' You can manually enter your details below.';
-                                    }
-                                    errorDiv.textContent = errorMsg;
-                                    errorDiv.style.display = 'block';
                                     if (data.registration_id) {
-                                        errorDiv.innerHTML += '<br>Registration ID: ' + data.registration_id;
+                                        errorMsg += '<br>Registration ID: ' + data.registration_id;
                                     }
+                                    errorDiv.innerHTML = errorMsg;
+                                    errorDiv.style.display = 'block';
                                 }
-                                // Keep fields editable for manual entry
+                                // Clear readonly fields
                                 if (nameInput) {
                                     nameInput.value = '';
-                                    nameInput.removeAttribute('readonly');
                                 }
                                 if (designationInput) {
                                     designationInput.value = '';
-                                    designationInput.removeAttribute('readonly');
                                 }
                                 if (companyInput) {
                                     companyInput.value = '';
-                                    companyInput.removeAttribute('readonly');
                                 }
                             } else {
-                                // Auto-fill and make readonly when employee found
+                                // Auto-fill readonly fields when employee found
+                                employeeFound = true;
                                 console.log('Auto-filling fields...');
                                 if (nameInput && data.name) {
                                     nameInput.value = data.name;
-                                    nameInput.setAttribute('readonly', 'readonly');
                                 }
                                 if (designationInput && data.designation) {
                                     designationInput.value = data.designation;
-                                    designationInput.setAttribute('readonly', 'readonly');
                                 }
                                 // Use entity data for company field (since employee data has entity)
                                 if (companyInput && data.entity) {
                                     companyInput.value = data.entity;
-                                    companyInput.setAttribute('readonly', 'readonly');
                                 }
                                 if (errorDiv) {
                                     errorDiv.style.display = 'none';
@@ -432,58 +444,77 @@
                                 if (loadingDiv) {
                                     loadingDiv.style.display = 'none';
                                 }
+                                if (successDiv) {
+                                    successDiv.style.display = 'block';
+                                }
                                 console.log('Fields auto-filled successfully');
                             }
                         })
                         .catch(error => {
                             console.error('Error fetching employee:', error);
+                            employeeFound = false;
                             if (loadingDiv) {
                                 loadingDiv.style.display = 'none';
                             }
+                            if (successDiv) {
+                                successDiv.style.display = 'none';
+                            }
                             if (errorDiv) {
                                 let errorMsg = error.message || 'Error fetching employee data. Please try again.';
-                                if (errorMsg.includes('not found')) {
-                                    errorMsg += ' You can manually enter your details below.';
-                                }
                                 errorDiv.textContent = errorMsg;
                                 errorDiv.style.display = 'block';
                             }
-                            // Keep fields editable for manual entry
+                            // Clear readonly fields
                             if (nameInput) {
                                 nameInput.value = '';
-                                nameInput.removeAttribute('readonly');
                             }
                             if (designationInput) {
                                 designationInput.value = '';
-                                designationInput.removeAttribute('readonly');
                             }
                             if (companyInput) {
                                 companyInput.value = '';
-                                companyInput.removeAttribute('readonly');
                             }
                         });
                 }, 300); // Reduced to 300ms for faster response
             } else {
                 // Clear fields when employee ID is empty
+                employeeFound = false;
                 if (nameInput) {
                     nameInput.value = '';
-                    nameInput.removeAttribute('readonly');
                 }
                 if (designationInput) {
                     designationInput.value = '';
-                    designationInput.removeAttribute('readonly');
                 }
                 if (companyInput) {
                     companyInput.value = '';
-                    companyInput.removeAttribute('readonly');
                 }
                 if (errorDiv) {
                     errorDiv.style.display = 'none';
                     errorDiv.textContent = '';
                 }
+                if (successDiv) {
+                    successDiv.style.display = 'none';
+                }
                 if (loadingDiv) {
                     loadingDiv.style.display = 'none';
                 }
+            }
+        });
+    }
+
+    // Prevent form submission if employee is not found
+    if (registrationForm) {
+        registrationForm.addEventListener('submit', function(e) {
+            if (!employeeFound) {
+                e.preventDefault();
+                if (errorDiv) {
+                    errorDiv.textContent = 'Please enter a valid Employee ID before submitting.';
+                    errorDiv.style.display = 'block';
+                }
+                if (employeeIdInput) {
+                    employeeIdInput.focus();
+                }
+                return false;
             }
         });
     }
