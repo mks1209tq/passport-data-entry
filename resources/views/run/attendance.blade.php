@@ -133,7 +133,7 @@
         @endif
         
         <div class="action-buttons">
-            <a href="{{ route('registrations.list') }}" class="btn btn-primary">← Back</a>
+            <a href="{{ route('registrations.list') }}" class="btn btn-primary">← Back to list</a>
             <a href="{{ route('attendance.export') }}" class="btn btn-success">📥 Download</a>
         </div>
         
