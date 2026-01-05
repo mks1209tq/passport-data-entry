@@ -378,7 +378,111 @@ class RunRegistrationController extends Controller
                 'Designation',
                 'Company',
                 'Contact Number',
-                'UN Category',
+                'RUN Category',
+                'T-Shirt Size',
+                'Attendance Status',
+                'Registered At'
+            ]);
+            
+            // Data rows
+            foreach ($registrations as $r) {
+                fputcsv($file, [
+                    $r->registration_id ?? 'N/A',
+                    $r->bib_number ?? '-',
+                    $r->employee_id,
+                    $r->name,
+                    $r->designation,
+                    $r->company,
+                    $r->contact_number,
+                    $r->run_category,
+                    $r->tshirt_size,
+                    $r->attendance_status ?? 'pending',
+                    $r->created_at ? $r->created_at->format('d/m/Y H:i') : 'N/A'
+                ]);
+            }
+            
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
+    public function searchEmployee(Request $request)
+    {
+        $employeeId = trim($request->input('employee_id'));
+        
+        if (empty($employeeId)) {
+            return response()->json(['error' => 'Employee ID is required'], 400);
+        }
+        
+        $registration = RunRegistration::where('employee_id', $employeeId)
+            ->orWhere('employee_id', 'LIKE', '%' . $employeeId . '%')
+            ->first();
+        
+        if (!$registration) {
+            return response()->json(['error' => 'Employee not found in registrations'], 404);
+        }
+        
+        return response()->json([
+            'id' => $registration->id,
+            'employee_id' => $registration->employee_id,
+            'name' => $registration->name,
+            'designation' => $registration->designation,
+            'company' => $registration->company,
+            'run_category' => $registration->run_category,
+            'bib_number' => $registration->bib_number,
+            'registration_id' => $registration->registration_id,
+            'attendance_status' => $registration->attendance_status ?? 'pending',
+        ]);
+    }
+
+    public function markAttendance(Request $request)
+    {
+        $request->validate([
+            'registration_id' => 'required|exists:run_registrations,id',
+            'status' => 'required|in:present,pending',
+        ]);
+        
+        $registration = RunRegistration::findOrFail($request->registration_id);
+        $registration->attendance_status = $request->status;
+        $registration->save();
+        
+        return response()->json([
+            'success' => true,
+            'message' => 'Attendance marked successfully',
+            'attendance_status' => $registration->attendance_status,
+        ]);
+    }
+
+    public function exportPresentees()
+    {
+        $registrations = RunRegistration::where('attendance_status', 'present')
+            ->latest()
+            ->get();
+        
+        $filename = 'tanseeq_run_presentees_' . date('Y-m-d_His') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($registrations) {
+            $file = fopen('php://output', 'w');
+            
+            // Add BOM for UTF-8
+            fprintf($file, chr(0xEF).chr(0xBB).chr(0xBF));
+            
+            // Header row
+            fputcsv($file, [
+                'Registration ID',
+                'Bib Number',
+                'Employee ID',
+                'Name',
+                'Designation',
+                'Company',
+                'Contact Number',
+                'RUN Category',
                 'T-Shirt Size',
                 'Registered At'
             ]);

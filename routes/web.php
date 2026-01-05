@@ -27,7 +27,12 @@ Route::middleware('admin')->group(function () {
 Route::middleware('admin')->group(function () {
     Route::get('/tanseeq-run/list', [RunRegistrationController::class, 'index'])->name('registrations.list');
     Route::get('/tanseeq-run/export', [RunRegistrationController::class, 'export']);
+    Route::get('/tanseeq-run/export-presentees', [RunRegistrationController::class, 'exportPresentees'])->name('registrations.export.presentees');
     Route::get('/tanseeq-run/edit/{id}', [RunRegistrationController::class, 'edit'])->name('registrations.edit');
     Route::put('/tanseeq-run/update/{id}', [RunRegistrationController::class, 'update'])->name('registrations.update');
     Route::get('/admin/logout', [RunRegistrationController::class, 'logout'])->name('admin.logout');
+    
+    // Attendance routes
+    Route::post('/api/search-employee', [RunRegistrationController::class, 'searchEmployee'])->name('attendance.search');
+    Route::post('/api/mark-attendance', [RunRegistrationController::class, 'markAttendance'])->name('attendance.mark');
 });

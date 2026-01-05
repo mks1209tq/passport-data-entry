@@ -19,5 +19,6 @@ class RunRegistration extends Model
         'tshirt_size',
         'registration_id',
         'bib_number',
+        'attendance_status',
     ];
 }

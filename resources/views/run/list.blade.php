@@ -113,6 +113,9 @@
             margin-bottom: 15px;
             font-size: 14px;
         }
+        .attendance-section {
+            margin-bottom: 15px;
+        }
         @media (max-width: 576px) {
             body {
                 padding: 5px;
@@ -124,6 +127,12 @@
             h2 {
                 font-size: 18px;
                 margin-bottom: 12px;
+            }
+            .attendance-section {
+                padding: 10px !important;
+            }
+            .attendance-section h3 {
+                font-size: 16px !important;
             }
             .action-buttons {
                 flex-direction: column;
@@ -147,6 +156,13 @@
                 padding: 6px 12px;
                 font-size: 12px;
             }
+            #attendance_result > div {
+                flex-direction: column !important;
+            }
+            #attendance_result button {
+                width: 100%;
+                margin-top: 8px;
+            }
         }
     </style>
 </head>
@@ -160,9 +176,43 @@
         
         <div class="count">Total Registrations: {{ $registrations->count() }}</div>
         
+        <!-- Attendance Marking Section -->
+        <div class="attendance-section" style="background: #fff; padding: 15px; border-radius: 5px; margin-bottom: 15px; border: 2px solid #007bff;">
+            <h3 style="margin-top: 0; margin-bottom: 15px; color: #007bff; font-size: 18px;">📋 Mark Attendance</h3>
+            <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end;">
+                <div style="flex: 1; min-width: 200px;">
+                    <label for="attendance_employee_id" style="display: block; margin-bottom: 5px; font-weight: 500;">Search Employee ID:</label>
+                    <input type="text" id="attendance_employee_id" class="form-control" 
+                           placeholder="Enter Employee ID" style="width: 100%; padding: 10px; font-size: 16px; border: 1px solid #ddd; border-radius: 4px;">
+                </div>
+                <button onclick="searchEmployeeForAttendance()" class="btn btn-primary" style="min-width: 120px;">Search</button>
+            </div>
+            
+            <!-- Search Results -->
+            <div id="attendance_result" style="margin-top: 15px; display: none;">
+                <div style="background: #f8f9fa; padding: 15px; border-radius: 5px; border-left: 4px solid #28a745;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+                        <div>
+                            <strong id="result_name"></strong><br>
+                            <small style="color: #666;">ID: <span id="result_employee_id"></span> | 
+                            Category: <span id="result_category"></span> | 
+                            Bib: <span id="result_bib"></span></small>
+                        </div>
+                        <div>
+                            <button onclick="markAttendance('present')" class="btn btn-success" style="min-width: 120px;">✓ Mark Present</button>
+                        </div>
+                    </div>
+                    <div id="attendance_status_display" style="margin-top: 10px; font-weight: bold;"></div>
+                </div>
+            </div>
+            
+            <div id="attendance_error" style="margin-top: 10px; display: none; padding: 10px; background: #f8d7da; color: #721c24; border-radius: 4px;"></div>
+        </div>
+        
         <div class="action-buttons">
             <a href="/tanseeq-run" class="btn btn-primary">Create New Registration</a>
-            <a href="/tanseeq-run/export" class="btn btn-success">Download as CSV</a>
+            <a href="/tanseeq-run/export" class="btn btn-success">Download All CSV</a>
+            <a href="/tanseeq-run/export-presentees" class="btn" style="background-color: #28a745; color: white;">Download Presentees Only</a>
             @if(isset($isSuperAdmin) && $isSuperAdmin)
                 <a href="{{ route('admin.register') }}" class="btn" style="background-color: #6c757d; color: white;">Create Admin Account</a>
             @endif
@@ -183,6 +233,7 @@
                     <th>Contact Number</th>
                     <th>RUN Category</th>
                     <th>T-Shirt Size</th>
+                    <th>Attendance</th>
                     <th>Registered At</th>
                     <th>Action</th>
                 </tr>
@@ -200,6 +251,13 @@
                     <td>{{ $r->contact_number }}</td>
                     <td>{{ $r->run_category }}</td>
                     <td>{{ $r->tshirt_size }}</td>
+                    <td>
+                        @if($r->attendance_status === 'present')
+                            <span style="color: #28a745; font-weight: bold;">✓ Present</span>
+                        @else
+                            <span style="color: #6c757d;">Pending</span>
+                        @endif
+                    </td>
                     <td>{{ $r->created_at ? $r->created_at->format('d/m/Y H:i') : 'N/A' }}</td>
                     <td>
                         <a href="{{ route('registrations.edit', $r->id) }}" class="btn btn-edit">Edit</a>
@@ -207,7 +265,7 @@
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="14" style="text-align: center; padding: 20px; color: #999;">
+                    <td colspan="12" style="text-align: center; padding: 20px; color: #999;">
                         No registrations found yet.
                     </td>
                 </tr>
@@ -216,5 +274,107 @@
         </table>
         </div>
     </div>
+
+    <script>
+        let currentRegistrationId = null;
+
+        function searchEmployeeForAttendance() {
+            const employeeId = document.getElementById('attendance_employee_id').value.trim();
+            const resultDiv = document.getElementById('attendance_result');
+            const errorDiv = document.getElementById('attendance_error');
+            
+            if (!employeeId) {
+                errorDiv.textContent = 'Please enter an Employee ID';
+                errorDiv.style.display = 'block';
+                resultDiv.style.display = 'none';
+                return;
+            }
+            
+            errorDiv.style.display = 'none';
+            resultDiv.style.display = 'none';
+            
+            fetch('{{ route("attendance.search") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({ employee_id: employeeId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    errorDiv.textContent = data.error;
+                    errorDiv.style.display = 'block';
+                    resultDiv.style.display = 'none';
+                } else {
+                    currentRegistrationId = data.id;
+                    document.getElementById('result_name').textContent = data.name;
+                    document.getElementById('result_employee_id').textContent = data.employee_id;
+                    document.getElementById('result_category').textContent = data.run_category;
+                    document.getElementById('result_bib').textContent = data.bib_number || 'N/A';
+                    
+                    updateAttendanceStatusDisplay(data.attendance_status);
+                    resultDiv.style.display = 'block';
+                    errorDiv.style.display = 'none';
+                }
+            })
+            .catch(error => {
+                errorDiv.textContent = 'Error searching employee. Please try again.';
+                errorDiv.style.display = 'block';
+                resultDiv.style.display = 'none';
+            });
+        }
+
+        function markAttendance(status) {
+            if (!currentRegistrationId) {
+                alert('Please search for an employee first');
+                return;
+            }
+            
+            fetch('{{ route("attendance.mark") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                },
+                body: JSON.stringify({
+                    registration_id: currentRegistrationId,
+                    status: status
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    updateAttendanceStatusDisplay(data.attendance_status);
+                    // Reload page after 1 second to show updated status in table
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 1000);
+                } else {
+                    alert('Error marking attendance. Please try again.');
+                }
+            })
+            .catch(error => {
+                alert('Error marking attendance. Please try again.');
+            });
+        }
+
+        function updateAttendanceStatusDisplay(status) {
+            const statusDiv = document.getElementById('attendance_status_display');
+            if (status === 'present') {
+                statusDiv.innerHTML = '<span style="color: #28a745;">✓ Status: Present</span>';
+            } else {
+                statusDiv.innerHTML = '<span style="color: #6c757d;">Status: Pending</span>';
+            }
+        }
+
+        // Allow Enter key to search
+        document.getElementById('attendance_employee_id').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchEmployeeForAttendance();
+            }
+        });
+    </script>
 </body>
 </html>
