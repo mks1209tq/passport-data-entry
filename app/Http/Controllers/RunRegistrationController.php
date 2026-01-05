@@ -545,10 +545,12 @@ class RunRegistrationController extends Controller
 
     public function exportAttendance()
     {
-        // Export ALL registrations with attendance status
-        $registrations = RunRegistration::latest()->get();
+        // Export ONLY present registrations
+        $registrations = RunRegistration::where('attendance_status', 'present')
+            ->latest()
+            ->get();
         
-        $filename = 'tanseeq_run_attendance_' . date('Y-m-d_His') . '.csv';
+        $filename = 'tanseeq_run_presentees_' . date('Y-m-d_His') . '.csv';
         
         $headers = [
             'Content-Type' => 'text/csv',
