@@ -33,19 +33,19 @@
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
+            justify-content: flex-end;
         }
         .btn {
-            padding: 10px 15px;
+            padding: 6px 12px;
             text-decoration: none;
             border-radius: 4px;
             display: inline-block;
             border: none;
             cursor: pointer;
-            font-size: 14px;
-            min-height: 44px;
+            font-size: 12px;
+            min-height: 32px;
             text-align: center;
-            flex: 1 1 auto;
-            min-width: 120px;
+            white-space: nowrap;
         }
         .btn-primary {
             background-color: #007bff;
@@ -90,9 +90,9 @@
                 font-size: 18px;
             }
             .btn {
-                font-size: 13px;
-                padding: 8px 12px;
-                min-height: 40px;
+                font-size: 11px;
+                padding: 5px 10px;
+                min-height: 30px;
             }
             .attendance-section {
                 padding: 15px;
@@ -133,9 +133,8 @@
         @endif
         
         <div class="action-buttons">
-            <a href="{{ route('registrations.list') }}" class="btn btn-primary">← Back to List</a>
-            <a href="{{ route('attendance.export') }}" class="btn btn-success"> Download Attendance Sheet</a>
-            <a href="{{ route('admin.logout') }}" class="btn" style="background-color: #dc3545; color: white;">Logout</a>
+            <a href="{{ route('registrations.list') }}" class="btn btn-primary">← Back</a>
+            <a href="{{ route('attendance.export') }}" class="btn btn-success">📥 Download</a>
         </div>
         
         <!-- Attendance Marking Section -->
