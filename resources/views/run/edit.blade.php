@@ -126,7 +126,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="run_category" class="form-label">UN Category <span class="text-danger">*</span></label>
+                            <label for="run_category" class="form-label">RUN Category <span class="text-danger">*</span></label>
                             <select class="form-control form-select" id="run_category" name="run_category" required>
                                 <option value="2.5KM" {{ $registration->run_category == '2.5KM' ? 'selected' : '' }}>2.5KM</option>
                                 <option value="5KM" {{ $registration->run_category == '5KM' ? 'selected' : '' }}>5KM</option>
