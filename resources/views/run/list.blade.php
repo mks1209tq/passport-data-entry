@@ -181,7 +181,7 @@
                     <th>Designation</th>
                     <th>Company</th>
                     <th>Contact Number</th>
-                    <th>UN Category</th>
+                    <th>RUN Category</th>
                     <th>T-Shirt Size</th>
                     <th>Registered At</th>
                     <th>Action</th>
