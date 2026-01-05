@@ -193,7 +193,7 @@
                     </div>
                     <div style="border-top: 1px solid #ddd; padding-top: 15px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
                         <div id="attendance_status_display" style="font-weight: bold; font-size: 16px;"></div>
-                        <div>
+                        <div id="mark_attendance_button_container">
                             <button onclick="markAttendance('present')" class="btn btn-success" style="min-width: 150px; font-size: 16px; padding: 12px;">✓ Mark Present</button>
                         </div>
                     </div>
@@ -232,6 +232,12 @@
             
             errorDiv.style.display = 'none';
             resultDiv.style.display = 'none';
+            
+            // Reset button visibility when starting a new search
+            const buttonContainer = document.getElementById('mark_attendance_button_container');
+            if (buttonContainer) {
+                buttonContainer.style.display = 'block';
+            }
             
             fetch('{{ route("attendance.search") }}', {
                 method: 'POST',
@@ -315,10 +321,20 @@
 
         function updateAttendanceStatusDisplay(status) {
             const statusDiv = document.getElementById('attendance_status_display');
+            const buttonContainer = document.getElementById('mark_attendance_button_container');
+            
             if (status === 'present') {
                 statusDiv.innerHTML = '<span style="color: #28a745;">✓ Status: Present</span>';
+                // Hide the button if already marked as present
+                if (buttonContainer) {
+                    buttonContainer.style.display = 'none';
+                }
             } else {
                 statusDiv.innerHTML = '<span style="color: #6c757d;">Status: Pending</span>';
+                // Show the button if not yet marked as present
+                if (buttonContainer) {
+                    buttonContainer.style.display = 'block';
+                }
             }
         }
 
