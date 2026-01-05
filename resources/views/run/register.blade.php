@@ -221,9 +221,9 @@
                 <div class="card-body">
                     <h3 class="card-title">
                         <span class="running-icon">🏃</span>
-                        Tanseeq Run
+                        Tanseeq Run -Season 3
                     </h3>
-                    <p class="card-subtitle">Registration Form</p>
+                    <p class="card-subtitle">17th jan 2026</p>
 
                     @if(session('success'))
                         <div class="success-container">
