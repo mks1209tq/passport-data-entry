@@ -72,8 +72,11 @@
         }
         .table-wrapper {
             overflow-x: auto;
+            overflow-y: auto;
             -webkit-overflow-scrolling: touch;
             margin-top: 10px;
+            max-height: calc(100vh - 250px);
+            position: relative;
         }
         table {
             width: 100%;
@@ -93,6 +96,8 @@
             font-weight: bold;
             position: sticky;
             top: 0;
+            z-index: 10;
+            box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.4);
         }
         tr:nth-child(even) {
             background-color: #f9f9f9;
@@ -137,11 +142,17 @@
             .count {
                 font-size: 14px;
             }
+            .table-wrapper {
+                max-height: calc(100vh - 180px);
+            }
             table {
                 font-size: 11px;
             }
             th, td {
                 padding: 6px 4px;
+            }
+            th {
+                z-index: 10;
             }
             .btn-edit {
                 padding: 6px 12px;

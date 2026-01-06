@@ -85,3 +85,4 @@ Wait 1 minute, then visit the registration page - it should show "Registration C
 - **No `.env` configuration needed** - just remove any test deadlines
 - **Automatic**: The deadline check happens automatically, no cron jobs needed
 
+
