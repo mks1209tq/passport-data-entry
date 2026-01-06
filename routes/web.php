@@ -12,6 +12,8 @@ Route::get('/tanseeq-run', [RunRegistrationController::class, 'create']);
 Route::post('/tanseeq-run', [RunRegistrationController::class, 'store']);
 Route::get('/api/employee', [RunRegistrationController::class, 'getEmployee']);
 Route::get('/api/check-database', [RunRegistrationController::class, 'checkDatabase']); // Diagnostic endpoint
+Route::get('/api/check-deadline', [RunRegistrationController::class, 'checkDeadlineStatus']); // Check current deadline status
+Route::get('/api/test-deadline', [RunRegistrationController::class, 'testDeadline']); // Test deadline at different times
 Route::get('/api/check-admin-status', [RunRegistrationController::class, 'checkAdminStatus'])->middleware('admin'); // Admin status diagnostic
 
 // Admin login and registration routes

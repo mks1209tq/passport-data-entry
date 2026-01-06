@@ -8,11 +8,149 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Carbon;
 
 class RunRegistrationController extends Controller
 {
+    /**
+     * Check if registration is closed
+     * Registration closes on January 8th, 2026 at 12:00 AM (midnight)
+     * This means it works all day on Jan 6th and Jan 7th, closes at start of Jan 8th
+     * 
+     * @param Carbon|null $testTime Optional test time to simulate different times
+     */
+    private function isRegistrationClosed($testTime = null)
+    {
+        // Get deadline from environment or use default (Jan 8, 2026 at 12 AM)
+        $deadline = env('REGISTRATION_DEADLINE', null);
+        
+        // Get local timezone from env or default to Asia/Dubai (Dubai/UAE timezone)
+        $localTimezone = env('APP_TIMEZONE', 'Asia/Dubai');
+        
+        if ($deadline) {
+            // Parse deadline assuming it's in local timezone (not UTC)
+            $deadlineTime = Carbon::parse($deadline, $localTimezone);
+        } else {
+            // Default: January 8th, 2026 at 12:00 AM (midnight) in local timezone
+            $deadlineTime = Carbon::create(2026, 1, 8, 0, 0, 0, $localTimezone);
+        }
+        
+        $currentTime = $testTime ?? now();
+        // Convert current time to local timezone for comparison
+        $currentTime = $currentTime->setTimezone($localTimezone);
+        
+        return $currentTime->gte($deadlineTime);
+    }
+
+    /**
+     * Quick diagnostic endpoint to check deadline status
+     */
+    public function checkDeadlineStatus()
+    {
+        $deadline = env('REGISTRATION_DEADLINE', null);
+        $localTimezone = env('APP_TIMEZONE', 'Asia/Dubai');
+        $currentTime = now();
+        
+        if ($deadline) {
+            // Parse deadline assuming it's in local timezone
+            $deadlineTime = Carbon::parse($deadline, $localTimezone);
+        } else {
+            $deadlineTime = Carbon::create(2026, 1, 8, 0, 0, 0, $localTimezone);
+        }
+        
+        $currentTime = $currentTime->setTimezone($localTimezone);
+        $isClosed = $currentTime->gte($deadlineTime);
+        
+        return response()->json([
+            'current_time' => $currentTime->format('Y-m-d H:i:s'),
+            'current_timezone' => $localTimezone,
+            'deadline_from_env' => $deadline ?: 'NOT SET (using default)',
+            'deadline_time' => $deadlineTime->format('Y-m-d H:i:s'),
+            'deadline_timezone' => $deadlineTime->timezone->getName(),
+            'is_closed' => $isClosed,
+            'status' => $isClosed ? 'CLOSED' : 'OPEN',
+            'time_until_deadline' => $currentTime->lt($deadlineTime) 
+                ? $currentTime->diffForHumans($deadlineTime, true) 
+                : 'Deadline has passed',
+            'comparison' => [
+                'current_timestamp' => $currentTime->timestamp,
+                'deadline_timestamp' => $deadlineTime->timestamp,
+                'difference_seconds' => $currentTime->timestamp - $deadlineTime->timestamp,
+            ],
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
+    /**
+     * Test endpoint to check registration status at different times
+     * Usage: /api/test-deadline?time=2026-01-07 11:50:00
+     */
+    public function testDeadline(Request $request)
+    {
+        $testTimeStr = $request->input('time');
+        
+        // Get deadline
+        $deadline = env('REGISTRATION_DEADLINE', null);
+        if ($deadline) {
+            $deadlineTime = Carbon::parse($deadline);
+        } else {
+            $deadlineTime = Carbon::create(2026, 1, 8, 0, 0, 0);
+        }
+        
+        // Test times to check
+        $testTimes = [];
+        
+        if ($testTimeStr) {
+            // Test with provided time
+            $testTimes[] = [
+                'label' => 'Provided Time',
+                'time' => Carbon::parse($testTimeStr),
+            ];
+        } else {
+            // Default test times
+            $testTimes = [
+                ['label' => 'Today 11:50 AM', 'time' => Carbon::create(2026, 1, 6, 11, 50, 0)],
+                ['label' => 'Tomorrow 11:50 AM', 'time' => Carbon::create(2026, 1, 7, 11, 50, 0)],
+                ['label' => 'Tomorrow 11:59 PM', 'time' => Carbon::create(2026, 1, 7, 23, 59, 59)],
+                ['label' => 'Jan 8th 12:00 AM', 'time' => Carbon::create(2026, 1, 8, 0, 0, 0)],
+                ['label' => 'Jan 8th 12:01 AM', 'time' => Carbon::create(2026, 1, 8, 0, 1, 0)],
+            ];
+        }
+        
+        // Add current time
+        array_unshift($testTimes, [
+            'label' => 'Current Time',
+            'time' => now(),
+        ]);
+        
+        $results = [];
+        foreach ($testTimes as $test) {
+            $isClosed = $this->isRegistrationClosed($test['time']);
+            $results[] = [
+                'label' => $test['label'],
+                'time' => $test['time']->format('Y-m-d H:i:s'),
+                'is_closed' => $isClosed,
+                'status' => $isClosed ? '❌ CLOSED' : '✅ OPEN',
+                'time_until_deadline' => $test['time']->lt($deadlineTime) 
+                    ? $test['time']->diffForHumans($deadlineTime, true) . ' until deadline'
+                    : 'Deadline passed',
+            ];
+        }
+        
+        return response()->json([
+            'deadline' => $deadlineTime->format('Y-m-d H:i:s'),
+            'deadline_readable' => $deadlineTime->format('F j, Y g:i A'),
+            'current_time' => now()->format('Y-m-d H:i:s'),
+            'test_results' => $results,
+        ], 200, [], JSON_PRETTY_PRINT);
+    }
+
     public function create()
     {
+        // Check if registration is closed
+        if ($this->isRegistrationClosed()) {
+            return view('run.closed');
+        }
+        
         return view('run.register');
     }
 
@@ -154,6 +292,11 @@ class RunRegistrationController extends Controller
 
     public function store(Request $request)
     {
+        // Check if registration is closed
+        if ($this->isRegistrationClosed()) {
+            return back()->withErrors(['registration_closed' => 'Registration is now closed. The deadline has passed.'])->withInput();
+        }
+
         $request->validate([
             'employee_id' => 'required|unique:run_registrations',
             'name' => 'required',
