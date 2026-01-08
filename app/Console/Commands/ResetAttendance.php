@@ -12,7 +12,7 @@ class ResetAttendance extends Command
      *
      * @var string
      */
-    protected $signature = 'attendance:reset';
+    protected $signature = 'attendance:reset {--force : Force reset without confirmation}';
 
     /**
      * The console command description.
@@ -35,7 +35,9 @@ class ResetAttendance extends Command
         $this->info("Total registrations: {$totalRegistrations}");
         $this->info("Registrations marked as present: {$presentCount}");
         
-        if ($this->confirm('Are you sure you want to reset all attendance data?', true)) {
+        $shouldReset = $this->option('force') || $this->confirm('Are you sure you want to reset all attendance data?', true);
+        
+        if ($shouldReset) {
             // Reset all attendance_status to 'pending'
             $updated = RunRegistration::query()->update(['attendance_status' => 'pending']);
             
