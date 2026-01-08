@@ -750,5 +750,14 @@ class RunRegistrationController extends Controller
 
         return response()->stream($callback, 200, $headers);
     }
+
+    public function resetAttendance()
+    {
+        // Reset all attendance_status to 'pending'
+        $updated = RunRegistration::query()->update(['attendance_status' => 'pending']);
+        
+        return redirect()->route('attendance.show')
+            ->with('success', "Successfully reset attendance for {$updated} registration(s). All attendance statuses have been set to 'pending'.");
+    }
 }
 

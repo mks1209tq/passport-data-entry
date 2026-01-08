@@ -134,6 +134,10 @@
         
         <div class="action-buttons">
             <a href="{{ route('registrations.list') }}" class="btn btn-primary">← Back to list</a>
+            <form action="{{ route('attendance.reset') }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to reset all attendance data? This will set all statuses to pending.');">
+                @csrf
+                <button type="submit" class="btn" style="background-color: #ffc107; color: #000; margin-right: 8px;">🔄 Reset Attendance</button>
+            </form>
             <a href="{{ route('attendance.export') }}" class="btn btn-success">📥 Download</a>
         </div>
         

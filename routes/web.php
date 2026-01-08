@@ -40,4 +40,5 @@ Route::middleware('admin')->group(function () {
     Route::get('/tanseeq-run/attendance/export', [RunRegistrationController::class, 'exportAttendance'])->name('attendance.export');
     Route::post('/api/search-employee', [RunRegistrationController::class, 'searchEmployee'])->name('attendance.search');
     Route::post('/api/mark-attendance', [RunRegistrationController::class, 'markAttendance'])->name('attendance.mark');
+    Route::post('/tanseeq-run/attendance/reset', [RunRegistrationController::class, 'resetAttendance'])->name('attendance.reset');
 });
